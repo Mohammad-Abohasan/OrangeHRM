@@ -11,6 +11,10 @@ describe('Login Page', () => {
 
   it('Valid Login', () => {
     loginObj.login('Admin', 'admin123');
-  })
+  });
+
+  it('Forgot your password?', () => {
+    loginObj.forgotYourPassword('Admin');
+  });
 
 })
