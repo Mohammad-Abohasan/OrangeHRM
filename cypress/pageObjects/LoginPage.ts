@@ -19,7 +19,7 @@ class LoginPage {
     this.elements.forgotPassword().click();
     this.elements.userName().type(userName);
     this.elements.resetPassword().click();
-    this.elements.titleResetPassword().contains('Reset Password link sent successfully').as('Done'); 
+    this.elements.titleResetPassword().contains('Reset Password link sent successfully').as('Reset Password done'); 
   }
 
 }
