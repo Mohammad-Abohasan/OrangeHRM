@@ -4,9 +4,9 @@ class LoginPage {
     userName: () => cy.getByAttribute('placeholder', 'Username'),
     password: () => cy.getByAttribute('placeholder', 'Password'),
     loginBtn: () => cy.get('button'),
-    forgotPassword: () => cy.getByClass('.orangehrm-login-forgot-header'),
+    forgotPassword: () => cy.getByClass('orangehrm-login-forgot-header'),
     resetPassword: () => cy.getByAttribute('type', 'submit'),
-    titleResetPassword: () => cy.getByClass('.orangehrm-forgot-password-title')
+    titleResetPassword: () => cy.getByClass('orangehrm-forgot-password-title')
   }
 
   login(userName: string, password: string) {
