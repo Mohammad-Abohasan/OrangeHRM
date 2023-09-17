@@ -5,8 +5,8 @@ const loginObj: LoginPage = new LoginPage();
 describe('Login Page', () => {
 
   beforeEach(() => {
-    cy.intercept('https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index').as('Login');
-    cy.visit('https://opensource-demo.orangehrmlive.com');
+    cy.intercept('/web/index.php/dashboard/index').as('Login');
+    cy.visit('/');
   });
 
   it('Forgot your password?', () => {

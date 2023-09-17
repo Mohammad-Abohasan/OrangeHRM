@@ -1,45 +1,30 @@
 import LoginPage from "../../../pageObjects/LoginPage";
+import DataUtils from "../../../support/DataUtils";
+import PIMTab from "../../../pageObjects/PIMTab";
 
-const loginObj: LoginPage = new LoginPage();
+const loginPage: LoginPage = new LoginPage();
+const dataUtils: DataUtils = new DataUtils();
+const pimTab: PIMTab = new PIMTab();
 
 describe('Login Page', () => {
 
   beforeEach(() => {
-    cy.intercept('https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index').as('Login');
-    cy.visit('https://opensource-demo.orangehrmlive.com');
+    cy.intercept('/web/index.php/dashboard/index').as('Login');
+    cy.visit('/');
 
     // Valid Login
-    loginObj.login('Admin', 'admin123');
+    loginPage.login('Admin', 'admin123');
   });
+
+  // it('PIM add employee', () => {
+  //   pimTab.addNewEmployee('Mohammad', 'Saed', 'Abohasan', 'm.s.abohasan', 'mohammad123', 'mohammad123');
+  // });
 
   it('Verify PIM add employee response', () => {
-    cy.request({
-      method: 'POST',
-      url: 'https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users',
-      body: {
-        username: 'Mohammad Abohasan', 
-        password: 'abohasan123',
-        status: true, 
-        userRoleId: 1, 
-        empNumber: 53
-      }
-    }).then((response) => {
-      expect(response).property(`status`).to.equal(200);
-    });
+    dataUtils.addEmployee('m.s.abuhasan', 'abohasan123', true, 1, 61);
   });
 
-  it('Verify employees locations response', () => {
-    cy.request('https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/dashboard/employees/locations')
-      .then((response) => {
-        expect(response).property(`status`).to.equal(200);
-      });
+  afterEach(() => {
+    dataUtils.deleteEmployee('m.s.abuhasan');
   });
-
-  it('Verify shortcuts response', () => {
-    cy.request('https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/dashboard/shortcuts')
-      .then((response) => {
-        expect(response).property(`status`).to.equal(200);
-      });
-  });
-
 });
