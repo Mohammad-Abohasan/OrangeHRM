@@ -1,12 +1,12 @@
 class LoginPage {
 
   elements = {
-    userName: () => cy.get('[placeholder="Username"]'),
-    password: () => cy.get('[placeholder="Password"]'),
+    userName: () => cy.getByAttribute('placeholder', 'Username'),
+    password: () => cy.getByAttribute('placeholder', 'Password'),
     loginBtn: () => cy.get('button'),
-    forgotPassword: () => cy.get('.orangehrm-login-forgot-header'),
-    resetPassword: () => cy.get('[type="submit"]'),
-    titleResetPassword: () => cy.get('.orangehrm-forgot-password-title')
+    forgotPassword: () => cy.getByClass('orangehrm-login-forgot-header'),
+    resetPassword: () => cy.getByAttribute('type', 'submit'),
+    titleResetPassword: () => cy.getByClass('orangehrm-forgot-password-title')
   }
 
   login(userName: string, password: string) {
@@ -19,7 +19,7 @@ class LoginPage {
     this.elements.forgotPassword().click();
     this.elements.userName().type(userName);
     this.elements.resetPassword().click();
-    this.elements.titleResetPassword().contains('Reset Password link sent successfully').as('Done'); 
+    this.elements.titleResetPassword().contains('Reset Password link sent successfully').as('Reset Password done'); 
   }
 
 }
