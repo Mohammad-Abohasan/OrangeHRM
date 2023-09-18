@@ -14,11 +14,15 @@ describe('Login Page', () => {
 
     // Valid Login
     loginPage.login('Admin', 'admin123');
+
+    cy.fixture('employeeInfoPIM').as('empInfo');
   });
 
-  // it('PIM add employee', () => {
-  //   pimTab.addNewEmployee('Mohammad', 'Saed', 'Abohasan', 'm.s.abohasan', 'mohammad123', 'mohammad123');
-  // });
+  it('PIM add employee', () => {
+    cy.get('@empInfo').then((infoData: any) => {
+      pimTab.addNewEmployee(infoData.firstName, infoData.middleName, infoData.lastName, 'm.s.abohasan', 'mohammad123', 'mohammad123');
+    })
+  });
 
   it('Verify PIM add employee response', () => {
     dataUtils.addEmployee('m.s.abuhasan', 'abohasan123', true, 1, 61);
