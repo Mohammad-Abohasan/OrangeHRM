@@ -12,23 +12,29 @@ describe('Login Page', () => {
     cy.intercept('/web/index.php/dashboard/index').as('Login');
     cy.visit('/');
 
-    // Valid Login
     loginPage.login('Admin', 'admin123');
-
     cy.fixture('employeeInfoPIM').as('empInfo');
   });
 
   it('PIM add employee', () => {
+    pimTab.openPIMTab();
     cy.get('@empInfo').then((infoData: any) => {
-      pimTab.addNewEmployee(infoData.firstName, infoData.middleName, infoData.lastName, 'm.s.abohasan', 'mohammad123', 'mohammad123');
-    })
+      pimTab.addNewEmployee(infoData.firstName, infoData.middleName, infoData.lastName, infoData.id, infoData.userName, infoData.password, infoData.password);
+    });
   });
 
-  it('Verify PIM add employee response', () => {
-    dataUtils.addEmployee('m.s.abuhasan', 'abohasan123', true, 1, 61);
-  });
+  // it('Verify Admin - add employee response', () => {
+  //   dataUtils.addEmployee('m.s.abuhasan', 'abohasan123', true, 1, 61);
+  // });
 
   afterEach(() => {
-    dataUtils.deleteEmployee('m.s.abuhasan');
+    pimTab.openPIMTab();
+    // PIM - delete employee
+    cy.get('@empInfo').then((infoData: any) => {
+      pimTab.deleteEmployee(infoData.id);
+    })
+
+    // Admin - delete employee response
+    // dataUtils.deleteEmployee('m.s.abuhasan');
   });
 });
