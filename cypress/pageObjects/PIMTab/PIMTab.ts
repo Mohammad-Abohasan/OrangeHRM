@@ -1,3 +1,7 @@
+import PIMSearch from "./PIMSearch";
+
+const pimSearch: PIMSearch = new PIMSearch();
+
 class PIMTab {
 
   elements = {
@@ -11,8 +15,12 @@ class PIMTab {
     saveNewEmp: () => cy.get('button[type="submit"]'),
     result: () => cy.get('.oxd-toast'),
 
-    employeeSearchId: () => cy.get('.oxd-input').eq(1),
+    loading: () => cy.get('.oxd-loading-spinner-container'),
+
+    employeeInputNickName: () => cy.get('.oxd-input').eq(4),
+
     searchBtn: () => cy.get('.orangehrm-left-space'),
+    resultData: () => cy.get('.oxd-table-cell'),
     resultActions: () => cy.get('.oxd-table-cell-actions'),
     deleteBtn: () => cy.get('.oxd-button--label-danger')
   }
@@ -34,15 +42,32 @@ class PIMTab {
 
     this.elements.saveNewEmp().click();
 
-    this.elements.result().contains('Successfully Saved').as('Successfully Added Employee'); 
+    this.elements.result().contains('Successfully Saved').as('Successfully Added Employee');
   }
 
-  deleteEmployee(id: number){
-    this.elements.employeeSearchId().type(`${id}`);
+  editPersonalDetails(nickName: string, driversLicenseNumber: string, licenseExpiryDate: string, maritalStatus: string, dateOfBirth: string, gender: string) {
+    this.elements.loading().should('exist');
+    this.elements.employeeInputNickName().type(nickName);
+  }
+
+  deleteEmployee(id: string) {
+    this.elements.employeeSearchId().type(id);
     this.elements.searchBtn().click({ force: true });
     this.elements.resultActions().children().eq(0).click();
     this.elements.deleteBtn().click();
     this.elements.result().contains('Successfully Deleted').as('Successfully Deleted Employee');
+  }
+
+  searchEmployee(empInfo: { key: string, value: string }[]) {
+    for (let i = 0; i < empInfo.length; i++) {
+      pimSearch.search(empInfo[i]);
+    }
+
+    this.elements.searchBtn().click({ force: true });
+
+    for (let i = 0; i < empInfo.length; i++) {
+      pimSearch.checkSearch(empInfo[i]);
+    }
   }
 
 }
