@@ -55,3 +55,4 @@ function getByAttribute(attribute: string, value: string) {
 
 Cypress.Commands.add('getByClass', getByClass);
 Cypress.Commands.add('getByAttribute', getByAttribute);
+
