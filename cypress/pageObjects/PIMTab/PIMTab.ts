@@ -1,4 +1,5 @@
 import PIMSearch from "./PIMSearch";
+import 'cypress-wait-until';
 
 const pimSearch: PIMSearch = new PIMSearch();
 
@@ -19,6 +20,7 @@ class PIMTab {
 
     employeeInputNickName: () => cy.get('.oxd-input').eq(4),
 
+    employeeSearchId: () => cy.get('input').eq(2),
     searchBtn: () => cy.get('.orangehrm-left-space'),
     resultData: () => cy.get('.oxd-table-cell'),
     resultActions: () => cy.get('.oxd-table-cell-actions'),
@@ -46,8 +48,14 @@ class PIMTab {
   }
 
   editPersonalDetails(nickName: string, driversLicenseNumber: string, licenseExpiryDate: string, maritalStatus: string, dateOfBirth: string, gender: string) {
-    this.elements.loading().should('exist');
+    this.elements.loading().should('not.exist');
+    this.elements.loading().should('not.exist');
     this.elements.employeeInputNickName().type(nickName);
+
+    this.elements.saveNewEmp().eq(0).click();
+    this.openPIMTab();
+
+    // this.elements.result().contains('Successfully Saved').as('Successfully Edited Employee');
   }
 
   deleteEmployee(id: string) {
@@ -58,17 +66,19 @@ class PIMTab {
     this.elements.result().contains('Successfully Deleted').as('Successfully Deleted Employee');
   }
 
-  searchEmployee(empInfo: { key: string, value: string }[]) {
-    for (let i = 0; i < empInfo.length; i++) {
-      pimSearch.search(empInfo[i]);
-    }
+  // ===================================
+  // searchEmployee(empInfo: { key: string, value: string }[]) {
+  //   for (let i = 0; i < empInfo.length; i++) {
+  //     pimSearch.search(empInfo[i]);
+  //   }
 
-    this.elements.searchBtn().click({ force: true });
+  //   this.elements.searchBtn().click({ force: true });
 
-    for (let i = 0; i < empInfo.length; i++) {
-      pimSearch.checkSearch(empInfo[i]);
-    }
-  }
+  //   for (let i = 0; i < empInfo.length; i++) {
+  //     pimSearch.checkSearch(empInfo[i]);
+  //   }
+  // }
+  // ===================================
 
 }
 
