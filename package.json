@@ -1,6 +1,9 @@
 {
   "devDependencies": {
-    "cypress": "^13.1.0",
+    "cypress": "^13.2.0",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "cypress-wait-until": "^2.0.1"
   }
 }

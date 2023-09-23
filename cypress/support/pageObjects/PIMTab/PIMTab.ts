@@ -1,5 +1,4 @@
 import PIMSearch from "./PIMSearch";
-import 'cypress-wait-until';
 
 const pimSearch: PIMSearch = new PIMSearch();
 
