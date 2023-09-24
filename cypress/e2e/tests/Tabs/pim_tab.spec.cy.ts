@@ -1,5 +1,5 @@
 import LoginPage from "../../../support/pageObjects/LoginPage";
-import PIMTab from "../../../support/pageObjects/PIMTab/PIMTab";
+import PIMTab from "../../../support/pageObjects/PIMTab";
 import DataUtils from "../../../support/DataUtils";
 
 const loginPage: LoginPage = new LoginPage();
@@ -20,7 +20,6 @@ describe('PIM: Employee\'s table data validation', () => {
   it('PIM - Add employee with Personal Details UI', () => {
     cy.get('@empInfo').then((infoData: any) => {
       pimTab.addEmployee(infoData.firstName, infoData.middleName, infoData.lastName, infoData.id, infoData.userName, infoData.password, infoData.password);
-
       pimTab.editPersonalDetails(infoData.id, infoData.nickName, infoData.driversLicenseNumber, infoData.licenseExpiryDate, infoData.maritalStatus, infoData.dateOfBirth, infoData.gender);
     });
   });
@@ -32,19 +31,12 @@ describe('PIM: Employee\'s table data validation', () => {
     });
   });
 
-  // ===================================
-  // it('Search by key-value', () => {
-  //   pimTab.searchEmployee([
-  //     { key: "empName", value: "Aaliyah  Haq" }, 
-  //     { key: "empId", value: "0038" },
-  //     { key: "empStatus", value: "Full-Time Permanent" },
-  //     { key: "empInclude", value: "Current and Past Employees" },
-  //     { key: "empSupervisorName", value: "Odis Adalwin" },
-  //     { key: "empJobTitle", value: "QA Lead" },
-  //     { key: "empSubUnit", value: "Quality Assurance" },
-  //   ]);
-  // });
-  // ===================================
+  it('PIM - Search by employee id and check info', () => {
+    cy.get('@empInfo').then((infoData: any) => {
+      dataUtils.pimTab.addEmployee(infoData.firstName, infoData.middleName, infoData.lastName, infoData.id, infoData.userName, infoData.password);
+      pimTab.searchEmployee([infoData.id, infoData.firstName, infoData.middleName, infoData.lastName, infoData.jobTitle, infoData.employmentStatus, infoData.subUnit, infoData.supervisor]);
+    });
+  });
 
   afterEach(() => {
     cy.get('@empInfo').then((infoData: any) => {
