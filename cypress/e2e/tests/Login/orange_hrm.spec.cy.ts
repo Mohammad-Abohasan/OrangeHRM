@@ -1,6 +1,6 @@
 import LoginPage from "../../../support/pageObjects/LoginPage";
 import DataUtils from "../../../support/DataUtils";
-import PIMTab from "../../../support/pageObjects/PIMTab/PIMTab";
+import PIMTab from "../../../support/pageObjects/PIMTab";
 
 const loginPage: LoginPage = new LoginPage();
 const dataUtils: DataUtils = new DataUtils();
@@ -17,11 +17,11 @@ describe('Login Page', () => {
   });
 
   // it('Verify Admin - add employee response', () => {
-  //   dataUtils.addEmployee('m.s.abuhasan', 'abohasan123', true, 1, 61);
+  //   dataUtils.adminTab.addEmployee('m.s.abuhasan', 'abohasan123', true, 1, 61);
   // });
 
   afterEach(() => {
     // Admin - delete employee response
-    // dataUtils.deleteEmployee('m.s.abuhasan');
+    // dataUtils.adminTab.deleteEmployee('m.s.abuhasan');
   });
 });

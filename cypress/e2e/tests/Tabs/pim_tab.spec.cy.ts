@@ -1,43 +1,47 @@
 import LoginPage from "../../../support/pageObjects/LoginPage";
-import PIMTab from "../../../support/pageObjects/PIMTab/PIMTab";
+import PIMTab from "../../../support/pageObjects/PIMTab";
+import DataUtils from "../../../support/DataUtils";
 
 const loginPage: LoginPage = new LoginPage();
 const pimTab: PIMTab = new PIMTab();
-describe('Login Page', () => {
+const dataUtils: DataUtils = new DataUtils();
+describe('PIM: Employee\'s table data validation', () => {
   beforeEach(() => {
-    cy.intercept('/web/index.php/dashboard/index').as('Login');
     cy.visit('/');
-    loginPage.login('Admin', 'admin123');
+
     cy.fixture('employeeInfoPIM').as('empInfo');
+    cy.fixture('loginInfo').then((loginData: any) => {
+      loginPage.login(loginData.userName.valid, loginData.password.valid);
+    });
+
     pimTab.openPIMTab();
   });
 
-  it('Add employee', () => {
+  it('PIM - Add employee with Personal Details UI', () => {
     cy.get('@empInfo').then((infoData: any) => {
-      pimTab.addNewEmployee(infoData.firstName, infoData.middleName, infoData.lastName, infoData.id, infoData.userName, infoData.password, infoData.password);
-
-      pimTab.editPersonalDetails(infoData.nickName, infoData.driversLicenseNumber, infoData.licenseExpiryDate, infoData.maritalStatus, infoData.dateOfBirth, infoData.gender);
+      pimTab.addEmployee(infoData.firstName, infoData.middleName, infoData.lastName, infoData.id, infoData.userName, infoData.password, infoData.password);
+      pimTab.editPersonalDetails(infoData.id, infoData.nickName, infoData.driversLicenseNumber, infoData.licenseExpiryDate, infoData.maritalStatus, infoData.dateOfBirth, infoData.gender);
     });
   });
 
-  // ===================================
-  // it('Search by key-value', () => {
-  //   pimTab.searchEmployee([
-  //     { key: "empName", value: "Aaliyah  Haq" }, 
-  //     { key: "empId", value: "0038" },
-  //     { key: "empStatus", value: "Full-Time Permanent" },
-  //     { key: "empInclude", value: "Current and Past Employees" },
-  //     { key: "empSupervisorName", value: "Odis Adalwin" },
-  //     { key: "empJobTitle", value: "QA Lead" },
-  //     { key: "empSubUnit", value: "Quality Assurance" },
-  //   ]);
-  // });
-  // ===================================
+  it('PIM - Add employee API then edit Personal Details UI', () => {
+    cy.get('@empInfo').then((infoData: any) => {
+      dataUtils.pimTab.addEmployee(infoData.firstName, infoData.middleName, infoData.lastName, infoData.id, infoData.userName, infoData.password);
+      pimTab.editPersonalDetails(infoData.id, infoData.nickName, infoData.driversLicenseNumber, infoData.licenseExpiryDate, infoData.maritalStatus, infoData.dateOfBirth, infoData.gender);
+    });
+  });
+
+  it('PIM - Search by employee id and check info', () => {
+    cy.get('@empInfo').then((infoData: any) => {
+      dataUtils.pimTab.addEmployee(infoData.firstName, infoData.middleName, infoData.lastName, infoData.id, infoData.userName, infoData.password);
+      pimTab.searchEmployee([infoData.id, infoData.firstName, infoData.middleName, infoData.lastName, infoData.jobTitle, infoData.employmentStatus, infoData.subUnit, infoData.supervisor]);
+    });
+  });
 
   afterEach(() => {
     cy.get('@empInfo').then((infoData: any) => {
       pimTab.deleteEmployee(infoData.id);
-    })
+    });
   });
 
 });
