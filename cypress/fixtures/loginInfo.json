@@ -1,0 +1,16 @@
+{
+    "userName": {
+        "valid": "Admin",
+        "invalid": "Black"
+    },
+    "password": {
+        "valid": "admin123",
+        "invalid": "GoodLuck"
+    },
+    "empty": "",
+    "errorMsg": {
+        "fieldRequired": "Required",
+        "invalidLogin": "Invalid credentials"
+    },
+    "validLogin": "Dashboard"
+}

@@ -1,10 +1,6 @@
 import PIMSearch from "./PIMSearch";
-import 'cypress-wait-until';
-
 const pimSearch: PIMSearch = new PIMSearch();
-
 class PIMTab {
-
   elements = {
     mainMenuItems: () => cy.get('.oxd-sidepanel-body'),
     addEmp: () => cy.get('.oxd-button--secondary'),
@@ -15,7 +11,6 @@ class PIMTab {
     passwords: () => cy.get('input[type="password"]'),
     saveNewEmp: () => cy.get('button[type="submit"]'),
     result: () => cy.get('.oxd-toast'),
-
     loading: () => cy.get('.oxd-loading-spinner-container'),
 
     employeeInputNickName: () => cy.get('.oxd-input').eq(4),
@@ -26,11 +21,9 @@ class PIMTab {
     resultActions: () => cy.get('.oxd-table-cell-actions'),
     deleteBtn: () => cy.get('.oxd-button--label-danger')
   }
-
   openPIMTab() {
     this.elements.mainMenuItems().contains('PIM').click();
   }
-
   addNewEmployee(firstName: string, middleName: string, lastName: string, id: number, userName: string, password: string, confirmPassword: string) {
     this.elements.addEmp().eq(1).click();
     this.elements.employeeInputName().children().eq(0).type(firstName);
@@ -41,9 +34,7 @@ class PIMTab {
     this.elements.userName().type(userName);
     this.elements.passwords().eq(0).type(password);
     this.elements.passwords().eq(1).type(confirmPassword);
-
     this.elements.saveNewEmp().click();
-
     this.elements.result().contains('Successfully Saved').as('Successfully Added Employee');
   }
 
@@ -81,5 +72,3 @@ class PIMTab {
   // ===================================
 
 }
-
-export default PIMTab;
