@@ -17,11 +17,11 @@ describe('Login Page', () => {
   });
 
   // it('Verify Admin - add employee response', () => {
-  //   dataUtils.addEmployee('m.s.abuhasan', 'abohasan123', true, 1, 61);
+  //   dataUtils.adminTab.addEmployee('m.s.abuhasan', 'abohasan123', true, 1, 61);
   // });
 
   afterEach(() => {
     // Admin - delete employee response
-    // dataUtils.deleteEmployee('m.s.abuhasan');
+    // dataUtils.adminTab.deleteEmployee('m.s.abuhasan');
   });
 });
