@@ -1,6 +1,6 @@
-import LoginPage from "../../../pageObjects/LoginPage";
+import LoginPage from "../../../support/pageObjects/LoginPage";
 import DataUtils from "../../../support/DataUtils";
-import PIMTab from "../../../pageObjects/PIMTab/PIMTab";
+import PIMTab from "../../../support/pageObjects/PIMTab/PIMTab";
 
 const loginPage: LoginPage = new LoginPage();
 const dataUtils: DataUtils = new DataUtils();

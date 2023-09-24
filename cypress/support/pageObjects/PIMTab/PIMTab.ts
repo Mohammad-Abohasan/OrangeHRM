@@ -72,3 +72,5 @@ class PIMTab {
   // ===================================
 
 }
+
+export default PIMTab;

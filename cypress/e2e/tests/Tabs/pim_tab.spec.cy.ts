@@ -1,5 +1,5 @@
-import LoginPage from "../../../pageObjects/LoginPage";
-import PIMTab from "../../../pageObjects/PIMTab/PIMTab";
+import LoginPage from "../../../support/pageObjects/LoginPage";
+import PIMTab from "../../../support/pageObjects/PIMTab/PIMTab";
 
 const loginPage: LoginPage = new LoginPage();
 const pimTab: PIMTab = new PIMTab();
