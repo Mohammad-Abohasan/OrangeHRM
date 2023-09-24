@@ -10,5 +10,9 @@
   "licenseExpiryDate": "2024-04-02",
   "maritalStatus": "Single",
   "dateOfBirth": "2002-04-14",
-  "gender": "Male"
+  "gender": "Male",
+  "jobTitle": "",
+  "employmentStatus": "",
+  "subUnit": "",
+  "supervisor": ""
 }
