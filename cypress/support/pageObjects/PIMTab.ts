@@ -1,5 +1,3 @@
-import { first, last } from "cypress/types/lodash";
-
 class PIMTab {
   elements = {
     mainMenuItems: () => cy.get('.oxd-sidepanel-body'),
