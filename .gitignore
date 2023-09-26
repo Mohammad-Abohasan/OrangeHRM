@@ -1,4 +1,5 @@
-# Ignore node_modules folder
 node_modules
-1-getting-started
-2-advanced-examples
+allure-report
+allure-results
+cypress/screenshots
+cypress/videos
