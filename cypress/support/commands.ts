@@ -40,8 +40,8 @@
 
 declare namespace Cypress {
   interface Chainable<Subject> {
-    getByClass: typeof getByClass,
-    getByAttribute: typeof getByAttribute
+    getByClass: typeof getByClass;
+    getByAttribute: typeof getByAttribute;
   }
 }
 
@@ -53,6 +53,5 @@ function getByAttribute(attribute: string, value: string) {
   return cy.get(`[${attribute}="${value}"]`);
 }
 
-Cypress.Commands.add('getByClass', getByClass);
-Cypress.Commands.add('getByAttribute', getByAttribute);
-
+Cypress.Commands.add("getByClass", getByClass);
+Cypress.Commands.add("getByAttribute", getByAttribute);

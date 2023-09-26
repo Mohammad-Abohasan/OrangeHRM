@@ -1,18 +1,17 @@
 class LoginPage {
-
   elements = {
-    userName: () => cy.getByAttribute('placeholder', 'Username'),
-    password: () => cy.getByAttribute('placeholder', 'Password'),
-    loginBtn: () => cy.get('button'),
-    forgotPassword: () => cy.getByClass('orangehrm-login-forgot-header'),
-    resetPassword: () => cy.getByAttribute('type', 'submit'),
-    titleResetPassword: () => cy.getByClass('orangehrm-forgot-password-title'),
+    userName: () => cy.getByAttribute("placeholder", "Username"),
+    password: () => cy.getByAttribute("placeholder", "Password"),
+    loginBtn: () => cy.get("button"),
+    forgotPassword: () => cy.getByClass("orangehrm-login-forgot-header"),
+    resetPassword: () => cy.getByAttribute("type", "submit"),
+    titleResetPassword: () => cy.getByClass("orangehrm-forgot-password-title"),
 
-    alertLogin: () => cy.get('.oxd-alert-content-text'),
-    dashboardLabel: () => cy.get('.oxd-topbar-header-breadcrumb > .oxd-text'),
-    userDropdown: () => cy.get('.oxd-userdropdown-tab'),
-    logoutOption: () => cy.get(':nth-child(4) > .oxd-userdropdown-link'),
-  }
+    alertLogin: () => cy.get(".oxd-alert-content-text"),
+    dashboardLabel: () => cy.get(".oxd-topbar-header-breadcrumb > .oxd-text"),
+    userDropdown: () => cy.get(".oxd-userdropdown-tab"),
+    logoutOption: () => cy.get(":nth-child(4) > .oxd-userdropdown-link"),
+  };
 
   login(userName: string, password: string) {
     userName && this.elements.userName().type(userName);
@@ -21,23 +20,38 @@ class LoginPage {
   }
 
   checkValidLogin(msg: string) {
-    this.elements.dashboardLabel().contains(msg).as('Login Successfully');
+    this.elements.dashboardLabel().contains(msg).as("Login Successfully");
   }
 
   checkInvalidLogin(msg: string) {
-    this.elements.alertLogin().contains(msg).as('Login Failed');
+    this.elements.alertLogin().contains(msg).as("Login Failed");
   }
 
   checkUserNameInputErrorMessageContainsValue(msg: string) {
-    this.elements.userName().parents().eq(1).contains("span", msg).should("exist").as('Login Failed');
+    this.elements
+      .userName()
+      .parents()
+      .eq(1)
+      .contains("span", msg)
+      .should("exist")
+      .as("Login Failed");
   }
 
   checkPasswordInputErrorMessageContainsValue(msg: string) {
-    this.elements.password().parents().eq(1).contains("span", msg).should("exist").as('Login Failed');
+    this.elements
+      .password()
+      .parents()
+      .eq(1)
+      .contains("span", msg)
+      .should("exist")
+      .as("Login Failed");
   }
 
   passwordIsHidden() {
-    this.elements.password().should('have.attr', 'type', 'password').as('Password is hidden');
+    this.elements
+      .password()
+      .should("have.attr", "type", "password")
+      .as("Password is hidden");
   }
 
   logout() {
@@ -49,9 +63,11 @@ class LoginPage {
     this.elements.forgotPassword().click();
     this.elements.userName().type(userName);
     this.elements.resetPassword().click();
-    this.elements.titleResetPassword().contains('Reset Password link sent successfully').as('Reset Password done');
+    this.elements
+      .titleResetPassword()
+      .contains("Reset Password link sent successfully")
+      .as("Reset Password done");
   }
-
 }
 
 export default LoginPage;
