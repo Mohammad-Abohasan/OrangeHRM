@@ -1,9 +1,11 @@
 {
   "devDependencies": {
+    "@cypress/grep": "^4.0.0",
     "@shelex/cypress-allure-plugin": "^2.40.0",
     "allure-commandline": "^2.24.0",
     "cypress": "12.14.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "cypress-plugin-api": "^2.11.1"
   },
   "scripts": {
     "start": "npx cypress open",
