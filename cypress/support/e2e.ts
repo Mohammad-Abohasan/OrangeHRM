@@ -16,6 +16,8 @@
 // Import commands.js using ES2015 syntax:
 import "./commands";
 import "@shelex/cypress-allure-plugin";
+import "cypress-plugin-api";
+import "../support/utils/apiUtils";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

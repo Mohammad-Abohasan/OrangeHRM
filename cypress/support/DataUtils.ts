@@ -19,6 +19,7 @@ class DataUtils {
         },
       }).then((response) => {
         expect(response).property(`status`).to.equal(200);
+        return response;
       });
     },
 
@@ -54,30 +55,50 @@ class DataUtils {
       userName: string,
       password: string
     ) {
-      cy.request({
-        method: "POST",
-        url: "/web/index.php/api/v2/pim/employees",
-        body: {
-          firstName,
-          middleName,
-          lastName,
-          employeeId: id,
-        },
-      }).then((response) => {
-        cy.request({
+      return cy
+        .request({
           method: "POST",
-          url: "/web/index.php/api/v2/admin/users",
+          url: "/web/index.php/api/v2/pim/employees",
           body: {
-            username: userName,
-            password,
-            status: true,
-            userRoleId: 2,
-            empNumber: response.body.data.empNumber,
+            firstName,
+            middleName,
+            lastName,
+            employeeId: id,
           },
-        }).then((response) => {
+        })
+        .then((response) => {
           expect(response).property(`status`).to.equal(200);
+          return cy
+            .request({
+              method: "POST",
+              url: "/web/index.php/api/v2/admin/users",
+              body: {
+                username: userName,
+                password,
+                status: true,
+                userRoleId: 2,
+                empNumber: response.body.data.empNumber,
+              },
+            })
+            .then((response) => {
+              expect(response).property(`status`).to.equal(200);
+              return response;
+            });
         });
-        expect(response).property(`status`).to.equal(200);
+    },
+    deleteEmployee(empID: string) {
+      cy.request(
+        `/web/index.php/api/v2/pim/employees?employeeId=${empID}`
+      ).then((response1) => {
+        cy.request({
+          method: "DELETE",
+          url: "/web/index.php/api/v2/pim/employees",
+          body: {
+            ids: [response1.body?.data[0]?.empNumber],
+          },
+        }).then((response2) => {
+          expect(response2).property(`status`).to.equal(200);
+        });
       });
     },
   };
