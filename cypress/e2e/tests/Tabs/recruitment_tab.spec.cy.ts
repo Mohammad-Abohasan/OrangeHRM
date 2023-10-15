@@ -4,11 +4,14 @@ import VacanciesPage from "../../../support/pageObjects/RecruitmentTab/Vacancies
 import DataUtils from "../../../support/DataUtils";
 import vacanciesHelper from "../../../support/helpers/vacanciesHelper";
 import candidatesHelper from "../../../support/helpers/candidatesHelper";
+import pimHelper from "../../../support/helpers/pimHelper";
 
 const loginPage: LoginPage = new LoginPage();
 const candidatesPage: CandidatesPage = new CandidatesPage();
 const vacanciesPage: VacanciesPage = new VacanciesPage();
 const dataUtils: DataUtils = new DataUtils();
+
+let employeeData: any = {};
 
 describe("Recruitment: Candidates & Vacancies table data validation", () => {
   beforeEach(() => {
@@ -17,86 +20,55 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
     cy.fixture("loginInfo").then((loginData: any) => {
       loginPage.login(loginData.userName.valid, loginData.password.valid);
     });
+
+    cy.fixture("employeeInfo").then((empData) => {
+      employeeData = empData;
+    });
   });
 
-  it.skip("Recruitment - Candidates: verify number of records", () => {
+  it("Recruitment - Candidates: verify number of records", () => {
     candidatesPage.openCandidatesPage();
     candidatesHelper
       .getCandidatesTableDataUsingAPI()
       .as("Candidates Page")
       .then((response: any) => {
-        candidatesPage.checkNumberOfRecords(response?.body.meta.total);
+        candidatesPage.numberOfRecords(response.meta.total);
       });
   });
 
-  it("Recruitment - Candidates", () => {
-    cy.fixture("employeeInfoPIM").then((infoData: any) => {
-      dataUtils.pimTab
-        .addEmployee(
-          infoData.firstName,
-          infoData.middleName,
-          infoData.lastName,
-          infoData.id,
-          infoData.userName,
-          infoData.password
-        )
-        .then((response) => {
-          cy.fixture("vacancyInfo").then((vacancyData: any) => {
-            vacanciesHelper
-              .addVacancy(vacancyData, response.body.data.employee.empNumber)
-              .then((vacancyResponse) => {
-                cy.fixture("candidateInfo").then((candidateData: any) => {
-                  candidatesHelper
-                    .addCandidate(candidateData, vacancyResponse.data.id)
-                    .then((candidateResponse) => {
-                      cy.request({
-                        url: `/web/index.php/api/v2/recruitment/candidates/${candidateResponse.data.id}/shortlist`,
-                        method: "PUT",
-                      }).then(() => {
-                        cy.visit(
-                          `/web/index.php/recruitment/addCandidate/${candidateResponse.data.id}`
-                        );
-                        cy.get(".oxd-loading-spinner-container").should(
-                          "exist"
-                        );
-                        cy.get(".oxd-button--success").click({ force: true });
-                        cy.get(".oxd-loading-spinner-container").should(
-                          "exist"
-                        );
-                        cy.get(".oxd-label")
-                          .contains("Interview Title")
-                          .parents()
-                          .eq(1)
-                          .children()
-                          .eq(1)
-                          .type("Mohammad Interview");
-                        cy.get(".oxd-autocomplete-text-input > input").type(
-                          `${infoData.firstName}`
-                        );
-                        cy.get(".oxd-autocomplete-option")
-                          .contains(
-                            `${infoData.firstName} ${infoData.middleName} ${infoData.lastName}`
-                          )
-                          .click();
-                        cy.get(".oxd-date-input").type("2024-04-02");
-                        cy.get(".oxd-time-input").type("04:00 AM");
-                        cy.get('button[type="submit"]').click();
-                        cy.get(".oxd-text--subtitle-2").should(
-                          "contain",
-                          "Interview Scheduled"
-                        );
-                      });
-                    });
-                });
-              });
-          });
+  it("Recruitment - Schedule an Interview for a Candidate", () => {
+    pimHelper
+      // Add an employee
+      .addEmployee(employeeData)
+      // Add a vacancy
+      .then((employeeResponse) => {
+        return cy.fixture("vacancyInfo").then((vacancyData) => {
+          return vacanciesHelper.addVacancy(
+            vacancyData,
+            employeeResponse.data.empNumber
+          );
         });
-    });
-  });
-
-  afterEach(() => {
-    cy.fixture("employeeInfoPIM").then((infoData: any) => {
-      dataUtils.pimTab.deleteEmployee(infoData.id);
-    });
+      })
+      // Add a candidate
+      .then((vacancyResponse) => {
+        return cy.fixture("candidateInfo").then((candidateData) => {
+          return candidatesHelper.addCandidate(
+            candidateData,
+            vacancyResponse.data.id
+          );
+        });
+      })
+      // Shortlist the candidate and schedule an interview
+      .then((candidateResponse) => {
+        candidatesHelper.shortlistCandidate(candidateResponse.data.id);
+        candidatesPage.scheduleInterview(
+          candidateResponse.data.id,
+          employeeData
+        );
+      })
+      // Delete the employee after the test
+      .then(() => {
+        dataUtils.pimTab.deleteEmployee(employeeData.employeeId);
+      });
   });
 });
