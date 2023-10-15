@@ -1,25 +1,38 @@
-import { ICreateCandidatePayload } from "../API/payload/addCandidatePayload";
-import { ICreateCandidateResponse } from "../API/response/addCandidateResponse";
-import { ICreateVacancyPayload } from "../API/payload/addVacancyPayload";
-import { ICreateVacancyResponse } from "../API/response/addVacancyResponse";
+import { ICreateCandidatePayload } from "../API/payload/Recruitment/Candidates/addCandidatePayload";
+import { ICreateCandidateResponse } from "../API/response/Recruitment/Candidates/addCandidateResponse";
+import { ICreateVacancyPayload } from "../API/payload/Recruitment/Vacancies/addVacancyPayload";
+import { ICreateVacancyResponse } from "../API/response/Recruitment/Vacancies/addVacancyResponse";
+import { IShortlistCandidateResponse } from "../API/response/Recruitment/Candidates/shortlistCandidate";
+import { ICreateEmployeeResponse } from "../API/response/PIM/addEmployeeResponse";
+import { ICreateEmployeePayload } from "../API/payload/PIM/addEmployeePayload";
 
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
-      getCandidatesTableData: (
-        method: string,
-        url: string
-      ) => Chainable<any>;
+      getCandidatesTableData: (method: string, url: string) => Chainable<any>;
+
       addCandidate: (
         method: string,
         url: string,
-        payload?: ICreateCandidatePayload
+        payload: ICreateCandidatePayload
       ) => Chainable<ICreateCandidateResponse>;
+
       addVacancy: (
         method: string,
         url: string,
-        payload?: ICreateVacancyPayload
+        payload: ICreateVacancyPayload
       ) => Chainable<ICreateVacancyResponse>;
+
+      shortlistCandidate: (
+        method: string,
+        url: string
+      ) => Chainable<IShortlistCandidateResponse>;
+
+      addEmployee: (
+        method: string,
+        url: string,
+        payload: ICreateEmployeePayload
+      ) => Chainable<ICreateEmployeeResponse>;
     }
   }
 }
@@ -47,3 +60,5 @@ const apiCall = (method: string, url: string, payload?: any) => {
 Cypress.Commands.add("getCandidatesTableData", apiCall);
 Cypress.Commands.add("addCandidate", apiCall);
 Cypress.Commands.add("addVacancy", apiCall);
+Cypress.Commands.add("shortlistCandidate", apiCall);
+Cypress.Commands.add("addEmployee", apiCall);
