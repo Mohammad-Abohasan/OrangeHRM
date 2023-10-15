@@ -1,4 +1,4 @@
-import { ICreateVacancyPayload } from "../API/payload/addVacancyPayload";
+import { ICreateVacancyPayload } from "../API/payload/Recruitment/Vacancies/addVacancyPayload";
 
 export default class Vacancies {
   static initVacancy(
