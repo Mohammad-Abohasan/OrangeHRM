@@ -1,4 +1,4 @@
-import { ICreateVacancyPayload } from "../API/payload/addVacancyPayload";
+import { ICreateVacancyPayload } from "../API/payload/Recruitment/Vacancies/addVacancyPayload";
 import VacanciesInit from "../initializers/vacanciesInit";
 
 export const URLs = {

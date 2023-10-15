@@ -1,4 +1,4 @@
-import { ICreateCandidatePayload } from "../API/payload/addCandidatePayload";
+import { ICreateCandidatePayload } from "../API/payload/Recruitment/Candidates/addCandidatePayload";
 import CandidatesInit from "../initializers/candidatesInit";
 
 export const URLs = {
@@ -18,6 +18,12 @@ export default class Candidates {
       "POST",
       URLs.candidates,
       CandidatesInit.initCandidate(candidateData, vacancyId)
+    );
+  }
+  static shortlistCandidate(candidateId: number) {
+    return cy.shortlistCandidate(
+      "PUT",
+      `${URLs.candidates}/${candidateId}/shortlist`
     );
   }
 }
