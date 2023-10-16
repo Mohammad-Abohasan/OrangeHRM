@@ -13,4 +13,19 @@ export default class PIM {
       PimInit.initEmployee(employeeData)
     );
   }
+
+  static getEmployee(employeeId: string) {
+    return cy.getEmployee(
+      "GET",
+      `${URLs.employees}?employeeId=${employeeId}`
+    );
+  }
+
+  static deleteEmployee(empNumber: number) {
+    return cy.deleteEmployee(
+      "DELETE",
+      URLs.employees,
+      PimInit.initDeleteEmployee(empNumber)
+    );
+  }
 }
