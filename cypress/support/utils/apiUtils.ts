@@ -5,6 +5,11 @@ import { ICreateVacancyResponse } from "../API/response/Recruitment/Vacancies/ad
 import { IShortlistCandidateResponse } from "../API/response/Recruitment/Candidates/shortlistCandidate";
 import { ICreateEmployeeResponse } from "../API/response/PIM/addEmployeeResponse";
 import { ICreateEmployeePayload } from "../API/payload/PIM/addEmployeePayload";
+import { IGetEmployeeResponse } from "../API/response/PIM/getEmployeeResponse";
+import { IDeleteEmployeeResponse } from "../API/response/PIM/deleteEmployeeResponse";
+import { IDeleteEmployeePayload } from "../API/payload/PIM/deleteEmployeePayload";
+import { ICreateAdminPayload } from "../API/payload/Admin/addAdminPayload";
+import { ICreateAdminResponse } from "../API/response/Admin/addAdminResponse";
 
 declare global {
   namespace Cypress {
@@ -33,6 +38,23 @@ declare global {
         url: string,
         payload: ICreateEmployeePayload
       ) => Chainable<ICreateEmployeeResponse>;
+
+      getEmployee: (
+        method: string,
+        url: string
+      ) => Chainable<IGetEmployeeResponse>;
+
+      deleteEmployee: (
+        method: string,
+        url: string,
+        payload: IDeleteEmployeePayload
+      ) => Chainable<IDeleteEmployeeResponse>;
+
+      addAdmin: (
+        method: string,
+        url: string,
+        payload: ICreateAdminPayload
+      ) => Chainable<ICreateAdminResponse>;
     }
   }
 }
@@ -62,3 +84,6 @@ Cypress.Commands.add("addCandidate", apiCall);
 Cypress.Commands.add("addVacancy", apiCall);
 Cypress.Commands.add("shortlistCandidate", apiCall);
 Cypress.Commands.add("addEmployee", apiCall);
+Cypress.Commands.add("getEmployee", apiCall);
+Cypress.Commands.add("deleteEmployee", apiCall);
+Cypress.Commands.add("addAdmin", apiCall);
