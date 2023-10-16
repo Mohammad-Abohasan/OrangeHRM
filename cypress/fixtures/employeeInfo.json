@@ -2,7 +2,7 @@
   "firstName": "Mohammad",
   "middleName": "Saed",
   "lastName": "Abohasan",
-  "id": "201913064",
+  "employeeId": "201913064",
   "userName": "mohammad._.abohasan",
   "password": "mohammad123",
   "nickName": "Askeemo",
@@ -14,5 +14,6 @@
   "jobTitle": "",
   "employmentStatus": "",
   "subUnit": "",
-  "supervisor": ""
+  "supervisor": "",
+  "empPicture": null
 }

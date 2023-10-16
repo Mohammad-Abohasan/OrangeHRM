@@ -63,7 +63,7 @@ class PIMTab {
     firstName: string,
     middleName: string,
     lastName: string,
-    id: number,
+    employeeId: number,
     userName: string,
     password: string,
     confirmPassword: string
@@ -73,7 +73,7 @@ class PIMTab {
     this.elements.employeeInputName().children().eq(0).type(firstName);
     this.elements.employeeInputName().children().eq(1).type(middleName);
     this.elements.employeeInputName().children().eq(2).type(lastName);
-    this.elements.employeeInputId().clear().type(`${id}`);
+    this.elements.employeeInputId().clear().type(`${employeeId}`);
     this.elements.createLoginDetails().click({ force: true });
     this.elements.userName().type(userName);
     this.elements.passwords().eq(0).type(password);
