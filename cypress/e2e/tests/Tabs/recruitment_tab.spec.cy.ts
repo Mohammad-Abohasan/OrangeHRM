@@ -1,15 +1,14 @@
 import LoginPage from "../../../support/pageObjects/LoginPage";
 import CandidatesPage from "../../../support/pageObjects/RecruitmentTab/CandidatesPage";
 import VacanciesPage from "../../../support/pageObjects/RecruitmentTab/VacanciesPage";
-import DataUtils from "../../../support/DataUtils";
 import vacanciesHelper from "../../../support/helpers/vacanciesHelper";
 import candidatesHelper from "../../../support/helpers/candidatesHelper";
 import pimHelper from "../../../support/helpers/pimHelper";
+import adminHelper from "../../../support/helpers/adminHelper";
 
 const loginPage: LoginPage = new LoginPage();
 const candidatesPage: CandidatesPage = new CandidatesPage();
 const vacanciesPage: VacanciesPage = new VacanciesPage();
-const dataUtils: DataUtils = new DataUtils();
 
 let employeeData: any = {};
 
@@ -68,7 +67,10 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       })
       // Delete the employee after the test
       .then(() => {
-        dataUtils.pimTab.deleteEmployee(employeeData.employeeId);
+        return pimHelper.getEmployee(employeeData.employeeId);
+      })
+      .then((employeeResponse) => {
+        pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
 });
