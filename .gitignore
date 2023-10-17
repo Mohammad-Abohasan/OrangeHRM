@@ -2,3 +2,4 @@ node_modules
 allure-results
 cypress/screenshots
 cypress/videos
+.env

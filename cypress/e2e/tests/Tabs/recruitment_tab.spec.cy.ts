@@ -4,7 +4,6 @@ import VacanciesPage from "../../../support/pageObjects/RecruitmentTab/Vacancies
 import vacanciesHelper from "../../../support/helpers/vacanciesHelper";
 import candidatesHelper from "../../../support/helpers/candidatesHelper";
 import pimHelper from "../../../support/helpers/pimHelper";
-import adminHelper from "../../../support/helpers/adminHelper";
 
 const loginPage: LoginPage = new LoginPage();
 const candidatesPage: CandidatesPage = new CandidatesPage();
