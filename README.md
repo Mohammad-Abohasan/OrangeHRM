@@ -1,6 +1,6 @@
 OrangeHRM - [Link](https://opensource-demo.orangehrmlive.com/)
 ==============================================================
-
+[![OrangeHRM](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/hef2z5/master&style=flat&logo=cypress)](https://cloud.cypress.io/projects/hef2z5/runs)
 - Manual Testing (**Gherkin**)
 - Automation Testing (**Cypress**)
 
