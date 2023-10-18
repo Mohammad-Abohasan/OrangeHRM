@@ -13,7 +13,7 @@ describe("Login Page", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPage.login(infoData.userName.valid, infoData.password.valid);
       loginPage.checkValidLogin(infoData.validLogin);
-      loginPage.logout();
+      // loginPage.logout();
     });
   });
 
@@ -106,7 +106,7 @@ describe("Login Page", () => {
           infoData.password.valid
         );
       loginPage.checkValidLogin(infoData.validLogin);
-      loginPage.logout();
+      // loginPage.logout();
     });
   });
 
