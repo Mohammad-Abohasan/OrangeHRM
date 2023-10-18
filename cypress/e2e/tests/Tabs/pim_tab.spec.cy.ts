@@ -23,8 +23,13 @@ describe("PIM: Employee's table data validation", () => {
     pimTab.openPIMTab();
   });
 
-  it("PIM - Add employee with Personal Details UI", { retries: 2 }, () => {
-    commonHelper.deleteAllRecords(".oxd-checkbox-input-icon", ".oxd-button--label-danger", ".oxd-button--label-danger");
+  it.only("PIM - Add employee with Personal Details UI", /*{ retries: 2 },*/ () => {
+    commonHelper.deleteAllRecords(
+      ".oxd-checkbox-input-icon",
+      ".oxd-button--label-danger",
+      ".oxd-button--label-danger"
+    );
+
     pimTab.addEmployee(
       employeeData.firstName,
       employeeData.middleName,
@@ -47,13 +52,13 @@ describe("PIM: Employee's table data validation", () => {
     pimTab.openPIMTab();
     let pimTableData = [
       {
-        "Id": employeeData.employeeId,
+        Id: employeeData.employeeId,
         "First (& Middle) Name": `${employeeData.firstName} ${employeeData.middleName}`,
         "Last Name": employeeData.lastName,
         "Job Title": employeeData.jobTitle,
         "Employment Status": employeeData.employmentStatus,
         "Sub Unit": employeeData.subUnit,
-        "Supervisor": employeeData.supervisor,
+        Supervisor: employeeData.supervisor,
       },
     ];
     commonHelper.checkRows(".oxd-table-row", pimTableData);
