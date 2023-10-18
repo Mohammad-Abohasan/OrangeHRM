@@ -29,8 +29,11 @@ class PIMTab {
       ),
     employeeInputMaritalStatus: () =>
       cy.get(
-        ":nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-select-wrapper > .oxd-select-text"
-      ),
+        ":nth-child(5) > :nth-child(1) > :nth-child(2) > .oxd-input-group > .oxd-input-group__label-wrapper > .oxd-label"
+      ).parents()
+      .eq(1)
+      .children()
+      .eq(1),
     employeeInputDateOfBirth: () =>
       cy.get(
         ":nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-date-wrapper > .oxd-date-input > .oxd-input"
