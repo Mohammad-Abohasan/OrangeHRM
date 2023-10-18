@@ -23,7 +23,7 @@ describe("PIM: Employee's table data validation", () => {
     pimTab.openPIMTab();
   });
 
-  it.only("PIM - Add employee with Personal Details UI", /*{ retries: 2 },*/ () => {
+  it("PIM - Add employee with Personal Details UI", /*{ retries: 2 },*/ () => {
     commonHelper.deleteAllRecords(
       ".oxd-checkbox-input-icon",
       ".oxd-button--label-danger",

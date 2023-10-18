@@ -74,7 +74,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       });
   });
 
-  it.only("Recruitment - Candidates: Add a new candidate and verify the record" /*{ retries: 2 },*/, () => {
+  it("Recruitment - Candidates: Add a new candidate and verify the record" /*{ retries: 2 },*/, () => {
     pimHelper
       // Add an employee
       .addEmployee(employeeData)
