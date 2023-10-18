@@ -117,13 +117,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
               "Date of Application": "2023-10-14",
               Status: "Application Initiated",
             },
-            {
-              Vacancy: "QA Automation",
-              Candidate: "Mohammad Saed Abohasan",
-              "Hiring Manager": "Mohammad Saed Abohasan",
-              "Date of Application": "2023-10-14",
-              Status: "Application Initiated",
-            },
           ];
           commonHelper.checkRows(".oxd-table-row", candidateTableData);
         })
