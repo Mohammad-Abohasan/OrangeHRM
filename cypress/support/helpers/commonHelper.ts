@@ -26,7 +26,11 @@ export default class Common {
     });
   }
 
-  static deleteAllRecords(selectAllRecords: string, deleteBtn: string, confirmDeleteBtn: string) {
+  static deleteAllRecords(
+    selectAllRecords: string,
+    deleteBtn: string,
+    confirmDeleteBtn: string
+  ) {
     cy.get(selectAllRecords).eq(0).click();
     cy.get(deleteBtn).click();
     cy.get(confirmDeleteBtn).eq(1).click();
