@@ -4,6 +4,7 @@ import VacanciesPage from "../../../support/pageObjects/RecruitmentTab/Vacancies
 import vacanciesHelper from "../../../support/helpers/vacanciesHelper";
 import candidatesHelper from "../../../support/helpers/candidatesHelper";
 import pimHelper from "../../../support/helpers/pimHelper";
+import commonHelper from "../../../support/helpers/commonHelper";
 
 const loginPage: LoginPage = new LoginPage();
 const candidatesPage: CandidatesPage = new CandidatesPage();
@@ -34,7 +35,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       });
   });
 
-  it("Recruitment - Schedule an Interview for a Candidate", () => {
+  it("Recruitment - Candidates: Schedule an Interview for a Candidate", () => {
     pimHelper
       // Add an employee
       .addEmployee(employeeData)
@@ -63,6 +64,57 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
           candidateResponse.data.id,
           employeeData
         );
+      })
+      // Delete the employee after the test
+      .then(() => {
+        return pimHelper.getEmployee(employeeData.employeeId);
+      })
+      .then((employeeResponse) => {
+        pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
+      });
+  });
+
+  it("Recruitment - Candidates: Add a new candidate and verify the record" /*{ retries: 2 },*/, () => {
+    pimHelper
+      // Add an employee
+      .addEmployee(employeeData)
+      // Add a vacancy
+      .then((employeeResponse) => {
+        return cy.fixture("vacancyInfo").then((vacancyData) => {
+          return vacanciesHelper.addVacancy(
+            vacancyData,
+            employeeResponse.data.empNumber
+          );
+        });
+      })
+      // Add a candidate
+      .then((vacancyResponse) => {
+        candidatesPage.openCandidatesPage();
+        commonHelper.deleteAllRecords(
+          ".oxd-checkbox-input-icon",
+          ".oxd-button--label-danger",
+          ".oxd-button--label-danger"
+        );
+        return cy.fixture("candidateInfo").then((candidateData) => {
+          return candidatesHelper.addCandidate(
+            candidateData,
+            vacancyResponse.data.id
+          );
+        });
+      })
+      // Verify the candidate record
+      .then(() => {
+        candidatesPage.openCandidatesPage();
+        let candidateTableData = [
+          {
+            Vacancy: "QA Automation",
+            Candidate: "Mohammad Saed Abohasan",
+            "Hiring Manager": "Mohammad Saed Abohasan",
+            "Date of Application": "2023-10-14",
+            Status: "Application Initiated",
+          },
+        ];
+        commonHelper.checkRows(".oxd-table-row", candidateTableData);
       })
       // Delete the employee after the test
       .then(() => {
