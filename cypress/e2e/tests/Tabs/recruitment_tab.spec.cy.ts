@@ -25,6 +25,73 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
     });
   });
 
+  it("Recruitment - Candidates: Attach Resume File", () => {
+    pimHelper
+      // Add an employee
+      .addEmployee(employeeData)
+      // Add a vacancy
+      .then((employeeResponse) => {
+        return cy.fixture("vacancyInfo").then((vacancyData) => {
+          return vacanciesHelper.addVacancy(
+            vacancyData,
+            employeeResponse.data.empNumber
+          );
+        });
+      })
+      // Add a candidate
+      .then((vacancyResponse) => {
+        return cy.fixture("candidateInfo").then((candidateData) => {
+          return candidatesHelper.addCandidate(
+            candidateData,
+            vacancyResponse.data.id
+          );
+        });
+      })
+      // Verify the candidate record
+      .then((candidateResponse) => {
+        cy.visit(
+          `/web/index.php/recruitment/addCandidate/${candidateResponse.data.id}`
+        );
+        candidatesPage.addResume("cypress/fixtures/CandidateResume.docx");
+      })
+      // Delete the employee after the test
+      .then(() => {
+        return pimHelper.getEmployee(employeeData.employeeId);
+      })
+      .then((employeeResponse) => {
+        pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
+      });
+  });
+
+  it("Recruitment - Vacancies: Attach File", () => {
+    pimHelper
+      // Add an employee
+      .addEmployee(employeeData)
+      // Add a vacancy
+      .then((employeeResponse) => {
+        return cy.fixture("vacancyInfo").then((vacancyData) => {
+          return vacanciesHelper.addVacancy(
+            vacancyData,
+            employeeResponse.data.empNumber
+          );
+        });
+      })
+      // Add a candidate
+      .then((vacancyResponse) => {
+        cy.visit(
+          `/web/index.php/recruitment/addJobVacancy/${vacancyResponse.data.id}`
+        );
+        vacanciesPage.addAttachment("cypress/fixtures/VacancyAttachment.xlsx");
+      })
+      // Delete the employee after the test
+      .then(() => {
+        return pimHelper.getEmployee(employeeData.employeeId);
+      })
+      .then((employeeResponse) => {
+        pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
+      });
+  });
+
   it("Recruitment - Candidates: verify number of records", () => {
     candidatesPage.openCandidatesPage();
     candidatesHelper
@@ -60,10 +127,10 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       // Shortlist the candidate and schedule an interview
       .then((candidateResponse) => {
         candidatesHelper.shortlistCandidate(candidateResponse.data.id);
-        candidatesPage.scheduleInterview(
-          candidateResponse.data.id,
-          employeeData
+        cy.visit(
+          `/web/index.php/recruitment/addCandidate/${candidateResponse.data.id}`
         );
+        candidatesPage.scheduleInterview(employeeData);
       })
       // Delete the employee after the test
       .then(() => {
