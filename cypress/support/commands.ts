@@ -38,12 +38,16 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-declare namespace Cypress {
-  interface Chainable<Subject> {
-    getByClass: typeof getByClass;
-    getByAttribute: typeof getByAttribute;
-    loginOrangeHRM(userName: string, password: string): typeof loginOrangeHRM;
-    logoutOrangeHRM: typeof logoutOrangeHRM;
+import "cypress-file-upload";
+
+declare global {
+  namespace Cypress {
+    interface Chainable<Subject> {
+      getByClass: typeof getByClass;
+      getByAttribute: typeof getByAttribute;
+      loginOrangeHRM(userName: string, password: string): typeof loginOrangeHRM;
+      logoutOrangeHRM: typeof logoutOrangeHRM;
+    }
   }
 }
 
