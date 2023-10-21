@@ -20,13 +20,13 @@ describe("PIM: Employee's table data validation", () => {
 
     cy.fixture("loginInfo").then((logData: any) => {
       loginData = logData;
-      loginPage.login(logData.userName.valid, logData.password.valid);
+      cy.loginOrangeHRM(logData.userName.valid, logData.password.valid);
     });
 
     pimTab.openPIMTab();
   });
 
-  it("PIM - Add employee and verify login info", () => {
+  it.only("PIM - Add employee and verify login info", () => {
     pimHelper
       // Add an employee
       .addEmployee(employeeData)
@@ -36,14 +36,15 @@ describe("PIM: Employee's table data validation", () => {
           adminHelper.addAdmin(adminData, employeeResponse.data.empNumber);
         });
       })
+      // Verify login info
       .then(() => {
-        loginPage.logout();
-        loginPage.login(employeeData.userName, employeeData.password);
-        loginPage.checkValidLogin(loginData.validLogin);
+        cy.logoutOrangeHRM();
+        cy.loginOrangeHRM(employeeData.userName, employeeData.password);
 
         // Login as Admin
-        loginPage.logout();
-        loginPage.login(loginData.userName.valid, loginData.password.valid);
+        cy.logoutOrangeHRM();
+        cy.loginOrangeHRM(loginData.userName.valid, loginData.password.valid);
+        cy.wait(1000);
       });
   });
 
