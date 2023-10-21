@@ -42,7 +42,24 @@ declare namespace Cypress {
   interface Chainable<Subject> {
     getByClass: typeof getByClass;
     getByAttribute: typeof getByAttribute;
+    loginOrangeHRM(userName: string, password: string): typeof loginOrangeHRM;
+    logoutOrangeHRM: typeof logoutOrangeHRM;
   }
+}
+
+function loginOrangeHRM(userName: string, password: string) {
+  userName && cy.getByAttribute("placeholder", "Username").type(userName);
+  password && cy.getByAttribute("placeholder", "Password").type(password);
+  cy.get("button").click();
+
+  cy.get(".oxd-topbar-header-breadcrumb > .oxd-text")
+    .contains("Dashboard")
+    .as("Login Successfully");
+}
+
+function logoutOrangeHRM() {
+  cy.get(".oxd-userdropdown-tab").click();
+  cy.get(":nth-child(4) > .oxd-userdropdown-link").click();
 }
 
 function getByClass(field: string) {
@@ -55,3 +72,5 @@ function getByAttribute(attribute: string, value: string) {
 
 Cypress.Commands.add("getByClass", getByClass);
 Cypress.Commands.add("getByAttribute", getByAttribute);
+Cypress.Commands.add("loginOrangeHRM", loginOrangeHRM);
+Cypress.Commands.add("logoutOrangeHRM", logoutOrangeHRM);

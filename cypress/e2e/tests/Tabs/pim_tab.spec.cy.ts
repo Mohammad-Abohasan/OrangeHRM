@@ -2,25 +2,49 @@ import LoginPage from "../../../support/pageObjects/LoginPage";
 import PIMTab from "../../../support/pageObjects/PIMTab";
 import pimHelper from "../../../support/helpers/pimHelper";
 import commonHelper from "../../../support/helpers/commonHelper";
+import adminHelper from "../../../support/helpers/adminHelper";
 
 const loginPage: LoginPage = new LoginPage();
 const pimTab: PIMTab = new PIMTab();
 
 let employeeData: any = {};
+let loginData: any = {};
 
 describe("PIM: Employee's table data validation", () => {
   beforeEach(() => {
     cy.visit("/");
 
-    cy.fixture("loginInfo").then((loginData: any) => {
-      loginPage.login(loginData.userName.valid, loginData.password.valid);
-    });
-
     cy.fixture("employeeInfo").then((empData) => {
       employeeData = empData;
     });
 
+    cy.fixture("loginInfo").then((logData: any) => {
+      loginData = logData;
+      cy.loginOrangeHRM(logData.userName.valid, logData.password.valid);
+    });
+
     pimTab.openPIMTab();
+  });
+
+  it.only("PIM - Add employee and verify login info", () => {
+    pimHelper
+      // Add an employee
+      .addEmployee(employeeData)
+      // Add an Admin
+      .then((employeeResponse) => {
+        cy.fixture("adminInfo").then((adminData) => {
+          adminHelper.addAdmin(adminData, employeeResponse.data.empNumber);
+        });
+      })
+      // Verify login info
+      .then(() => {
+        cy.logoutOrangeHRM();
+        cy.loginOrangeHRM(employeeData.userName, employeeData.password);
+
+        // Login as Admin
+        cy.logoutOrangeHRM();
+        cy.loginOrangeHRM(loginData.userName.valid, loginData.password.valid);
+      });
   });
 
   it("PIM - Add employee with Personal Details UI", /*{ retries: 2 },*/ () => {
