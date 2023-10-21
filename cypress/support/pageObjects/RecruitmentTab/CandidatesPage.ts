@@ -12,6 +12,12 @@ export default class CandidatesPage {
     timeInput: () => cy.get(".oxd-time-input"),
     submitBtn: () => cy.get('button[type="submit"]'),
     statusLabel: () => cy.get(".oxd-text--subtitle-2"),
+
+    editSwitch: () => cy.get(".oxd-switch-input"),
+    fileInput: () => cy.get("input[type='file']"),
+    resumeName: () => cy.get('.orangehrm-file-preview > .oxd-text'),
+    tableLoader: () => cy.get(".oxd-table-loader"),
+    resultToast: () => cy.get(".oxd-toast")
   };
 
   openCandidatesPage() {
@@ -23,8 +29,7 @@ export default class CandidatesPage {
     this.elements.candidatesTable().should("have.length", length);
   }
 
-  scheduleInterview(candidateId: number, infoData: any) {
-    cy.visit(`/web/index.php/recruitment/addCandidate/${candidateId}`);
+  scheduleInterview(infoData: any) {
     this.elements.loadingSpinner().should("exist");
     this.elements.scheduleInterviewBtn().click({ force: true });
     this.elements.loadingSpinner().should("exist");
@@ -47,5 +52,13 @@ export default class CandidatesPage {
     this.elements.timeInput().clear().type("09:00 AM");
     this.elements.submitBtn().click();
     this.elements.statusLabel().should("contain", "Interview Scheduled");
+  }
+
+  addResume(filePath: string) {
+    this.elements.editSwitch().click();
+    this.elements.fileInput().selectFile(filePath, { force: true });
+    this.elements.submitBtn().click();
+    this.elements.resultToast().should("exist");
+    this.elements.resumeName().should("contain", filePath.substring(filePath.lastIndexOf('/') + 1));
   }
 }
