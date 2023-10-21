@@ -44,7 +44,6 @@ describe("PIM: Employee's table data validation", () => {
         // Login as Admin
         cy.logoutOrangeHRM();
         cy.loginOrangeHRM(loginData.userName.valid, loginData.password.valid);
-        cy.wait(1000);
       });
   });
 
