@@ -26,7 +26,7 @@ describe("PIM: Employee's table data validation", () => {
     pimTab.openPIMTab();
   });
 
-  it.only("PIM - Add employee and verify login info", () => {
+  it("PIM - Add employee and verify login info", () => {
     pimHelper
       // Add an employee
       .addEmployee(employeeData)
