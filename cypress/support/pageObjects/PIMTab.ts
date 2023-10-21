@@ -105,11 +105,11 @@ class PIMTab {
     this.elements
       .employeeInputDriversLicenseNumber()
       .type(driversLicenseNumber);
-    this.elements.employeeInputLicenseExpiryDate().type(licenseExpiryDate);
+    this.elements.employeeInputLicenseExpiryDate().clear().type(licenseExpiryDate);
     this.elements.closeCalendar().click();
     this.elements.employeeInputMaritalStatus().click();
     this.elements.dropDownOptions().contains(maritalStatus).click();
-    this.elements.employeeInputDateOfBirth().type(dateOfBirth);
+    this.elements.employeeInputDateOfBirth().clear().type(dateOfBirth);
     this.elements.closeCalendar().click();
     this.elements.employeeInputGender().contains(gender).click({ force: true });
     this.elements.saveEmp().eq(0).click();
