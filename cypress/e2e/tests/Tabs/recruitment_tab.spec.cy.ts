@@ -83,15 +83,9 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         );
         vacanciesPage.addAttachment("cypress/fixtures/VacancyAttachment.xlsx");
         cy.get(".oxd-toast").should("exist");
-        commonHelper.checkRows(".oxd-table-row", [
-          {
-            "File Name": "VacancyAttachment.xlsx",
-            "File Size": "9.06 kb",
-            "File Type":
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            Comment: "",
-          },
-        ]);
+        cy.fixture("vacancyAttachmentsInfo").then((attachmentsData) => {
+          commonHelper.checkRows(".oxd-table-row", attachmentsData);
+        });
       })
       // Delete the employee after the test
       .then(() => {
