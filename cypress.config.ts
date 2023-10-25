@@ -1,6 +1,6 @@
 import { writeFileSync, unlink } from "fs";
 import { defineConfig } from "cypress";
-import allureWriter from "@shelex/cypress-allure-plugin/writer";
+// import allureWriter from "@shelex/cypress-allure-plugin/writer";
 import * as XLSX from "xlsx";
 import * as path from "path";
 import dotenv from "dotenv";
@@ -8,6 +8,7 @@ dotenv.config();
 
 export default defineConfig({
   projectId: process.env.CYPRESS_PROJECT_ID,
+  reporter: "cypress-mochawesome-reporter",
   e2e: {
     baseUrl: "https://opensource-demo.orangehrmlive.com",
     setupNodeEvents(on, config) {
@@ -39,13 +40,13 @@ export default defineConfig({
           });
         },
       });
-      allureWriter(on, config);
+      // allureWriter(on, config);
+      require("cypress-mochawesome-reporter/plugin")(on);
       return config;
     },
     env: {
       allure: true,
       allureResultsPath: "allure-results",
-      download_dir: "./cypress/downloads",
     },
     screenshotOnRunFailure: true,
   },
