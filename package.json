@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "npx cypress open",
+    "clean-downloads": "rm -rf cypress/downloads/*",
     "regression-allureCh": "cypress run --browser chrome --spec cypress/e2e/tests/*/* --env allure=true",
     "regression-allureEl": "cypress run --spec cypress/e2e/tests/*/* --env allure=true",
     "allure:clean": "rm -r allure-results/ cypress/screenshots cypress/videos || true",

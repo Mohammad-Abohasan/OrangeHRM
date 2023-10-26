@@ -43,6 +43,7 @@ declare namespace Cypress {
     getByAttribute: typeof getByAttribute;
     loginOrangeHRM(userName: string, password: string): typeof loginOrangeHRM;
     logoutOrangeHRM: typeof logoutOrangeHRM;
+    clearDownloadsDirectory: Cypress.Chainable;
   }
 }
 
@@ -73,3 +74,7 @@ Cypress.Commands.add("getByClass", getByClass);
 Cypress.Commands.add("getByAttribute", getByAttribute);
 Cypress.Commands.add("loginOrangeHRM", loginOrangeHRM);
 Cypress.Commands.add("logoutOrangeHRM", logoutOrangeHRM);
+
+Cypress.Commands.add("clearDownloadsDirectory", () => {
+  cy.exec("npm run clean-downloads", { log: false, failOnNonZeroExit: false });
+});
