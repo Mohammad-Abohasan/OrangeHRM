@@ -1,7 +1,7 @@
 import leaveHelper from "../../../support/helpers/leaveHelper";
 import pimHelper from "../../../support/helpers/pimHelper";
 import adminHelper from "../../../support/helpers/adminHelper";
-import commonHelper from "../../../support/helpers/commonHelper";
+import sharedHelper from "../../../support/helpers/sharedHelper";
 import MyLeavePage from "../../../support/pageObjects/LeaveTab/MyLeavePage";
 
 const myLeavePage: MyLeavePage = new MyLeavePage();
@@ -69,7 +69,7 @@ describe("Leave: ", () => {
         cy.loginOrangeHRM(employeeData.userName, employeeData.password);
         myLeavePage.open();
         cy.fixture("myLeaveTableInfo").then((myLeaveTableData) => {
-          commonHelper.checkRows(".oxd-table-row", myLeaveTableData);
+          sharedHelper.checkRows(".oxd-table-row", myLeaveTableData);
         });
       })
       // Login as admin and delete the employee.

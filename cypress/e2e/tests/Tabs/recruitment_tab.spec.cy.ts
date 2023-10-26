@@ -4,7 +4,7 @@ import VacanciesPage from "../../../support/pageObjects/RecruitmentTab/Vacancies
 import vacanciesHelper from "../../../support/helpers/vacanciesHelper";
 import candidatesHelper from "../../../support/helpers/candidatesHelper";
 import pimHelper from "../../../support/helpers/pimHelper";
-import commonHelper from "../../../support/helpers/commonHelper";
+import sharedHelper from "../../../support/helpers/sharedHelper";
 
 import * as path from "path";
 
@@ -47,7 +47,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         vacanciesPage.addAttachment("cypress/fixtures/VacancyAttachment.xlsx");
         cy.get(".oxd-toast").should("exist");
         cy.fixture("vacancyAttachmentsInfo").then((attachmentsData) => {
-          commonHelper.checkRows(".oxd-table-row", attachmentsData);
+          sharedHelper.checkRows(".oxd-table-row", attachmentsData);
         });
       })
       // Delete the employee after the test
@@ -81,7 +81,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         vacanciesPage.addAttachment(xlsxPath);
         cy.get(".oxd-toast").should("exist");
         cy.fixture("vacancyAttachmentsInfo").then((attachmentsData) => {
-          commonHelper.checkRows(".oxd-table-row", attachmentsData);
+          sharedHelper.checkRows(".oxd-table-row", attachmentsData);
         });
         return cy
           .task("convertXlsxToJson", [xlsxPath, true])
@@ -234,7 +234,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       // Add a candidate
       .then((vacancyResponse) => {
         candidatesPage.openCandidatesPage();
-        commonHelper.deleteAllRecords(
+        sharedHelper.deleteAllRecords(
           ".oxd-checkbox-input-icon",
           ".oxd-button--label-danger",
           ".oxd-button--label-danger"
@@ -258,7 +258,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
             Status: "Application Initiated",
           },
         ];
-        commonHelper.checkRows(".oxd-table-row", candidateTableData);
+        sharedHelper.checkRows(".oxd-table-row", candidateTableData);
       })
       // Delete the employee after the test
       .then(() => {

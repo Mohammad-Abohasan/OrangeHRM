@@ -1,7 +1,7 @@
 import LoginPage from "../../../support/pageObjects/LoginPage";
 import PIMTab from "../../../support/pageObjects/PIMTab";
 import pimHelper from "../../../support/helpers/pimHelper";
-import commonHelper from "../../../support/helpers/commonHelper";
+import sharedHelper from "../../../support/helpers/sharedHelper";
 import adminHelper from "../../../support/helpers/adminHelper";
 
 const loginPage: LoginPage = new LoginPage();
@@ -48,7 +48,7 @@ describe("PIM: Employee's table data validation", () => {
   });
 
   it("PIM - Add employee with Personal Details UI", /*{ retries: 2 },*/ () => {
-    commonHelper.deleteAllRecords(
+    sharedHelper.deleteAllRecords(
       ".oxd-checkbox-input-icon",
       ".oxd-button--label-danger",
       ".oxd-button--label-danger"
@@ -85,7 +85,7 @@ describe("PIM: Employee's table data validation", () => {
         Supervisor: employeeData.supervisor,
       },
     ];
-    commonHelper.checkRows(".oxd-table-row", pimTableData);
+    sharedHelper.checkRows(".oxd-table-row", pimTableData);
   });
 
   it("PIM - Add employee API then edit Personal Details UI", () => {
