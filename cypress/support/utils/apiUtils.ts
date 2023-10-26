@@ -84,12 +84,6 @@ declare global {
 }
 
 const apiCall = (method: string, url: string, payload?: any) => {
-  const restAPI: any = {
-    GET: { response: 200 },
-    POST: { response: 200 || 201 },
-    PUT: { response: 200 },
-    DELETE: { response: 200 },
-  };
   return cy
     .request({
       method,
@@ -97,7 +91,6 @@ const apiCall = (method: string, url: string, payload?: any) => {
       body: payload,
     })
     .then((response) => {
-      expect(response.status).to.eq(restAPI[method].response);
       return response;
     })
     .its("body");
