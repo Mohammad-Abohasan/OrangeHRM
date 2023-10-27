@@ -1,4 +1,47 @@
-export default class Common {
+export default class SharedHelper {
+  static getHeaderIndex(headerName: string) {
+    return cy
+      .get(".oxd-table-header")
+      .children()
+      .first()
+      .contains("[role='columnheader']", headerName)
+      .invoke("index");
+  }
+
+  static checkRecordsContainsValueInColumn(
+    rowNumber: number,
+    headerName: string,
+    value: string
+  ) {
+    this.getHeaderIndex(headerName).then((headerIndex) => {
+      cy.get(".oxd-table-body")
+        .find("div[role=row]")
+        .eq(rowNumber)
+        .find("div[role=cell]")
+        .eq(headerIndex)
+        .contains(value)
+        .should("exist");
+    });
+  }
+
+  static selectItemFromDropdown(labelName: string, itemName: string) {
+    cy.get(".oxd-input-group")
+      .contains(".oxd-label", labelName)
+      .parents()
+      .eq(1)
+      .find(".oxd-select-wrapper")
+      .click();
+    cy.get(".oxd-select-option").contains(itemName).click();
+  }
+
+  static clickSearchButton() {
+    cy.contains("[type='submit']", " Search ").click();
+  }
+
+  static clickResetButton() {
+    cy.getByAttribute("type", "reset").click();
+  }
+
   static checkRows(rowSelector: string, args: {}[]) {
     const headers: string[] = [];
     cy.get(rowSelector)
@@ -25,5 +68,4 @@ export default class Common {
         });
     });
   }
-
 }
