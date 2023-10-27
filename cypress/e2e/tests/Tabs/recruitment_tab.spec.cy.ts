@@ -16,10 +16,7 @@ let employeeData: any = {};
 describe("Recruitment: Candidates & Vacancies table data validation", () => {
   beforeEach(() => {
     cy.visit("/");
-
-    cy.fixture("loginInfo").then((loginData: any) => {
-      loginPage.login(loginData.userName.valid, loginData.password.valid);
-    });
+    cy.loginOrangeHRM();
 
     cy.fixture("employeeInfo").then((empData) => {
       employeeData = empData;
@@ -234,11 +231,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       // Add a candidate
       .then((vacancyResponse) => {
         candidatesPage.openCandidatesPage();
-        sharedHelper.deleteAllRecords(
-          ".oxd-checkbox-input-icon",
-          ".oxd-button--label-danger",
-          ".oxd-button--label-danger"
-        );
         return cy.fixture("candidateInfo").then((candidateData) => {
           return candidatesHelper.addCandidate(
             candidateData,

@@ -13,16 +13,10 @@ let loginData: any = {};
 describe("PIM: Employee's table data validation", () => {
   beforeEach(() => {
     cy.visit("/");
-
+    cy.loginOrangeHRM();
     cy.fixture("employeeInfo").then((empData) => {
       employeeData = empData;
     });
-
-    cy.fixture("loginInfo").then((logData: any) => {
-      loginData = logData;
-      cy.loginOrangeHRM(logData.userName.valid, logData.password.valid);
-    });
-
     pimTab.openPIMTab();
   });
 
@@ -48,12 +42,6 @@ describe("PIM: Employee's table data validation", () => {
   });
 
   it("PIM - Add employee with Personal Details UI", /*{ retries: 2 },*/ () => {
-    sharedHelper.deleteAllRecords(
-      ".oxd-checkbox-input-icon",
-      ".oxd-button--label-danger",
-      ".oxd-button--label-danger"
-    );
-
     pimTab.addEmployee(
       employeeData.firstName,
       employeeData.middleName,
