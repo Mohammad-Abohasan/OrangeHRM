@@ -10,9 +10,9 @@ let employeeData: any = {};
 describe("Leave: ", () => {
   beforeEach(() => {
     cy.visit("/");
+    cy.loginOrangeHRM();
     cy.fixture("loginInfo").then((logData: any) => {
       loginData = logData;
-      cy.loginOrangeHRM(logData.userName.valid, logData.password.valid);
     });
     cy.fixture("employeeInfo").then((empData: any) => (employeeData = empData));
   });
