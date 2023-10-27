@@ -39,41 +39,33 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 declare namespace Cypress {
   interface Chainable<Subject> {
-    getByClass: typeof getByClass;
-    getByAttribute: typeof getByAttribute;
-    loginOrangeHRM(userName: string, password: string): typeof loginOrangeHRM;
-    logoutOrangeHRM: typeof logoutOrangeHRM;
-    clearDownloadsDirectory: Cypress.Chainable;
+    getByAttribute: (attribute: string, value: string) => Chainable;
+    loginOrangeHRM: (userName?: string, password?: string) => void;
+    logoutOrangeHRM: () => void;
+    clearDownloadsDirectory: Chainable;
   }
 }
 
-function loginOrangeHRM(userName: string, password: string) {
-  userName && cy.getByAttribute("placeholder", "Username").type(userName);
-  password && cy.getByAttribute("placeholder", "Password").type(password);
-  cy.get("button").click();
-
-  cy.get(".oxd-topbar-header-breadcrumb > .oxd-text")
-    .contains("Dashboard")
-    .as("Login Successfully");
-}
-
-function logoutOrangeHRM() {
-  cy.get(".oxd-userdropdown-tab").click();
-  cy.get(":nth-child(4) > .oxd-userdropdown-link").click();
-}
-
-function getByClass(field: string) {
-  return cy.get(`.${field}`);
-}
-
-function getByAttribute(attribute: string, value: string) {
+Cypress.Commands.add("getByAttribute", (attribute: string, value: string) => {
   return cy.get(`[${attribute}="${value}"]`);
-}
+});
 
-Cypress.Commands.add("getByClass", getByClass);
-Cypress.Commands.add("getByAttribute", getByAttribute);
-Cypress.Commands.add("loginOrangeHRM", loginOrangeHRM);
-Cypress.Commands.add("logoutOrangeHRM", logoutOrangeHRM);
+Cypress.Commands.add(
+  "loginOrangeHRM",
+  (userName = "Admin", password = "admin123") => {
+    cy.getByAttribute("placeholder", "Username").type(userName);
+    cy.getByAttribute("placeholder", "Password").type(password);
+    cy.get("button").click();
+
+    cy.get(".oxd-topbar-header-breadcrumb > .oxd-text")
+      .contains("Dashboard")
+      .as("Login Successfully");
+  }
+);
+
+Cypress.Commands.add("logoutOrangeHRM", () => {
+  cy.request("/auth/logout");
+});
 
 Cypress.Commands.add("clearDownloadsDirectory", () => {
   cy.exec("npm run clean-downloads", { log: false, failOnNonZeroExit: false });
