@@ -41,7 +41,7 @@ declare namespace Cypress {
   interface Chainable<Subject> {
     getByAttribute: (attribute: string, value: string) => Chainable;
     loginOrangeHRM: (userName?: string, password?: string) => void;
-    logoutOrangeHRM: () => void;
+    logoutOrangeHRM: () => any;
     clearDownloadsDirectory: Chainable;
   }
 }
@@ -53,18 +53,31 @@ Cypress.Commands.add("getByAttribute", (attribute: string, value: string) => {
 Cypress.Commands.add(
   "loginOrangeHRM",
   (userName = "Admin", password = "admin123") => {
+    cy.intercept(
+      "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/dashboard/employees/time-at-work**"
+    ).as("timeAtWork");
+    cy.intercept(
+      "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/buzz/feed**"
+    ).as("buzzFeed");
+
+    cy.visit("/");
     cy.getByAttribute("placeholder", "Username").type(userName);
     cy.getByAttribute("placeholder", "Password").type(password);
     cy.get("button").click();
 
-    cy.get(".oxd-topbar-header-breadcrumb > .oxd-text")
-      .contains("Dashboard")
-      .as("Login Successfully");
+    cy.wait(["@timeAtWork", "@buzzFeed"]);
   }
 );
 
 Cypress.Commands.add("logoutOrangeHRM", () => {
-  cy.request("/auth/logout");
+  // cy.request("/web/index.php/auth/logout").as("Logout Successfully");
+  cy.intercept(
+    "https://opensource-demo.orangehrmlive.com/web/index.php/core/i18n/messages**"
+  ).as("messages");
+  cy.get(".oxd-userdropdown-tab").click();
+  cy.contains("[role=menuitem]", "Logout").click();
+
+  cy.wait("@messages");
 });
 
 Cypress.Commands.add("clearDownloadsDirectory", () => {
