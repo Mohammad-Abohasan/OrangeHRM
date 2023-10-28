@@ -1,10 +1,14 @@
 import AdminHelper from "../../support/helpers/adminTab/AdminHelper";
 import PimHelper from "../../support/helpers/pimTab/PimHelper";
-import Timesheets from "../../support/pageObjects/timeTab/TimesheetsPage";
+import TimesheetsPageActions from "../../support/pageObjects/timeTab/timesheetsPage/TimesheetsPageActions";
+import TimesheetsPageAssertions from "../../support/pageObjects/timeTab/timesheetsPage/TimesheetsPageAssertions";
 
 let employeeData: any = {};
 let adminData: any = {};
-const timesheetsPage: Timesheets = new Timesheets();
+const timesheetsPageActions: TimesheetsPageActions =
+  new TimesheetsPageActions();
+const timesheetsPageAssertions: TimesheetsPageAssertions =
+  new TimesheetsPageAssertions();
 
 describe("Time: ", () => {
   beforeEach(() => {
@@ -25,14 +29,18 @@ describe("Time: ", () => {
       .then(() => {
         cy.logoutOrangeHRM();
         cy.loginOrangeHRM(adminData.username, adminData.password);
-        timesheetsPage.openTimePage();
-        timesheetsPage.openMyTimesheets();
-        timesheetsPage.addTimesheet();
+        timesheetsPageActions.openTimePage();
+        timesheetsPageActions.openMyTimesheets();
+        timesheetsPageActions.addTimesheet();
+        timesheetsPageAssertions.addTimesheetAssertion();
         cy.logoutOrangeHRM();
         cy.loginOrangeHRM();
-        timesheetsPage.openTimePage();
-        timesheetsPage.openEmployeeTimesheets();
-        timesheetsPage.timesheetTableContains(employeeData);
+        timesheetsPageActions.openTimePage();
+        timesheetsPageActions.openEmployeeTimesheets();
+        timesheetsPageActions.checkRecordsContainsTimesheet(employeeData);
+        timesheetsPageAssertions.checkRecordsContainsTimesheetAssertion(
+          employeeData
+        );
       });
   });
 

@@ -1,6 +1,6 @@
-import SharedHelper from "../../helpers/SharedHelper";
+import SharedHelper from "../../../helpers/SharedHelper";
 
-class Timesheets {
+class TimesheetsPageActions {
   elements = {
     timesheetsDropDown: () =>
       cy.get(".oxd-topbar-body-nav-tab").contains("Timesheets"),
@@ -35,21 +35,14 @@ class Timesheets {
 
   addTimesheet() {
     this.elements.submitButton().click();
-    SharedHelper.checkToastMessage("Timesheet Submitted");
   }
 
-  timesheetTableContains(employeeData: any) {
+  checkRecordsContainsTimesheet(employeeData: any) {
     const employeeFullName = `${employeeData.firstName} ${employeeData.middleName} ${employeeData.lastName}`;
     this.elements.employeeNameSearchField().type(employeeFullName);
     SharedHelper.selectOptionFromListBox(employeeFullName);
     this.elements.submit().click();
-    SharedHelper.checkRecordsContainsValueInColumn(0, "Action", "Submitted");
-    SharedHelper.checkRecordsContainsValueInColumn(
-      0,
-      "Performed By",
-      `${employeeData.firstName} ${employeeData.lastName}`
-    );
   }
 }
 
-export default Timesheets;
+export default TimesheetsPageActions;
