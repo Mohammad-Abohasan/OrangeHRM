@@ -42,6 +42,10 @@ export default class SharedHelper {
     cy.getByAttribute("type", "reset").click();
   }
 
+  static mainMenuItems() {
+    return cy.get(".oxd-sidepanel-body");
+  }
+
   static checkRows(rowSelector: string, args: {}[]) {
     const headers: string[] = [];
     cy.get(rowSelector)
