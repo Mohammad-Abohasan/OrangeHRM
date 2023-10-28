@@ -42,8 +42,21 @@ export default class SharedHelper {
     cy.getByAttribute("type", "reset").click();
   }
 
+  static checkToastMessage(message: string) {
+    cy.contains(".oxd-toast", message).should("exist");
+  }
+
   static mainMenuItems() {
     return cy.get(".oxd-sidepanel-body");
+  }
+
+  static selectOptionFromListBox(option: string) {
+    cy.getByAttribute("role", "option")
+      .contains("Searching....")
+      .should("not.exist");
+    cy.getByAttribute("role", "listbox")
+      .contains("[role=option]", option)
+      .click();
   }
 
   static checkRows(rowSelector: string, args: {}[]) {
