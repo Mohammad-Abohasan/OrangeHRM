@@ -5,3 +5,4 @@ cypress/screenshots
 cypress/videos
 cypress/downloads
 .env
+.npm/_logs
