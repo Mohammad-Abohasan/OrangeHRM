@@ -39,8 +39,7 @@ class TimesheetsPageActions {
 
   checkRecordsContainsTimesheet(employeeData: any) {
     const employeeFullName = `${employeeData.firstName} ${employeeData.middleName} ${employeeData.lastName}`;
-    this.elements.employeeNameSearchField().type(employeeFullName);
-    SharedHelper.selectOptionFromListBox(employeeFullName);
+    SharedHelper.selectOptionFromListBox("Employee Name", employeeFullName);
     this.elements.submit().click();
   }
 }
