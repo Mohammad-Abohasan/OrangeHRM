@@ -3,24 +3,25 @@ import BuzzTabAssertions from "../../support/pageObjects/buzzTab/BuzzTabAssertio
 
 const buzzTabActions: BuzzTabActions = new BuzzTabActions();
 const buzzTabAssertions: BuzzTabAssertions = new BuzzTabAssertions();
+const postInfoPath: string = "cypress/fixtures/buzzTab/postInfo.json";
 
 describe("Buzz: Check Posts Validation", () => {
   beforeEach(() => {
     cy.loginOrangeHRM();
     buzzTabActions.openTimePage();
-    cy.writeFile("cypress/fixtures/buzzTab/buzz.json", {
-      post: "Hi, I'm Mohammad Abohasan",
+    cy.writeFile(postInfoPath, {
+      content: "Hi, I'm Mohammad Abohasan",
     });
   });
 
   it("Buzz - The user should be able to add a post", () => {
-    cy.fixture("buzzTab/buzz.json").then((postData) => {
-      buzzTabActions.addNewPost(postData.post);
-      buzzTabAssertions.checkPostText(postData.post);
+    cy.fixture("buzzTab/postInfo.json").then((postData) => {
+      buzzTabActions.addNewPost(postData.content);
+      buzzTabAssertions.checkPostText(postData.content);
     });
   });
 
   afterEach(() => {
-    buzzTabActions.clearBuzzTabDirectoryFromFixtures();
+    cy.task("deleteFile", postInfoPath);
   });
 });
