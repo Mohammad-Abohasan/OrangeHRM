@@ -17,10 +17,7 @@ class BuzzTabActions {
   }
 
   clearBuzzTabDirectoryFromFixtures() {
-    cy.exec("rm -rf cypress/fixtures/buzzTab/buzz.json", {
-      log: false,
-      failOnNonZeroExit: false,
-    });
+    cy.task("deleteFile", "cypress/fixtures/buzzTab/buzz.json");
   }
 }
 
