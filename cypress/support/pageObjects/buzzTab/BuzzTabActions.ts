@@ -15,10 +15,6 @@ class BuzzTabActions {
     this.elements.postButton().click();
     SharedHelper.checkToastIsExist(false);
   }
-
-  clearBuzzTabDirectoryFromFixtures() {
-    cy.task("deleteFile", "cypress/fixtures/buzzTab/buzz.json");
-  }
 }
 
 export default BuzzTabActions;
