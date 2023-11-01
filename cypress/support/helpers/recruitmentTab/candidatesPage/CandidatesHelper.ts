@@ -14,11 +14,13 @@ export default class CandidatesHelper {
     candidateData: ICreateCandidatePayload,
     vacancyId: number
   ) {
-    return cy.addCandidate(
-      "POST",
-      URLs.candidates,
-      CandidatesInit.initCandidate(candidateData, vacancyId)
-    );
+    return cy
+      .addCandidate(
+        "POST",
+        URLs.candidates,
+        CandidatesInit.initCandidate(candidateData, vacancyId)
+      )
+      .then((response) => response.data);
   }
   static shortlistCandidate(candidateId: number) {
     return cy.shortlistCandidate(
