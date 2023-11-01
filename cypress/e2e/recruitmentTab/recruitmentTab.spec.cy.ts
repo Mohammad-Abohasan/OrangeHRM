@@ -81,7 +81,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
-        SharedHelper.checkToastMessage("Successfully Deleted");
 
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
@@ -166,7 +165,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
-        SharedHelper.checkToastMessage("Successfully Deleted");
 
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
@@ -220,7 +218,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
-        SharedHelper.checkToastMessage("Successfully Deleted");
 
         // TODO: Fix this issue
         vacanciesPageActions.openVacanciesPage();
@@ -230,7 +227,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
-        SharedHelper.checkToastMessage("Successfully Deleted");
 
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
@@ -292,7 +288,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
-        SharedHelper.checkToastMessage("Successfully Deleted");
 
         // TODO: Fix this issue
         vacanciesPageActions.openVacanciesPage();
@@ -302,7 +297,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
-        SharedHelper.checkToastMessage("Successfully Deleted");
 
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
@@ -360,7 +354,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
-        SharedHelper.checkToastMessage("Successfully Deleted");
 
         // TODO: Fix this issue
         vacanciesPageActions.openVacanciesPage();
@@ -370,7 +363,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
-        SharedHelper.checkToastMessage("Successfully Deleted");
 
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });

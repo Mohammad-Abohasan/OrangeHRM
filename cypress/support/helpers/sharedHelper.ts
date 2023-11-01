@@ -38,6 +38,7 @@ export default class SharedHelper {
           .click({ force: true });
         cy.get(".oxd-button--label-danger").dblclick();
         cy.get(".oxd-button--label-danger").eq(1).click();
+        this.checkToastMessage("Successfully Deleted");
       }
     });
   }

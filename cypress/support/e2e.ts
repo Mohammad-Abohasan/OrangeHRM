@@ -35,6 +35,5 @@ it("Delete an employee if exists", () => {
     SharedHelper.typeInInputField("Employee Id", employeeId);
     SharedHelper.clickSubmitButtonIsContains("Search");
     SharedHelper.selectAllRecordsFoundAndDelete();
-    SharedHelper.checkToastMessage("Successfully Deleted");
   })();
 });
