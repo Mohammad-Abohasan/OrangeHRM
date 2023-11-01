@@ -19,6 +19,30 @@ import "@shelex/cypress-allure-plugin";
 import "cypress-mochawesome-reporter/register";
 import "cypress-plugin-api";
 import "../support/utils/apiUtils";
+import SharedHelper from "./helpers/SharedHelper";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+Cypress.on("uncaught:exception", (err, runnable) => {
+  return false;
+});
+
+it("Delete an employee if exists", () => {
+  cy.loginOrangeHRM();
+  ((employeeId) => {
+    SharedHelper.mainMenuItems().contains("PIM").click();
+    SharedHelper.typeInInputField("Employee Id", employeeId);
+    SharedHelper.clickSubmitButtonIsContains("Search");
+    cy.get(".oxd-table-row").then(($rows) => {
+      if ($rows.length > 1) {
+        cy.get(".oxd-table-header")
+          .find("[type='checkbox']")
+          .click({ force: true });
+        // dbl click 
+        cy.get(".oxd-button--label-danger").dblclick();
+        cy.get(".oxd-button--label-danger").eq(1).click();
+      }
+    });
+  })("201913064");
+});
