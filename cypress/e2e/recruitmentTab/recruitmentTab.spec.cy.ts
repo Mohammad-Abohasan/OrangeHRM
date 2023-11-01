@@ -77,7 +77,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         vacanciesPageActions.openVacanciesPage();
         SharedHelper.selectItemFromDropdown(
           "Hiring Manager",
-          "Mohammad Saed Abohasan"
+          "Mohammad Abohasan"
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
@@ -161,7 +161,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         vacanciesPageActions.openVacanciesPage();
         SharedHelper.selectItemFromDropdown(
           "Hiring Manager",
-          "Mohammad Saed Abohasan"
+          "Mohammad Abohasan"
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
@@ -214,7 +214,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         candidatesPageActions.openCandidatesPage();
         SharedHelper.selectOptionFromListBox(
           "Candidate Name",
-          "Mohammad Saed Abohasan"
+          "Mohammad"
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
@@ -223,7 +223,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         vacanciesPageActions.openVacanciesPage();
         SharedHelper.selectItemFromDropdown(
           "Hiring Manager",
-          "Mohammad Saed Abohasan"
+          "Mohammad Abohasan"
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
@@ -284,7 +284,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         candidatesPageActions.openCandidatesPage();
         SharedHelper.selectOptionFromListBox(
           "Candidate Name",
-          "Mohammad Saed Abohasan"
+          "Mohammad"
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
@@ -293,7 +293,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         vacanciesPageActions.openVacanciesPage();
         SharedHelper.selectItemFromDropdown(
           "Hiring Manager",
-          "Mohammad Saed Abohasan"
+          "Mohammad Abohasan"
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
@@ -350,7 +350,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         candidatesPageActions.openCandidatesPage();
         SharedHelper.selectOptionFromListBox(
           "Candidate Name",
-          "Mohammad Saed Abohasan"
+          "Mohammad"
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
@@ -359,7 +359,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         vacanciesPageActions.openVacanciesPage();
         SharedHelper.selectItemFromDropdown(
           "Hiring Manager",
-          "Mohammad Saed Abohasan"
+          "Mohammad Abohasan"
         );
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
