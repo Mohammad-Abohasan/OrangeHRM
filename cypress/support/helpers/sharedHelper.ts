@@ -19,8 +19,26 @@ export default class SharedHelper {
         .eq(rowNumber)
         .find("div[role=cell]")
         .eq(headerIndex)
-        .contains(value)
-        .should("exist");
+        .invoke("text")
+        .then((tableValue) => {
+          if (tableValue.trim().length === `${value}`.length) {
+            cy.wrap(tableValue).should("eq", value);
+          } else {
+            expect(tableValue.trim()).to.be.empty;
+          }
+        });
+    });
+  }
+
+  static selectAllRecordsFoundAndDelete() {
+    cy.get(".oxd-table-row").then(($rows) => {
+      if ($rows.length > 1) {
+        cy.get(".oxd-table-header")
+          .find("[type='checkbox']")
+          .click({ force: true });
+        cy.get(".oxd-button--label-danger").dblclick();
+        cy.get(".oxd-button--label-danger").eq(1).click();
+      }
     });
   }
 
