@@ -24,7 +24,7 @@ describe("Time: ", () => {
   it("Time - Timesheets: The user should be able to add a new timesheet", () => {
     PimHelper.addEmployee(employeeData)
       .then((employeeResponse) =>
-        AdminHelper.addAdmin(adminData, employeeResponse.data.empNumber)
+        AdminHelper.addAdmin(adminData, employeeResponse.empNumber)
       )
       .then(() => {
         cy.logoutOrangeHRM();
