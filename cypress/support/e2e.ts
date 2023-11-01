@@ -30,19 +30,11 @@ Cypress.on("uncaught:exception", (err, runnable) => {
 
 it("Delete an employee if exists", () => {
   cy.loginOrangeHRM();
-  ((employeeId) => {
+  ((employeeId = "201913064") => {
     SharedHelper.mainMenuItems().contains("PIM").click();
     SharedHelper.typeInInputField("Employee Id", employeeId);
     SharedHelper.clickSubmitButtonIsContains("Search");
-    cy.get(".oxd-table-row").then(($rows) => {
-      if ($rows.length > 1) {
-        cy.get(".oxd-table-header")
-          .find("[type='checkbox']")
-          .click({ force: true });
-        // dbl click 
-        cy.get(".oxd-button--label-danger").dblclick();
-        cy.get(".oxd-button--label-danger").eq(1).click();
-      }
-    });
-  })("201913064");
+    SharedHelper.selectAllRecordsFoundAndDelete();
+    SharedHelper.checkToastMessage("Successfully Deleted");
+  })();
 });
