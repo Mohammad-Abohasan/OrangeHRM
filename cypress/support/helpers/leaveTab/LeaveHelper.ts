@@ -19,7 +19,7 @@ export default class LeaveHelper {
       "POST",
       `${URLs.leaveBaseUrl}${URLs.leaveEntitlements}`,
       LeaveInit.initLeaveEntitlement(leaveEntitlementData, empNumber)
-    );
+    ).then((response) => response.data);
   }
 
   static applyLeave(leaveRequestData: IApplyLeavePayload, leaveTypeId: number) {
@@ -27,7 +27,7 @@ export default class LeaveHelper {
       "POST",
       `${URLs.leaveBaseUrl}${URLs.applyRequest}`,
       LeaveInit.initLeaveRequest(leaveRequestData, leaveTypeId)
-    );
+    ).then((response) => response.data);
   }
 
   static actionOnLeaveRequest(
