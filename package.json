@@ -17,6 +17,7 @@
     "cloud:debug": "cypress run --record --key d961cdbf-deb2-4156-9705-bf54098c9577"
   },
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "xlsx": "^0.18.5"
   }
 }
