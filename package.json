@@ -1,21 +1,15 @@
 {
-  "devDependencies": {
-    "@cypress/grep": "^4.0.0",
-    "@shelex/cypress-allure-plugin": "^2.40.0",
-    "allure-commandline": "^2.24.0",
-    "cypress": "^13.3.1",
-    "cypress-mochawesome-reporter": "^3.6.1",
-    "cypress-plugin-api": "^2.11.1",
-    "typescript": "^5.2.2"
-  },
+  "name": "orangehrm",
+  "version": "1.0.0",
+  "description": "Creating and automating test cases for the @orangehrm system.",
   "scripts": {
     "start": "npx cypress open",
     "clean-downloads": "rm -rf cypress/downloads/*",
     "regression-allureCh": "cypress run --browser chrome --spec cypress/e2e/**/*.spec.cy.ts --env allure=true",
     "regression-allureEl": "cypress run --spec cypress/e2e/**/*.spec.cy.ts --env allure=true",
-    "allure:clean": "rm -r allure-results/ cypress/screenshots cypress/videos || true",
+    "allure:clean": "rm -rf allure-results/ cypress/screenshots cypress/videos || true",
     "allure:report": "allure generate allure-results --clean -o allure-report",
-    "allure:history": "mv -f allure-report/history allure-report/history && rm -r allure-report || true",
+    "allure:history": "mv -f allure-report/history allure-report/history && rm -rf allure-report || true",
     "regression:buzz": "cypress run --spec cypress/e2e/buzzTab/*",
     "regression:leave": "cypress run --spec cypress/e2e/leaveTab/*",
     "regression:login": "cypress run --spec cypress/e2e/loginPage/*",
@@ -30,5 +24,14 @@
     "dotenv": "^16.3.1",
     "moment": "^2.29.4",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@cypress/grep": "^4.0.0",
+    "@shelex/cypress-allure-plugin": "^2.40.0",
+    "allure-commandline": "^2.24.0",
+    "cypress": "^13.3.1",
+    "cypress-mochawesome-reporter": "^3.6.1",
+    "cypress-plugin-api": "^2.11.1",
+    "typescript": "^5.2.2"
   }
 }
