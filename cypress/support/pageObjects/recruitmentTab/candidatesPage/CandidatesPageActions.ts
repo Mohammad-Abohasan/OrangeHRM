@@ -1,8 +1,12 @@
-export default class CandidatesPage {
+import SharedHelper from "../../../helpers/SharedHelper";
+import CandidatesPageAssertions from "./CandidatesPageAssertions";
+
+const candidatesPageAssertions: CandidatesPageAssertions =
+  new CandidatesPageAssertions();
+
+export default class CandidatesPageActions {
   elements = {
-    mainMenuItems: () => cy.get(".oxd-sidepanel-body"),
     pages: () => cy.get(".oxd-topbar-body-nav-tab"),
-    candidatesTable: () => cy.get(".oxd-table-body > .oxd-table-card"),
     loadingSpinner: () => cy.get(".oxd-loading-spinner-container"),
     scheduleInterviewBtn: () => cy.get(".oxd-button--success"),
     labels: () => cy.get(".oxd-label"),
@@ -11,28 +15,41 @@ export default class CandidatesPage {
     dateInput: () => cy.get(".oxd-date-input"),
     timeInput: () => cy.get(".oxd-time-input"),
     submitBtn: () => cy.get('button[type="submit"]'),
-    statusLabel: () => cy.get(".oxd-text--subtitle-2"),
 
     editSwitch: () => cy.get(".oxd-switch-input"),
     fileInput: () => cy.get("input[type='file']"),
-    resumeName: () => cy.get('.orangehrm-file-preview > .oxd-text'),
-    tableLoader: () => cy.get(".oxd-table-loader"),
-    resultToast: () => cy.get(".oxd-toast")
+    resumeName: () => cy.get(".orangehrm-file-preview > .oxd-text"),
   };
 
   openCandidatesPage() {
-    this.elements.mainMenuItems().contains("Recruitment").click();
+    SharedHelper.mainMenuItems().contains("Recruitment").click();
     this.elements.pages().contains("Candidates").click();
   }
 
-  numberOfRecords(length: number) {
-    this.elements.candidatesTable().should("have.length", length);
+  searchForCandidate(candidateData: any) {
+    const [firstNameHM, , lastNameHM] = candidateData["Hiring Manager"].split(" ");
+    const [firstNameCandidate] = candidateData["Candidate"].split(" ");
+    SharedHelper.selectItemFromDropdown("Vacancy", candidateData["Vacancy"]);
+    SharedHelper.selectItemFromDropdown(
+      "Hiring Manager",
+      `${firstNameHM} ${lastNameHM}`
+    );
+    SharedHelper.selectItemFromDropdown("Status", candidateData["Status"]);
+    SharedHelper.selectOptionFromListBox(
+      "Candidate Name",
+      firstNameCandidate
+    );
+    SharedHelper.selectDateFromCalendar(
+      "Date of Application",
+      candidateData["Date of Application"]
+    );
+    SharedHelper.clickSearchButton();
   }
 
   scheduleInterview(infoData: any) {
-    this.elements.loadingSpinner().should("exist");
+    SharedHelper.checkLoadingSpinnerIsExist(true);
     this.elements.scheduleInterviewBtn().click({ force: true });
-    this.elements.loadingSpinner().should("exist");
+    SharedHelper.checkLoadingSpinnerIsExist(true);
     this.elements
       .labels()
       .contains("Interview Title")
@@ -51,14 +68,21 @@ export default class CandidatesPage {
     this.elements.dateInput().type("2024-04-02");
     this.elements.timeInput().clear().type("09:00 AM");
     this.elements.submitBtn().click();
-    this.elements.statusLabel().should("contain", "Interview Scheduled");
+    candidatesPageAssertions.checkStatus("Interview Scheduled");
+  }
+
+  editCandidateById(candidateId: number) {
+    cy.visit(`/web/index.php/recruitment/addCandidate/${candidateId}`);
   }
 
   addResume(filePath: string) {
     this.elements.editSwitch().click();
     this.elements.fileInput().selectFile(filePath, { force: true });
     this.elements.submitBtn().click();
-    this.elements.resultToast().should("exist");
-    this.elements.resumeName().should("contain", filePath.substring(filePath.lastIndexOf('/') + 1));
+
+    SharedHelper.checkToastIsExist(true);
+    candidatesPageAssertions.checkResumeName(
+      filePath.substring(filePath.lastIndexOf("/") + 1)
+    );
   }
 }

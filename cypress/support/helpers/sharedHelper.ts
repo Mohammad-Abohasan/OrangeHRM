@@ -24,22 +24,16 @@ export default class SharedHelper {
     });
   }
 
-  static selectItemFromDropdown(labelName: string, itemName: string) {
-    cy.get(".oxd-input-group")
-      .contains(".oxd-label", labelName)
-      .parents()
-      .eq(1)
-      .find(".oxd-select-wrapper")
-      .click();
-    cy.get(".oxd-select-option").contains(itemName).click();
-  }
-
   static clickSearchButton() {
     cy.contains("[type='submit']", " Search ").click();
   }
 
   static clickResetButton() {
     cy.getByAttribute("type", "reset").click();
+  }
+
+  static checkToastIsExist(isExist: boolean) {
+    cy.get(".oxd-toast").should(isExist ? "exist" : "not.exist");
   }
 
   static checkToastMessage(message: string) {
@@ -50,8 +44,29 @@ export default class SharedHelper {
     return cy.get(".oxd-sidepanel-body");
   }
 
-  static selectOptionFromListBox(option: string) {
-    cy.getByAttribute("role", "option")
+  static checkLoadingSpinnerIsExist(isExist: boolean) {
+    cy.get(".oxd-loading-spinner-container").should(
+      isExist ? "exist" : "not.exist"
+    );
+  }
+
+  static selectItemFromDropdown(labelName: string, itemName: string) {
+    cy.get(".oxd-input-group")
+      .contains(".oxd-label", labelName)
+      .parents()
+      .eq(1)
+      .find(".oxd-select-wrapper")
+      .click();
+    cy.get(".oxd-select-option").contains(itemName).click();
+  }
+
+  static selectOptionFromListBox(labelName: string, option: string) {
+    cy.get(".oxd-input-group")
+      .contains(".oxd-label", labelName)
+      .parents()
+      .eq(1)
+      .find("[placeholder='Type for hints...']")
+      .type(option)
       .contains("Searching....")
       .should("not.exist");
     cy.getByAttribute("role", "listbox")
@@ -59,30 +74,15 @@ export default class SharedHelper {
       .click();
   }
 
-  static checkRows(rowSelector: string, args: {}[]) {
-    const headers: string[] = [];
-    cy.get(rowSelector)
-      .eq(0)
-      .children()
-      .each(($cell) => {
-        const cellStr: string = $cell
-          .text()
-          .replace(/AscendingDescending|Actions/g, "")
-          .trim();
-        if (cellStr) headers.push(cellStr);
-      });
+  static selectDateFromCalendar(labelName: string, date: string) {
+    cy.get(".oxd-input-group")
+      .contains(".oxd-label", labelName)
+      .parents()
+      .eq(1)
+      .find(".oxd-date-input > .oxd-input")
+      .type(date);
 
-    args.forEach((rowData: any, rowInd) => {
-      cy.get(rowSelector)
-        .eq(++rowInd)
-        .children()
-        .then((cellsOfRow) => {
-          for (let i = 0; i < headers.length; i++) {
-            cy.wrap(cellsOfRow)
-              .eq(i + 1)
-              .should("contain", rowData[headers[i]]);
-          }
-        });
-    });
+    // close calendar
+    cy.contains(".oxd-date-input-link", "Close").click();
   }
 }
