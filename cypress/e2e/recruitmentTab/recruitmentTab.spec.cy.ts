@@ -1,18 +1,31 @@
+import * as path from "path";
 import CandidatesPageActions from "../../support/pageObjects/recruitmentTab/candidatesPage/CandidatesPageActions";
 import CandidatesPageAssertions from "../../support/pageObjects/recruitmentTab/candidatesPage/CandidatesPageAssertions";
-import VacanciesPage from "../../support/pageObjects/recruitmentTab/vacanciesPage/VacanciesPage";
-import vacanciesHelper from "../../support/helpers/recruitmentTab/vacanciesPage/VacanciesHelper";
+import VacanciesPageActions from "../../support/pageObjects/recruitmentTab/vacanciesPage/VacanciesPageActions";
+import VacanciesPageAssertions from "../../support/pageObjects/recruitmentTab/vacanciesPage/VacanciesPageAssertions";
 import candidatesHelper from "../../support/helpers/recruitmentTab/candidatesPage/CandidatesHelper";
+import vacanciesHelper from "../../support/helpers/recruitmentTab/vacanciesPage/VacanciesHelper";
 import pimHelper from "../../support/helpers/pimTab/PimHelper";
-
-import * as path from "path";
 import SharedHelper from "../../support/helpers/SharedHelper";
 
 const candidatesPageActions: CandidatesPageActions =
   new CandidatesPageActions();
 const candidatesPageAssertions: CandidatesPageAssertions =
   new CandidatesPageAssertions();
-const vacanciesPage: VacanciesPage = new VacanciesPage();
+const vacanciesPageActions: VacanciesPageActions = new VacanciesPageActions();
+const vacanciesPageAssertions: VacanciesPageAssertions =
+  new VacanciesPageAssertions();
+enum StatusCandidate {
+  ApplicationInitiated = "Application Initiated",
+  Shortlisted = "Shortlisted",
+  InterviewScheduled = "Interview Scheduled",
+  InterviewPassed = "Interview Passed",
+  InterviewFailed = "Interview Failed",
+  JobOffered = "Job Offered",
+  OfferDeclined = "Offer Declined",
+  Hired = "Hired",
+  Rejected = "fRejected",
+}
 
 let employeeData: any = {};
 describe("Recruitment: Candidates & Vacancies table data validation", () => {
@@ -24,7 +37,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
     });
   });
 
-  it.skip("Recruitment - Vacancies: The user should be able to attach a file to a vacancy.", () => {
+  it("Recruitment - Vacancies: The user should be able to attach a file to a vacancy", () => {
     pimHelper
       // Add an employee
       .addEmployee(employeeData)
@@ -35,26 +48,24 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
           .then((vacancyData) => {
             return vacanciesHelper.addVacancy(
               vacancyData,
-              employeeResponse.data.empNumber
+              employeeResponse.empNumber
             );
           });
       })
       // Attach a file to the vacancy
       .then((vacancyResponse) => {
-        cy.visit(
-          `/web/index.php/recruitment/addJobVacancy/${vacancyResponse.data.id}`
-        );
-        vacanciesPage.addAttachment(
+        vacanciesPageActions.editVacancyById(vacancyResponse.id);
+        vacanciesPageActions.addAttachmentToVacancy(
           "cypress/fixtures/recruitmentTab/vacanciesPage/vacancyAttachment.xlsx"
         );
         SharedHelper.checkToastIsExist(true);
         cy.fixture(
-          "recruitmentTab/vacanciesPage/vacancyAttachmentsInfo.json"
+          "recruitmentTab/vacanciesPage/vacancyAttachmentInfo.json"
         ).then((attachmentData) => {
-          // vacanciesPageActions.searchForAttachment(attachmentData);
-          // vacanciesPageAssertions.checkRecordsContainsAttachment(
-          //   attachmentData
-          // );
+          vacanciesPageAssertions.checkRecordsContainsAttachment(
+            attachmentData
+          );
+          vacanciesPageActions.downloadAnAttachment();
         });
       })
       // Delete the employee after the test
@@ -62,11 +73,21 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         return pimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
+        // TODO: Fix this issue
+        vacanciesPageActions.openVacanciesPage();
+        SharedHelper.selectItemFromDropdown(
+          "Hiring Manager",
+          "Mohammad Saed Abohasan"
+        );
+        SharedHelper.clickSubmitButtonIsContains("Search");
+        SharedHelper.selectAllRecordsFoundAndDelete();
+        SharedHelper.checkToastMessage("Successfully Deleted");
+
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
 
-  it.skip("Recruitment - Vacancies: The user should be able to download the vacancy attachment (excel file).", () => {
+  it("Recruitment - Vacancies: The user should be able to download the vacancy attachment (excel file)", () => {
     pimHelper
       // Add an employee
       .addEmployee(employeeData)
@@ -77,26 +98,23 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
           .then((vacancyData) => {
             return vacanciesHelper.addVacancy(
               vacancyData,
-              employeeResponse.data.empNumber
+              employeeResponse.empNumber
             );
           });
       })
       // Attach a file to the vacancy
       .then((vacancyResponse) => {
-        cy.visit(
-          `/web/index.php/recruitment/addJobVacancy/${vacancyResponse.data.id}`
-        );
+        vacanciesPageActions.editVacancyById(vacancyResponse.id);
         const xlsxPath: string =
           "cypress/fixtures/recruitmentTab/vacanciesPage/vacancyAttachment.xlsx";
-        vacanciesPage.addAttachment(xlsxPath);
-        cy.get(".oxd-toast").should("exist");
+        vacanciesPageActions.addAttachmentToVacancy(xlsxPath);
+        SharedHelper.checkToastIsExist(true);
         cy.fixture(
-          "recruitmentTab/vacanciesPage/vacancyAttachmentsInfo.json"
+          "recruitmentTab/vacanciesPage/vacancyAttachmentInfo.json"
         ).then((attachmentData) => {
-          // vacanciesPageActions.searchForAttachment(attachmentData);
-          // vacanciesPageAssertions.checkRecordsContainsAttachment(
-          //   attachmentData
-          // );
+          vacanciesPageAssertions.checkRecordsContainsAttachment(
+            attachmentData
+          );
         });
         return cy
           .task("convertXlsxToJson", [xlsxPath, true])
@@ -106,7 +124,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
               .then((attachmentData) => {
                 // Delete the json file after the test
                 return cy.task("deleteFile", jsonPathResponse).then(() => {
-                  return [vacancyResponse.data.id, attachmentData];
+                  return [vacancyResponse.id, attachmentData];
                 });
               });
           });
@@ -114,10 +132,8 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       // Download the attachment and verify the content
       .then((vacancyResponse2) => {
         const [vacancyResponseId, originalAttachmentData] = vacancyResponse2;
-        cy.visit(
-          `/web/index.php/recruitment/addJobVacancy/${vacancyResponseId}`
-        );
-        vacanciesPage.downloadAttachment();
+        vacanciesPageActions.editVacancyById(vacancyResponseId);
+        vacanciesPageActions.downloadAnAttachment();
 
         const xlsxPath: string = "cypress/downloads/vacancyAttachment.xlsx";
         cy.readFile(xlsxPath).should("exist"); // Verify that the file exists
@@ -142,6 +158,16 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         return pimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
+        // TODO: Fix this issue
+        vacanciesPageActions.openVacanciesPage();
+        SharedHelper.selectItemFromDropdown(
+          "Hiring Manager",
+          "Mohammad Saed Abohasan"
+        );
+        SharedHelper.clickSubmitButtonIsContains("Search");
+        SharedHelper.selectAllRecordsFoundAndDelete();
+        SharedHelper.checkToastMessage("Successfully Deleted");
+
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
@@ -157,7 +183,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
           .then((vacancyData) => {
             return vacanciesHelper.addVacancy(
               vacancyData,
-              employeeResponse.data.empNumber
+              employeeResponse.empNumber
             );
           });
       })
@@ -168,22 +194,44 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
           .then((candidateData) => {
             return candidatesHelper.addCandidate(
               candidateData,
-              vacancyResponse.data.id
+              vacancyResponse.id
             );
           });
       })
       // Verify the candidate record
       .then((candidateResponse) => {
-        candidatesPageActions.editCandidateById(candidateResponse.data.id);
-        candidatesPageActions.addResume(
-          "cypress/fixtures/recruitmentTab/candidatesPage/candidateResume.docx"
-        );
+        candidatesPageActions.editCandidateById(candidateResponse.id);
+        const resumePath: string =
+          "cypress/fixtures/recruitmentTab/candidatesPage/candidateResume.docx";
+        candidatesPageActions.addResume(resumePath);
+        SharedHelper.checkToastIsExist(true);
+        candidatesPageAssertions.checkResumeName(resumePath.split("/").pop()!);
       })
       // Delete the employee after the test
       .then(() => {
         return pimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
+        // TODO: Fix this issue
+        candidatesPageActions.openCandidatesPage();
+        SharedHelper.selectOptionFromListBox(
+          "Candidate Name",
+          "Mohammad Saed Abohasan"
+        );
+        SharedHelper.clickSubmitButtonIsContains("Search");
+        SharedHelper.selectAllRecordsFoundAndDelete();
+        SharedHelper.checkToastMessage("Successfully Deleted");
+
+        // TODO: Fix this issue
+        vacanciesPageActions.openVacanciesPage();
+        SharedHelper.selectItemFromDropdown(
+          "Hiring Manager",
+          "Mohammad Saed Abohasan"
+        );
+        SharedHelper.clickSubmitButtonIsContains("Search");
+        SharedHelper.selectAllRecordsFoundAndDelete();
+        SharedHelper.checkToastMessage("Successfully Deleted");
+
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
@@ -206,7 +254,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
           .then((vacancyData) => {
             return vacanciesHelper.addVacancy(
               vacancyData,
-              employeeResponse.data.empNumber
+              employeeResponse.empNumber
             );
           });
       })
@@ -217,26 +265,50 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
           .then((candidateData) => {
             return candidatesHelper.addCandidate(
               candidateData,
-              vacancyResponse.data.id
+              vacancyResponse.id
             );
           });
       })
       // Shortlist the candidate and schedule an interview
       .then((candidateResponse) => {
-        candidatesHelper.shortlistCandidate(candidateResponse.data.id);
-        candidatesPageActions.editCandidateById(candidateResponse.data.id);
+        candidatesHelper.shortlistCandidate(candidateResponse.id);
+        candidatesPageActions.editCandidateById(candidateResponse.id);
+        SharedHelper.checkLoadingSpinnerIsExist(true);
         candidatesPageActions.scheduleInterview(employeeData);
+        candidatesPageAssertions.checkStatus(
+          StatusCandidate.InterviewScheduled
+        );
       })
       // Delete the employee after the test
       .then(() => {
         return pimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
+        // TODO: Fix this issue
+        candidatesPageActions.openCandidatesPage();
+        SharedHelper.selectOptionFromListBox(
+          "Candidate Name",
+          "Mohammad Saed Abohasan"
+        );
+        SharedHelper.clickSubmitButtonIsContains("Search");
+        SharedHelper.selectAllRecordsFoundAndDelete();
+        SharedHelper.checkToastMessage("Successfully Deleted");
+
+        // TODO: Fix this issue
+        vacanciesPageActions.openVacanciesPage();
+        SharedHelper.selectItemFromDropdown(
+          "Hiring Manager",
+          "Mohammad Saed Abohasan"
+        );
+        SharedHelper.clickSubmitButtonIsContains("Search");
+        SharedHelper.selectAllRecordsFoundAndDelete();
+        SharedHelper.checkToastMessage("Successfully Deleted");
+
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
 
-  it.only("Recruitment - Candidates: Add a new candidate and verify the record", () => {
+  it("Recruitment - Candidates: Add a new candidate and verify the record", () => {
     pimHelper
       // Add an employee
       .addEmployee(employeeData)
@@ -247,7 +319,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
           .then((vacancyData) => {
             return vacanciesHelper.addVacancy(
               vacancyData,
-              employeeResponse.data.empNumber
+              employeeResponse.empNumber
             );
           });
       })
@@ -259,28 +331,47 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
           .then((candidateData) => {
             return candidatesHelper.addCandidate(
               candidateData,
-              vacancyResponse.data.id
+              vacancyResponse.id
             );
           });
       })
       // Verify the candidate record
       .then(() => {
         candidatesPageActions.openCandidatesPage();
-        const candidateData = {
-          Vacancy: "QA Automation",
-          Candidate: "Mohammad Saed Abohasan",
-          "Hiring Manager": "Mohammad Saed Abohasan",
-          "Date of Application": "2023-10-14",
-          Status: "Application Initiated",
-        };
-        candidatesPageActions.searchForCandidate(candidateData);
-        candidatesPageAssertions.checkRecordsContainsCandidate(candidateData);
+        cy.fixture(
+          "recruitmentTab/candidatesPage/candidateRecordInfo.json"
+        ).then((candidateRecordData: any) => {
+          candidatesPageActions.searchForCandidate(candidateRecordData);
+          candidatesPageAssertions.checkRecordsContainsCandidate(
+            candidateRecordData
+          );
+        });
       })
       // Delete the employee after the test
       .then(() => {
         return pimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
+        // TODO: Fix this issue
+        candidatesPageActions.openCandidatesPage();
+        SharedHelper.selectOptionFromListBox(
+          "Candidate Name",
+          "Mohammad Saed Abohasan"
+        );
+        SharedHelper.clickSubmitButtonIsContains("Search");
+        SharedHelper.selectAllRecordsFoundAndDelete();
+        SharedHelper.checkToastMessage("Successfully Deleted");
+
+        // TODO: Fix this issue
+        vacanciesPageActions.openVacanciesPage();
+        SharedHelper.selectItemFromDropdown(
+          "Hiring Manager",
+          "Mohammad Saed Abohasan"
+        );
+        SharedHelper.clickSubmitButtonIsContains("Search");
+        SharedHelper.selectAllRecordsFoundAndDelete();
+        SharedHelper.checkToastMessage("Successfully Deleted");
+
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
