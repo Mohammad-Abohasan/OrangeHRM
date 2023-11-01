@@ -20,11 +20,11 @@ export default class SharedHelper {
         .find("div[role=cell]")
         .eq(headerIndex)
         .invoke("text")
-        .then((tableValue: string) => {
-          if (tableValue.trim().length > 0) {
-            tableValue.includes(value);
+        .then(($tableValue: string) => {
+          if ($tableValue.length > 0) {
+            cy.wrap($tableValue).should("contain", value);
           } else {
-            expect(tableValue.trim()).to.be.empty;
+            expect($tableValue).to.be.empty;
           }
         });
     });
@@ -108,8 +108,9 @@ export default class SharedHelper {
       .parents()
       .eq(1)
       .find("[placeholder='Type for hints...']")
-      .type(option)
-      .contains("Searching....")
+      .type(option);
+    cy.getByAttribute("role", "listbox")
+      .contains("[role=option]", "Searching....")
       .should("not.exist");
     cy.getByAttribute("role", "listbox")
       .contains("[role=option]", option)
