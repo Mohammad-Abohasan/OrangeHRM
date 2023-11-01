@@ -63,7 +63,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       });
   });
 
-  it("Recruitment - Vacancies: Attach File", () => {
+  it("Recruitment - Vacancies: The user should be able to attach a file to a vacancy.", () => {
     pimHelper
       // Add an employee
       .addEmployee(employeeData)
@@ -82,6 +82,10 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
           `/web/index.php/recruitment/addJobVacancy/${vacancyResponse.data.id}`
         );
         vacanciesPage.addAttachment("cypress/fixtures/VacancyAttachment.xlsx");
+        cy.get(".oxd-toast").should("exist");
+        cy.fixture("vacancyAttachmentsInfo").then((attachmentsData) => {
+          commonHelper.checkRows(".oxd-table-row", attachmentsData);
+        });
       })
       // Delete the employee after the test
       .then(() => {

@@ -10,6 +10,12 @@ import { IDeleteEmployeeResponse } from "../API/response/PIM/deleteEmployeeRespo
 import { IDeleteEmployeePayload } from "../API/payload/PIM/deleteEmployeePayload";
 import { ICreateAdminPayload } from "../API/payload/Admin/addAdminPayload";
 import { ICreateAdminResponse } from "../API/response/Admin/addAdminResponse";
+import { IAddLeaveEntitlementPayload } from "../API/payload/Leave/addLeaveEntitlementPayload";
+import { IAddLeaveEntitlementResponse } from "../API/response/Leave/addLeaveEntitlementResponse";
+import { IApplyLeavePayload } from "../API/payload/Leave/applyLeavePayload";
+import { IApplyLeaveResponse } from "../API/response/Leave/applyLeaveResponse";
+import { IActionOnLeaveRequestPayload } from "../API/payload/Leave/actionOnLeaveRequestPayload";
+import { IActionOnLeaveRequestResponse } from "../API/response/Leave/actionOnLeaveRequestResponse";
 
 declare global {
   namespace Cypress {
@@ -55,6 +61,24 @@ declare global {
         url: string,
         payload: ICreateAdminPayload
       ) => Chainable<ICreateAdminResponse>;
+
+      addLeaveEntitlement: (
+        method: string,
+        url: string,
+        payload: IAddLeaveEntitlementPayload
+      ) => Chainable<IAddLeaveEntitlementResponse>;
+
+      applyLeave: (
+        method: string,
+        url: string,
+        payload: IApplyLeavePayload
+      ) => Chainable<IApplyLeaveResponse>;
+
+      actionOnLeaveRequest: (
+        method: string,
+        url: string,
+        payload: IActionOnLeaveRequestPayload
+      ) => Chainable<IActionOnLeaveRequestResponse>;
     }
   }
 }
@@ -87,3 +111,6 @@ Cypress.Commands.add("addEmployee", apiCall);
 Cypress.Commands.add("getEmployee", apiCall);
 Cypress.Commands.add("deleteEmployee", apiCall);
 Cypress.Commands.add("addAdmin", apiCall);
+Cypress.Commands.add("addLeaveEntitlement", apiCall);
+Cypress.Commands.add("applyLeave", apiCall);
+Cypress.Commands.add("actionOnLeaveRequest", apiCall);
