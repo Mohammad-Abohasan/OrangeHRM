@@ -12,11 +12,19 @@
     "start": "npx cypress open",
     "clean-downloads": "rm -rf cypress/downloads/*",
     "regression-allureCh": "cypress run --browser chrome --spec cypress/e2e/*/*/* --env allure=true",
-    "regression-allureEl": "cypress run --spec cypress/e2e/tests/*/* --env allure=true",
+    "regression-allureEl": "cypress run --spec cypress/e2e/*/*/* --env allure=true",
     "allure:clean": "rm -r allure-results/ cypress/screenshots cypress/videos || true",
     "allure:report": "allure generate allure-results --clean -o allure-report",
     "allure:history": "mv -f allure-report/history allure-report/history && rm -r allure-report || true",
-    "cloud:debug": "cypress run --record --key d961cdbf-deb2-4156-9705-bf54098c9577"
+    "regression:buzz": "cypress run --spec cypress/e2e/buzzTab/*",
+    "regression:leave": "cypress run --spec cypress/e2e/leaveTab/*",
+    "regression:login": "cypress run --spec cypress/e2e/loginPage/*",
+    "regression:pim": "cypress run --spec cypress/e2e/pimTab/*",
+    "regression:recruitment": "cypress run --spec cypress/e2e/recruitmentTab/*",
+    "regression:time": "cypress run --spec cypress/e2e/timeTab/*",
+    "withCloud": "--record --key d961cdbf-deb2-4156-9705-bf54098c9577",
+    "regression:all": "npm run regression:buzz && npm run regression:leave && npm run regression:login && npm run regression:pim && npm run regression:recruitment && npm run regression:time",
+    "regression:all:withCloud": "npm run regression:all --withCloud"
   },
   "dependencies": {
     "dotenv": "^16.3.1",
