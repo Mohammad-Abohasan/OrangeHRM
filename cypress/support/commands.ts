@@ -39,37 +39,47 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 declare namespace Cypress {
   interface Chainable<Subject> {
-    getByClass: typeof getByClass;
-    getByAttribute: typeof getByAttribute;
-    loginOrangeHRM(userName: string, password: string): typeof loginOrangeHRM;
-    logoutOrangeHRM: typeof logoutOrangeHRM;
+    getByAttribute: (attribute: string, value: string) => Chainable;
+    loginOrangeHRM: (userName?: string, password?: string) => void;
+    logoutOrangeHRM: () => any;
+    clearDownloadsDirectory: Chainable;
   }
 }
 
-function loginOrangeHRM(userName: string, password: string) {
-  userName && cy.getByAttribute("placeholder", "Username").type(userName);
-  password && cy.getByAttribute("placeholder", "Password").type(password);
-  cy.get("button").click();
-
-  cy.get(".oxd-topbar-header-breadcrumb > .oxd-text")
-    .contains("Dashboard")
-    .as("Login Successfully");
-}
-
-function logoutOrangeHRM() {
-  cy.get(".oxd-userdropdown-tab").click();
-  cy.get(":nth-child(4) > .oxd-userdropdown-link").click();
-}
-
-function getByClass(field: string) {
-  return cy.get(`.${field}`);
-}
-
-function getByAttribute(attribute: string, value: string) {
+Cypress.Commands.add("getByAttribute", (attribute: string, value: string) => {
   return cy.get(`[${attribute}="${value}"]`);
-}
+});
 
-Cypress.Commands.add("getByClass", getByClass);
-Cypress.Commands.add("getByAttribute", getByAttribute);
-Cypress.Commands.add("loginOrangeHRM", loginOrangeHRM);
-Cypress.Commands.add("logoutOrangeHRM", logoutOrangeHRM);
+Cypress.Commands.add(
+  "loginOrangeHRM",
+  (userName = "Admin", password = "admin123") => {
+    cy.intercept(
+      "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/dashboard/employees/time-at-work**"
+    ).as("timeAtWork");
+    cy.intercept(
+      "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/buzz/feed**"
+    ).as("buzzFeed");
+
+    cy.visit("/");
+    cy.getByAttribute("placeholder", "Username").type(userName);
+    cy.getByAttribute("placeholder", "Password").type(password);
+    cy.get("button").click();
+
+    cy.wait(["@timeAtWork", "@buzzFeed"]);
+  }
+);
+
+Cypress.Commands.add("logoutOrangeHRM", () => {
+  // cy.request("/web/index.php/auth/logout").as("Logout Successfully");
+  cy.intercept(
+    "https://opensource-demo.orangehrmlive.com/web/index.php/core/i18n/messages**"
+  ).as("messages");
+  cy.get(".oxd-userdropdown-tab").click();
+  cy.contains("[role=menuitem]", "Logout").click();
+
+  cy.wait("@messages");
+});
+
+Cypress.Commands.add("clearDownloadsDirectory", () => {
+  cy.exec("npm run clean-downloads", { log: false, failOnNonZeroExit: false });
+});

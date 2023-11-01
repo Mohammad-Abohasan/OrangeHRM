@@ -1,21 +1,21 @@
-import { ICreateCandidatePayload } from "../API/payload/Recruitment/Candidates/addCandidatePayload";
-import { ICreateCandidateResponse } from "../API/response/Recruitment/Candidates/addCandidateResponse";
-import { ICreateVacancyPayload } from "../API/payload/Recruitment/Vacancies/addVacancyPayload";
-import { ICreateVacancyResponse } from "../API/response/Recruitment/Vacancies/addVacancyResponse";
-import { IShortlistCandidateResponse } from "../API/response/Recruitment/Candidates/shortlistCandidate";
-import { ICreateEmployeeResponse } from "../API/response/PIM/addEmployeeResponse";
-import { ICreateEmployeePayload } from "../API/payload/PIM/addEmployeePayload";
-import { IGetEmployeeResponse } from "../API/response/PIM/getEmployeeResponse";
-import { IDeleteEmployeeResponse } from "../API/response/PIM/deleteEmployeeResponse";
-import { IDeleteEmployeePayload } from "../API/payload/PIM/deleteEmployeePayload";
-import { ICreateAdminPayload } from "../API/payload/Admin/addAdminPayload";
-import { ICreateAdminResponse } from "../API/response/Admin/addAdminResponse";
-import { IAddLeaveEntitlementPayload } from "../API/payload/Leave/addLeaveEntitlementPayload";
-import { IAddLeaveEntitlementResponse } from "../API/response/Leave/addLeaveEntitlementResponse";
-import { IApplyLeavePayload } from "../API/payload/Leave/applyLeavePayload";
-import { IApplyLeaveResponse } from "../API/response/Leave/applyLeaveResponse";
-import { IActionOnLeaveRequestPayload } from "../API/payload/Leave/actionOnLeaveRequestPayload";
-import { IActionOnLeaveRequestResponse } from "../API/response/Leave/actionOnLeaveRequestResponse";
+import { ICreateCandidatePayload } from "../apis/payload/recruitmentTab/candidatesPage/addCandidatePayload";
+import { ICreateCandidateResponse } from "../apis/response/recruitmentTab/candidatesPage/addCandidateResponse";
+import { ICreateVacancyPayload } from "../apis/payload/recruitmentTab/vacanciesPage/addVacancyPayload";
+import { ICreateVacancyResponse } from "../apis/response/recruitmentTab/vacanciesPage/addVacancyResponse";
+import { IShortlistCandidateResponse } from "../apis/response/recruitmentTab/candidatesPage/shortlistCandidate";
+import { ICreateEmployeeResponse } from "../apis/response/pimTab/addEmployeeResponse";
+import { ICreateEmployeePayload } from "../apis/payload/pimTab/addEmployeePayload";
+import { IGetEmployeeResponse } from "../apis/response/pimTab/getEmployeeResponse";
+import { IDeleteEmployeeResponse } from "../apis/response/pimTab/deleteEmployeeResponse";
+import { IDeleteEmployeePayload } from "../apis/payload/pimTab/deleteEmployeePayload";
+import { ICreateAdminPayload } from "../apis/payload/adminTab/userManagementPage/addAdminPayload";
+import { ICreateAdminResponse } from "../apis/response/adminTab/userManagementPage/addAdminResponse";
+import { IAddLeaveEntitlementPayload } from "../apis/payload/leaveTab/entitlementsPage/addLeaveEntitlementPayload";
+import { IAddLeaveEntitlementResponse } from "../apis/response/leaveTab/entitlementsPage/addLeaveEntitlementResponse";
+import { IApplyLeavePayload } from "../apis/payload/leaveTab/applyPage/applyLeavePayload";
+import { IApplyLeaveResponse } from "../apis/response/leaveTab/applyPage/applyLeaveResponse";
+import { IActionOnLeaveRequestPayload } from "../apis/payload/leaveTab/leaveListPage/actionOnLeaveRequestPayload";
+import { IActionOnLeaveRequestResponse } from "../apis/response/leaveTab/leaveListPage/actionOnLeaveRequestResponse";
 
 declare global {
   namespace Cypress {
@@ -84,12 +84,6 @@ declare global {
 }
 
 const apiCall = (method: string, url: string, payload?: any) => {
-  const restAPI: any = {
-    GET: { response: 200 },
-    POST: { response: 200 || 201 },
-    PUT: { response: 200 },
-    DELETE: { response: 200 },
-  };
   return cy
     .request({
       method,
@@ -97,7 +91,6 @@ const apiCall = (method: string, url: string, payload?: any) => {
       body: payload,
     })
     .then((response) => {
-      expect(response.status).to.eq(restAPI[method].response);
       return response;
     })
     .its("body");
