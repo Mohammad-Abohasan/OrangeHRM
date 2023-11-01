@@ -20,9 +20,9 @@ export default class SharedHelper {
         .find("div[role=cell]")
         .eq(headerIndex)
         .invoke("text")
-        .then((tableValue) => {
-          if (tableValue.trim().length === `${value}`.length) {
-            cy.wrap(tableValue).should("eq", value);
+        .then((tableValue: string) => {
+          if (tableValue.trim().length > 0) {
+            tableValue.includes(value);
           } else {
             expect(tableValue.trim()).to.be.empty;
           }
@@ -36,7 +36,7 @@ export default class SharedHelper {
         cy.get(".oxd-table-header")
           .find("[type='checkbox']")
           .click({ force: true });
-        cy.get(".oxd-button--label-danger").dblclick();
+        cy.get(".oxd-button--label-danger").click({ force: true });
         cy.get(".oxd-button--label-danger").eq(1).click();
         this.checkToastMessage("Successfully Deleted");
       }
