@@ -24,8 +24,8 @@ export default class SharedHelper {
     });
   }
 
-  static clickSearchButton() {
-    cy.contains("[type='submit']", " Search ").click();
+  static clickSubmitButtonIsContains(buttonText: string) {
+    cy.contains("[type='submit']", ` ${buttonText} `).click();
   }
 
   static clickResetButton() {
@@ -55,9 +55,32 @@ export default class SharedHelper {
       .contains(".oxd-label", labelName)
       .parents()
       .eq(1)
-      .find(".oxd-select-wrapper")
+      .find(".oxd-select-text")
       .click();
     cy.get(".oxd-select-option").contains(itemName).click();
+  }
+
+  static deselectOptionsFromMultiSelect(labelName: string) {
+    cy.get(".oxd-input-group")
+      .contains(".oxd-label", labelName)
+      .parents()
+      .eq(1)
+      .find(".--clear")
+      .as("clearItemsButton");
+    cy.get("@clearItemsButton").then(($clearItemsButton) => {
+      for (let i = 0; i < $clearItemsButton.length; i++) {
+        cy.get("@clearItemsButton").eq(0).click();
+      }
+    });
+  }
+
+  static typeInInputField(labelName: string, value: string) {
+    cy.get(".oxd-input-group")
+      .contains(".oxd-label", labelName)
+      .parents()
+      .eq(1)
+      .find("input")
+      .type(value);
   }
 
   static selectOptionFromListBox(labelName: string, option: string) {
@@ -80,6 +103,7 @@ export default class SharedHelper {
       .parents()
       .eq(1)
       .find(".oxd-date-input > .oxd-input")
+      .clear()
       .type(date);
 
     // close calendar
