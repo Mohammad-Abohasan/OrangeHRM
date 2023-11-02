@@ -43,8 +43,8 @@ export default class SharedHelper {
     });
   }
 
-  static clickSubmitButtonIsContains(buttonText: string) {
-    cy.contains("[type='submit']", ` ${buttonText} `).click();
+  static clickSubmitButtonIsContains(buttonText: string, index: number = 0) {
+    cy.contains("[type='submit']", ` ${buttonText} `).eq(index).click();
   }
 
   static clickResetButton() {
@@ -99,7 +99,21 @@ export default class SharedHelper {
       .parents()
       .eq(1)
       .find("input")
+      .clear()
       .type(value);
+  }
+
+  static selectOptionFromList(labelName: string, value: string) {
+    cy.get(".oxd-input-group")
+      .contains(".oxd-label", labelName)
+      .parents()
+      .eq(1)
+      .children()
+      .eq(1)
+      .contains("label", value)
+      .children()
+      .eq(0)
+      .click({ force: true });
   }
 
   static selectOptionFromListBox(labelName: string, option: string) {
