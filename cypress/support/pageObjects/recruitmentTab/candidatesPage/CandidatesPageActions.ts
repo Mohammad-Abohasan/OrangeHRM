@@ -27,7 +27,8 @@ export default class CandidatesPageActions {
   }
 
   searchForCandidate(candidateData: any) {
-    const [firstNameHM, , lastNameHM] = candidateData["Hiring Manager"].split(" ");
+    const [firstNameHM, , lastNameHM] =
+      candidateData["Hiring Manager"].split(" ");
     const [firstNameCandidate] = candidateData["Candidate"].split(" ");
     SharedHelper.selectItemFromDropdown("Vacancy", candidateData["Vacancy"]);
     SharedHelper.selectItemFromDropdown(
@@ -35,15 +36,12 @@ export default class CandidatesPageActions {
       `${firstNameHM} ${lastNameHM}`
     );
     SharedHelper.selectItemFromDropdown("Status", candidateData["Status"]);
-    SharedHelper.selectOptionFromListBox(
-      "Candidate Name",
-      firstNameCandidate
-    );
+    SharedHelper.selectOptionFromListBox("Candidate Name", firstNameCandidate);
     SharedHelper.selectDateFromCalendar(
       "Date of Application",
       candidateData["Date of Application"]
     );
-    SharedHelper.clickSearchButton();
+    SharedHelper.clickSubmitButtonIsContains("Search");
   }
 
   scheduleInterview(infoData: any) {
@@ -68,7 +66,6 @@ export default class CandidatesPageActions {
     this.elements.dateInput().type("2024-04-02");
     this.elements.timeInput().clear().type("09:00 AM");
     this.elements.submitBtn().click();
-    candidatesPageAssertions.checkStatus("Interview Scheduled");
   }
 
   editCandidateById(candidateId: number) {
@@ -79,10 +76,5 @@ export default class CandidatesPageActions {
     this.elements.editSwitch().click();
     this.elements.fileInput().selectFile(filePath, { force: true });
     this.elements.submitBtn().click();
-
-    SharedHelper.checkToastIsExist(true);
-    candidatesPageAssertions.checkResumeName(
-      filePath.substring(filePath.lastIndexOf("/") + 1)
-    );
   }
 }

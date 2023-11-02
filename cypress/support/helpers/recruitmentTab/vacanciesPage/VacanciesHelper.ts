@@ -7,10 +7,12 @@ export const URLs = {
 
 export default class VacanciesHelper {
   static addVacancy(vacancyData: ICreateVacancyPayload, employeeId: number) {
-    return cy.addVacancy(
-      "POST",
-      URLs.vacancies,
-      VacanciesInit.initVacancy(vacancyData, employeeId)
-    );
+    return cy
+      .addVacancy(
+        "POST",
+        URLs.vacancies,
+        VacanciesInit.initVacancy(vacancyData, employeeId)
+      )
+      .then((response) => response.data);
   }
 }

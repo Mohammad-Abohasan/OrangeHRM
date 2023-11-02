@@ -1,7 +1,7 @@
 {
   "leaveTypeId": 9,
-  "fromDate": "2023-11-10",
-  "toDate": "2023-11-10",
+  "fromDate": null,
+  "toDate": null,
   "comment": "One day only.",
   "duration": {
     "type": "full_day"

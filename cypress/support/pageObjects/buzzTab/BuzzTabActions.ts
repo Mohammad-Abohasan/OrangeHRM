@@ -2,18 +2,18 @@ import SharedHelper from "../../helpers/SharedHelper";
 
 class BuzzTabActions {
   elements = {
-    postInputField: () => cy.get(".oxd-buzz-post-input"),
-    postButton: () => cy.contains("[type='submit']", " Post "),
+    postInput: () => cy.get(".oxd-buzz-post-input"),
   };
 
-  openTimePage() {
+  openBuzzTab() {
+    cy.intercept("/web/index.php/api/v2/buzz/feed**").as("buzzFeed");
     SharedHelper.mainMenuItems().contains("Buzz").click();
+    cy.wait("@buzzFeed");
   }
 
   addNewPost(postData: string) {
-    this.elements.postInputField().type(postData);
-    this.elements.postButton().click();
-    SharedHelper.checkToastIsExist(false);
+    this.elements.postInput().type(postData);
+    SharedHelper.clickSubmitButtonIsContains("Post");
   }
 }
 

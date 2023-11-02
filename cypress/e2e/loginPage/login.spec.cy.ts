@@ -1,127 +1,143 @@
-import LoginPage from "../../support/pageObjects/loginPage/LoginPage";
+import LoginPageActions from "../../support/pageObjects/loginPage/LoginPageActions";
+import LoginPageAssertions from "../../support/pageObjects/loginPage/LoginPageAssertions";
 
-const loginPage: LoginPage = new LoginPage();
+const loginPageActions: LoginPageActions = new LoginPageActions();
+const loginPageAssertions: LoginPageAssertions = new LoginPageAssertions();
 
-describe("Login Page", () => {
+describe("Login - Login functionality", { tags: "login" }, () => {
   beforeEach(() => {
     cy.visit("/");
     cy.fixture("loginPage/loginInfo.json").as("logInfo");
   });
 
-  it("Check valid userName and valid password", () => {
+  it("Login: Check valid username and valid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      loginPage.login(infoData.userName.valid, infoData.password.valid);
-      loginPage.checkValidLogin(infoData.validLogin);
-      loginPage.logout();
+      loginPageActions.login(infoData.username.valid, infoData.password.valid);
+      loginPageAssertions.checkValidLogin(infoData.validLogin);
+      loginPageActions.logout();
     });
   });
 
-  it("Check valid userName and invalid password", () => {
+  it("Login: Check valid username and invalid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      loginPage.login(infoData.userName.valid, infoData.password.invalid);
-      loginPage.checkInvalidLogin(infoData.errorMsg.invalidLogin);
+      loginPageActions.login(
+        infoData.username.valid,
+        infoData.password.invalid
+      );
+      loginPageAssertions.checkInvalidLogin(infoData.errorMsg.invalidLogin);
     });
   });
 
-  it("Check invalid userName and valid password", () => {
+  it("Login: Check invalid username and valid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      loginPage.login(infoData.userName.invalid, infoData.password.valid);
-      loginPage.checkInvalidLogin(infoData.errorMsg.invalidLogin);
+      loginPageActions.login(
+        infoData.username.invalid,
+        infoData.password.valid
+      );
+      loginPageAssertions.checkInvalidLogin(infoData.errorMsg.invalidLogin);
     });
   });
 
-  it("Check invalid userName and invalid password", () => {
+  it("Login: Check invalid username and invalid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      loginPage.login(infoData.userName.invalid, infoData.password.valid);
-      loginPage.checkInvalidLogin(infoData.errorMsg.invalidLogin);
+      loginPageActions.login(
+        infoData.username.invalid,
+        infoData.password.valid
+      );
+      loginPageAssertions.checkInvalidLogin(infoData.errorMsg.invalidLogin);
     });
   });
 
-  it("Check empty userName and valid password", () => {
+  it("Login: Check empty username and valid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      loginPage.login(infoData.password.empty, infoData.password.valid);
-      loginPage.checkUserNameInputErrorMessageContainsValue(
+      loginPageActions.login(infoData.password.empty, infoData.password.valid);
+      loginPageAssertions.checkUsernameInputErrorMessageContainsValue(
         infoData.errorMsg.fieldRequired
       );
     });
   });
 
-  it("Check empty userName and invalid password", () => {
+  it("Login: Check empty username and invalid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      loginPage.login(infoData.password.empty, infoData.password.invalid);
-      loginPage.checkUserNameInputErrorMessageContainsValue(
+      loginPageActions.login(
+        infoData.password.empty,
+        infoData.password.invalid
+      );
+      loginPageAssertions.checkUsernameInputErrorMessageContainsValue(
         infoData.errorMsg.fieldRequired
       );
     });
   });
 
-  it("Check valid userName and empty password", () => {
+  it("Login: Check valid username and empty password", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      loginPage.login(infoData.userName.valid, infoData.password.empty);
-      loginPage.checkPasswordInputErrorMessageContainsValue(
+      loginPageActions.login(infoData.username.valid, infoData.password.empty);
+      loginPageAssertions.checkPasswordInputErrorMessageContainsValue(
         infoData.errorMsg.fieldRequired
       );
     });
   });
 
-  it("Check invalid userName and empty password", () => {
+  it("Login: Check invalid username and empty password", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      loginPage.login(infoData.userName.invalid, infoData.password.empty);
-      // loginPage.checkEmptyPassword(infoData.errorMsg.fieldRequired);
-      loginPage.checkPasswordInputErrorMessageContainsValue(
+      loginPageActions.login(
+        infoData.username.invalid,
+        infoData.password.empty
+      );
+      loginPageAssertions.checkPasswordInputErrorMessageContainsValue(
         infoData.errorMsg.fieldRequired
       );
     });
   });
 
-  it("Check empty userName and empty password", () => {
+  it("Login: Check empty username and empty password", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      loginPage.login(infoData.password.empty, infoData.password.empty);
-      loginPage.checkUserNameInputErrorMessageContainsValue(
+      loginPageActions.login(infoData.password.empty, infoData.password.empty);
+      loginPageAssertions.checkUsernameInputErrorMessageContainsValue(
         infoData.errorMsg.fieldRequired
       );
-      loginPage.checkPasswordInputErrorMessageContainsValue(
+      loginPageAssertions.checkPasswordInputErrorMessageContainsValue(
         infoData.errorMsg.fieldRequired
       );
     });
   });
 
-  it("Check password visibility", () => {
+  it("Login: Check password visibility", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      loginPage.passwordIsHidden();
+      loginPageAssertions.passwordIsHidden();
     });
   });
 
-  it("Check userName sensitivity", () => {
+  it("Login: Check username sensitivity", () => {
     cy.get("@logInfo").then((infoData: any) => {
-      if (infoData.userName.valid == infoData.userName.valid.toUpperCase())
-        loginPage.login(
-          infoData.userName.valid.toLowerCase(),
+      if (infoData.username.valid == infoData.username.valid.toUpperCase())
+        loginPageActions.login(
+          infoData.username.valid.toLowerCase(),
           infoData.password.valid
         );
       else
-        loginPage.login(
-          infoData.userName.valid.toUpperCase(),
+        loginPageActions.login(
+          infoData.username.valid.toUpperCase(),
           infoData.password.valid
         );
-      loginPage.checkValidLogin(infoData.validLogin);
-      loginPage.logout();
+      loginPageAssertions.checkValidLogin(infoData.validLogin);
+      loginPageActions.logout();
     });
   });
 
-  it("Check password sensitivity", () => {
+  it("Login: Check password sensitivity", () => {
     cy.get("@logInfo").then((infoData: any) => {
       if (infoData.password.valid == infoData.password.valid.toUpperCase())
-        loginPage.login(
+        loginPageActions.login(
           infoData.password.valid.toLowerCase(),
           infoData.password.valid
         );
       else
-        loginPage.login(
+        loginPageActions.login(
           infoData.password.valid.toUpperCase(),
           infoData.password.valid
         );
-      loginPage.checkInvalidLogin(infoData.errorMsg.invalidLogin);
+      loginPageAssertions.checkInvalidLogin(infoData.errorMsg.invalidLogin);
     });
   });
 });

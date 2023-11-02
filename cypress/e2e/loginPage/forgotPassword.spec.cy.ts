@@ -1,14 +1,17 @@
-import LoginPage from "../../support/pageObjects/loginPage/LoginPage";
+import LoginPageActions from "../../support/pageObjects/loginPage/LoginPageActions";
+import LoginPageAssertions from "../../support/pageObjects/loginPage/LoginPageAssertions";
 
-const loginObj: LoginPage = new LoginPage();
+const loginPageActions: LoginPageActions = new LoginPageActions();
+const loginPageAssertions: LoginPageAssertions = new LoginPageAssertions();
 
-describe("Login Page", () => {
+describe("Login - Forgot possword functionality", () => {
   beforeEach(() => {
-    cy.visit("/");  
+    cy.visit("/");
     cy.intercept("/web/index.php/dashboard/index").as("Login");
   });
 
-  it("Forgot your password?", () => {
-    loginObj.forgotYourPassword("Admin");
+  it("Login: Forgot your password?", () => {
+    loginPageActions.forgotYourPassword("Admin");
+    loginPageAssertions.checkForgotPasswordPage();
   });
 });

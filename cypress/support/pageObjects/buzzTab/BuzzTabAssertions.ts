@@ -3,8 +3,12 @@ class BuzzTabAssertions {
     posts: () => cy.get(".oxd-sheet"),
   };
 
-  checkPostText(postData: string) {
-    this.elements.posts().contains("p", postData).as("Successfully added post");
+  checkNewPostCreated(postContent: string) {
+    this.elements
+      .posts()
+      .eq(1)
+      .contains(postContent)
+      .as("Post successfully created");
   }
 }
 

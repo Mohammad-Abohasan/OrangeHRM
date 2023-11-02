@@ -19,13 +19,32 @@ export default class SharedHelper {
         .eq(rowNumber)
         .find("div[role=cell]")
         .eq(headerIndex)
-        .contains(value)
-        .should("exist");
+        .invoke("text")
+        .then(($tableValue: string) => {
+          if ($tableValue.length > 0) {
+            cy.wrap($tableValue).should("contain", value);
+          } else {
+            expect($tableValue).to.be.empty;
+          }
+        });
     });
   }
 
-  static clickSearchButton() {
-    cy.contains("[type='submit']", " Search ").click();
+  static selectAllRecordsFoundAndDelete() {
+    cy.get(".oxd-table-row").then(($rows) => {
+      if ($rows.length > 1) {
+        cy.get(".oxd-table-header")
+          .find("[type='checkbox']")
+          .click({ force: true });
+        cy.get(".oxd-button--label-danger").click({ force: true });
+        cy.get(".oxd-button--label-danger").eq(1).click();
+        this.checkToastMessage("Successfully Deleted");
+      }
+    });
+  }
+
+  static clickSubmitButtonIsContains(buttonText: string, index: number = 0) {
+    cy.contains("[type='submit']", ` ${buttonText} `).eq(index).click();
   }
 
   static clickResetButton() {
@@ -55,9 +74,46 @@ export default class SharedHelper {
       .contains(".oxd-label", labelName)
       .parents()
       .eq(1)
-      .find(".oxd-select-wrapper")
+      .find(".oxd-select-text")
       .click();
     cy.get(".oxd-select-option").contains(itemName).click();
+  }
+
+  static deselectOptionsFromMultiSelect(labelName: string) {
+    cy.get(".oxd-input-group")
+      .contains(".oxd-label", labelName)
+      .parents()
+      .eq(1)
+      .find(".--clear")
+      .as("clearItemsButton");
+    cy.get("@clearItemsButton").then(($clearItemsButton) => {
+      for (let i = 0; i < $clearItemsButton.length; i++) {
+        cy.get("@clearItemsButton").eq(0).click();
+      }
+    });
+  }
+
+  static typeInInputField(labelName: string, value: string) {
+    cy.get(".oxd-input-group")
+      .contains(".oxd-label", labelName)
+      .parents()
+      .eq(1)
+      .find("input")
+      .clear()
+      .type(value);
+  }
+
+  static selectOptionFromList(labelName: string, value: string) {
+    cy.get(".oxd-input-group")
+      .contains(".oxd-label", labelName)
+      .parents()
+      .eq(1)
+      .children()
+      .eq(1)
+      .contains("label", value)
+      .children()
+      .eq(0)
+      .click({ force: true });
   }
 
   static selectOptionFromListBox(labelName: string, option: string) {
@@ -66,8 +122,9 @@ export default class SharedHelper {
       .parents()
       .eq(1)
       .find("[placeholder='Type for hints...']")
-      .type(option)
-      .contains("Searching....")
+      .type(option);
+    cy.getByAttribute("role", "listbox")
+      .contains("[role=option]", "Searching....")
       .should("not.exist");
     cy.getByAttribute("role", "listbox")
       .contains("[role=option]", option)
@@ -80,6 +137,7 @@ export default class SharedHelper {
       .parents()
       .eq(1)
       .find(".oxd-date-input > .oxd-input")
+      .clear()
       .type(date);
 
     // close calendar

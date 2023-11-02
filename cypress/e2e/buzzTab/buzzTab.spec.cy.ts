@@ -8,7 +8,7 @@ const postInfoPath: string = "cypress/fixtures/buzzTab/postInfo.json";
 describe("Buzz: Check Posts Validation", () => {
   beforeEach(() => {
     cy.loginOrangeHRM();
-    buzzTabActions.openTimePage();
+    buzzTabActions.openBuzzTab();
     cy.writeFile(postInfoPath, {
       content: "Hi, I'm Mohammad Abohasan",
     });
@@ -17,7 +17,8 @@ describe("Buzz: Check Posts Validation", () => {
   it("Buzz - The user should be able to add a post", () => {
     cy.fixture("buzzTab/postInfo.json").then((postData) => {
       buzzTabActions.addNewPost(postData.content);
-      buzzTabAssertions.checkPostText(postData.content);
+      buzzTabActions.openBuzzTab();
+      buzzTabAssertions.checkNewPostCreated(postData.content);
     });
   });
 

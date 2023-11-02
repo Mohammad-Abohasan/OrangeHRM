@@ -7,18 +7,13 @@ export const URLs = {
 
 export default class PimHelper {
   static addEmployee(employeeData: ICreateEmployeePayload) {
-    return cy.addEmployee(
-      "POST",
-      URLs.employees,
-      PimInit.initEmployee(employeeData)
-    );
+    return cy
+      .addEmployee("POST", URLs.employees, PimInit.initEmployee(employeeData))
+      .then((response) => response.data);
   }
 
   static getEmployee(employeeId: string) {
-    return cy.getEmployee(
-      "GET",
-      `${URLs.employees}?employeeId=${employeeId}`
-    );
+    return cy.getEmployee("GET", `${URLs.employees}?employeeId=${employeeId}`);
   }
 
   static deleteEmployee(empNumber: number) {
