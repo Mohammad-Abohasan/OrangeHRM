@@ -4,7 +4,7 @@ import LoginPageAssertions from "../../support/pageObjects/loginPage/LoginPageAs
 const loginPageActions: LoginPageActions = new LoginPageActions();
 const loginPageAssertions: LoginPageAssertions = new LoginPageAssertions();
 
-describe("Login Page", () => {
+describe("Login Page", { tags: "login" }, () => {
   beforeEach(() => {
     cy.visit("/");
     cy.fixture("loginPage/loginInfo.json").as("logInfo");
