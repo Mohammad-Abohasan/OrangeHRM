@@ -15,7 +15,7 @@ describe("PIM: Employee's table data validation", () => {
     cy.fixture("pimTab/employeeInfo.json").then((empData) => {
       employeeData = empData;
     });
-    pimTabActions.openPIMTab();
+    pimTabActions.openPimTab();
   });
 
   it("PIM - Add employee and verify login info", () => {
@@ -33,7 +33,7 @@ describe("PIM: Employee's table data validation", () => {
       // Verify login info
       .then(() => {
         cy.logoutOrangeHRM();
-        cy.loginOrangeHRM(employeeData.userName, employeeData.password);
+        cy.loginOrangeHRM(employeeData.username, employeeData.password);
 
         // Login as Admin
         cy.logoutOrangeHRM();
@@ -42,40 +42,15 @@ describe("PIM: Employee's table data validation", () => {
   });
 
   it("PIM - Add employee with Personal Details UI", () => {
-    pimTabActions.addEmployee(
-      employeeData.firstName,
-      employeeData.middleName,
-      employeeData.lastName,
-      employeeData.employeeId,
-      employeeData.userName,
-      employeeData.password,
-      employeeData.password
-    );
+    pimTabActions.addEmployee(employeeData, true);
     SharedHelper.checkToastMessage("Successfully Saved");
-    pimTabActions.editPersonalDetails(
-      employeeData.employeeId,
-      employeeData.nickName,
-      employeeData.driversLicenseNumber,
-      employeeData.licenseExpiryDate,
-      employeeData.maritalStatus,
-      employeeData.dateOfBirth,
-      employeeData.gender
-    );
-    SharedHelper.checkToastMessage("Successfully Saved");
+    SharedHelper.checkLoadingSpinnerIsExist(false);
+    pimTabActions.editPersonalDetails(employeeData);
+    SharedHelper.checkToastMessage("Successfully Updated");
 
-    pimTabActions.openPIMTab();
-    let pimTableData = [
-      {
-        Id: employeeData.employeeId,
-        "First (& Middle) Name": `${employeeData.firstName} ${employeeData.middleName}`,
-        "Last Name": employeeData.lastName,
-        "Job Title": employeeData.jobTitle,
-        "Employment Status": employeeData.employmentStatus,
-        "Sub Unit": employeeData.subUnit,
-        Supervisor: employeeData.supervisor,
-      },
-    ];
-    // sharedHelper.checkRows(".oxd-table-row", pimTableData);
+    pimTabActions.openPimTab();
+    pimTabActions.searchEmployee(employeeData.employeeId);
+    pimTabAssertions.checkRecordsContainsEmployee(employeeData);
   });
 
   it("PIM - Add employee API then edit Personal Details UI", () => {
@@ -83,17 +58,11 @@ describe("PIM: Employee's table data validation", () => {
       // Add an employee
       .addEmployee(employeeData)
       // Edit Personal Details
-      .then(() => {
-        pimTabActions.editPersonalDetails(
-          employeeData.employeeId,
-          employeeData.nickName,
-          employeeData.driversLicenseNumber,
-          employeeData.licenseExpiryDate,
-          employeeData.maritalStatus,
-          employeeData.dateOfBirth,
-          employeeData.gender
-        );
-        SharedHelper.checkToastMessage("Successfully Saved");
+      .then((employeeResponse) => {
+        pimTabActions.editEmployeeByEmpNumber(employeeResponse.empNumber);
+        SharedHelper.checkLoadingSpinnerIsExist(false);
+        pimTabActions.editPersonalDetails(employeeData);
+        SharedHelper.checkToastMessage("Successfully Updated");
       });
   });
 
@@ -104,16 +73,7 @@ describe("PIM: Employee's table data validation", () => {
       // Search an employee
       .then(() => {
         pimTabActions.searchEmployee(employeeData.employeeId);
-        pimTabAssertions.searchEmployee([
-          employeeData.employeeId,
-          employeeData.firstName,
-          employeeData.middleName,
-          employeeData.lastName,
-          employeeData.jobTitle,
-          employeeData.employmentStatus,
-          employeeData.subUnit,
-          employeeData.supervisor,
-        ]);
+        pimTabAssertions.checkRecordsContainsEmployee(employeeData);
       });
   });
 
