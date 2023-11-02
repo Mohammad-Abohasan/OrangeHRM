@@ -1,28 +1,44 @@
-class PimTabAssertions {
-  elements = {
-    resultData: () => cy.get(".oxd-table-cell"),
-  };
+import SharedHelper from "../../helpers/SharedHelper";
 
-  searchEmployee([
-    id,
-    firstName,
-    middleName,
-    lastName,
-    jobTitle,
-    employmentStatus,
-    subUnit,
-    supervisor,
-  ]: any) {
-    this.elements.resultData().eq(1).should("contain", id);
-    this.elements
-      .resultData()
-      .eq(2)
-      .should("contain", `${firstName} ${middleName}`);
-    this.elements.resultData().eq(3).should("contain", lastName);
-    this.elements.resultData().eq(4).should("contain", jobTitle);
-    this.elements.resultData().eq(5).should("contain", employmentStatus);
-    this.elements.resultData().eq(6).should("contain", subUnit);
-    this.elements.resultData().eq(7).should("contain", supervisor);
+class PimTabAssertions {
+  elements = {};
+
+  checkRecordsContainsEmployee(employeeData: any) {
+    SharedHelper.checkRecordsContainsValueInColumn(
+      0,
+      "Id",
+      employeeData.employeeId
+    );
+    SharedHelper.checkRecordsContainsValueInColumn(
+      0,
+      "First (& Middle) Name",
+      `${employeeData.firstName} ${employeeData.middleName}`
+    );
+    SharedHelper.checkRecordsContainsValueInColumn(
+      0,
+      "Last Name",
+      employeeData.lastName
+    );
+    SharedHelper.checkRecordsContainsValueInColumn(
+      0,
+      "Job Title",
+      employeeData.jobTitle
+    );
+    SharedHelper.checkRecordsContainsValueInColumn(
+      0,
+      "Employment Status",
+      employeeData.employmentStatus
+    );
+    SharedHelper.checkRecordsContainsValueInColumn(
+      0,
+      "Sub Unit",
+      employeeData.subUnit
+    );
+    SharedHelper.checkRecordsContainsValueInColumn(
+      0,
+      "Supervisor",
+      employeeData.supervisor
+    );
   }
 }
 
