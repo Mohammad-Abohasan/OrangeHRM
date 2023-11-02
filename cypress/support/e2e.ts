@@ -15,12 +15,13 @@
 
 // Import commands.js using ES2015 syntax:
 import "./commands";
-import '@cypress/grep';
+import "@cypress/grep";
 import "@shelex/cypress-allure-plugin";
 import "cypress-mochawesome-reporter/register";
 import "cypress-plugin-api";
 import "../support/utils/apiUtils";
 import SharedHelper from "./helpers/SharedHelper";
+import PimHelper from "./helpers/pimTab/PimHelper";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
@@ -31,10 +32,10 @@ Cypress.on("uncaught:exception", (err, runnable) => {
 
 it("Delete an employee if exists", () => {
   cy.loginOrangeHRM();
-  ((employeeId = "201913064") => {
-    SharedHelper.mainMenuItems().contains("PIM").click();
-    SharedHelper.typeInInputField("Employee Id", employeeId);
-    SharedHelper.clickSubmitButtonIsContains("Search");
-    SharedHelper.selectAllRecordsFoundAndDelete();
-  })();
+  cy.fixture("pimTab/employeeInfo.json").then((employeeData) => {
+    PimHelper.getEmployee(employeeData.employeeId).then((employeeResponse) => {
+      if (employeeResponse.meta.total > 0)
+        PimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
+    });
+  });
 });
