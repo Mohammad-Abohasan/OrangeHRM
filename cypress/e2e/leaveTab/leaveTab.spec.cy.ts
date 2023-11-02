@@ -46,7 +46,7 @@ describe("Leave: Leave's functionality", () => {
       // Login as employee and apply for leave.
       .then((leaveEntitlementResponse) => {
         cy.logoutOrangeHRM();
-        cy.loginOrangeHRM(employeeData.userName, employeeData.password);
+        cy.loginOrangeHRM(employeeData.username, employeeData.password);
         return cy
           .fixture("leaveTab/applyPage/leaveRequestInfo.json")
           .then((leaveRequestData) => {
@@ -78,7 +78,7 @@ describe("Leave: Leave's functionality", () => {
       // Login as employee and check the leave status.
       .then(() => {
         cy.logoutOrangeHRM();
-        cy.loginOrangeHRM(employeeData.userName, employeeData.password);
+        cy.loginOrangeHRM(employeeData.username, employeeData.password);
         myLeavePageActions.openMyLeavePage();
         cy.fixture("leaveTab/myLeavePage/myLeaveInfo.json").then(
           (myLeaveData) => {
