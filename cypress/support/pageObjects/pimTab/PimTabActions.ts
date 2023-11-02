@@ -1,120 +1,115 @@
+import SharedHelper from "../../helpers/SharedHelper";
+
 class PimTabActions {
   elements = {
-    mainMenuItems: () => cy.get(".oxd-sidepanel-body"),
-    addEmp: () => cy.get(".oxd-button--secondary"),
-    employeeInputName: () => cy.get(".--name-grouped-field"),
-    employeeInputId: () =>
-      cy.get(":nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-input"),
+    addEmployeeButton: () =>
+      cy
+        .get(".orangehrm-header-container")
+        .contains("[type='button']", " Add "),
+    employeeInputName: (name: string, value: string) =>
+      cy
+        .get(".--name-grouped-field")
+        .find(`[name='${name}']`)
+        .clear()
+        .type(value),
     createLoginDetails: () => cy.get('input[type="checkbox"]'),
-    userName: () =>
-      cy.get(
-        ":nth-child(4) > .oxd-grid-2 > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-input"
-      ),
-    passwords: () => cy.get('input[type="password"]'),
-    saveEmp: () => cy.get('button[type="submit"]'),
-    result: () => cy.get(".oxd-toast"),
-    loading: () => cy.get(".oxd-loading-spinner-container"),
-
-    employeeInputNickName: () =>
-      cy.get(
-        ":nth-child(1) > .oxd-grid-3 > .oxd-grid-item > .oxd-input-group > :nth-child(2) > .oxd-input"
-      ),
-    employeeInputDriversLicenseNumber: () =>
-      cy.get(
-        ":nth-child(3) > :nth-child(2) > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-input"
-      ),
-    employeeInputLicenseExpiryDate: () =>
-      cy.get(
-        ":nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-date-wrapper > .oxd-date-input > .oxd-input"
-      ),
-    employeeInputMaritalStatus: () =>
-      cy.get(
-        ":nth-child(5) > :nth-child(1) > :nth-child(2) > .oxd-input-group > .oxd-input-group__label-wrapper > .oxd-label"
-      ).parents()
-      .eq(1)
-      .children()
-      .eq(1),
-    employeeInputDateOfBirth: () =>
-      cy.get(
-        ":nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-date-wrapper > .oxd-date-input > .oxd-input"
-      ),
-    employeeInputGender: () =>
-      cy.get(":nth-child(5) > :nth-child(2) > :nth-child(2)"),
-
-    closeCalendar: () => cy.get(".--close"),
-    dropDownOptions: () => cy.get(".oxd-select-dropdown"),
-
-    employeeSearchId: () => cy.get("input").eq(2),
-    searchBtn: () => cy.get(".orangehrm-left-space"),
-    resultData: () => cy.get(".oxd-table-cell"),
-    editAction: () =>
-      cy.get(
-        ":nth-child(1) > .oxd-table-row > :nth-child(9) > .oxd-table-cell-actions > :nth-child(2)"
-      ),
-    deleteAction: () =>
-      cy.get(
-        ":nth-child(1) > .oxd-table-row > :nth-child(9) > .oxd-table-cell-actions > :nth-child(1)"
-      ),
+    deleteAction: () => cy.get(".oxd-table-cell-actions").eq(0),
+    editAction: () => cy.get(".oxd-table-cell-actions").eq(1),
     deleteBtn: () => cy.get(".oxd-button--label-danger"),
   };
 
-  openPIMTab() {
-    this.elements.mainMenuItems().contains("PIM").click();
+  openPimTab() {
+    cy.intercept("/web/index.php/api/v2/pim/employees**").as("employees");
+    cy.intercept("/web/index.php/api/v2/admin/job-titles**").as("jobTitles");
+    cy.intercept("/web/index.php/api/v2/admin/employment-statuses**").as(
+      "employmentStatuses"
+    );
+    cy.intercept("/web/index.php/api/v2/admin/subunits**").as("subunits");
+    cy.intercept("/web/index.php/core/i18n/messages").as("messages");
+
+    SharedHelper.mainMenuItems().contains("PIM").click();
+
+    cy.wait([
+      "@employees",
+      "@jobTitles",
+      "@employmentStatuses",
+      "@subunits",
+      "@messages",
+    ]);
   }
 
-  addEmployee(
-    firstName: string,
-    middleName: string,
-    lastName: string,
-    employeeId: number,
-    userName: string,
-    password: string,
-    confirmPassword: string
-  ) {
-    this.elements.addEmp().eq(1).click();
-    this.elements.employeeInputName().children().eq(0).type(firstName);
-    this.elements.employeeInputName().children().eq(1).type(middleName);
-    this.elements.employeeInputName().children().eq(2).type(lastName);
-    this.elements.employeeInputId().clear().type(`${employeeId}`);
-    this.elements.createLoginDetails().click({ force: true });
-    this.elements.userName().type(userName);
-    this.elements.passwords().eq(0).type(password);
-    this.elements.passwords().eq(1).type(confirmPassword);
-    this.elements.saveEmp().click();
+  addEmployee(employeeData: any, withLoginDetails: boolean = false) {
+    this.elements.addEmployeeButton().click();
+    this.elements.employeeInputName("firstName", employeeData.firstName);
+    this.elements.employeeInputName("middleName", employeeData.middleName);
+    this.elements.employeeInputName("lastName", employeeData.lastName);
+    SharedHelper.typeInInputField("Employee Id", employeeData.employeeId);
+    if (withLoginDetails) {
+      this.elements.createLoginDetails().click({ force: true });
+      SharedHelper.typeInInputField("Username", employeeData.username);
+      SharedHelper.selectOptionFromList("Status", employeeData.status);
+      SharedHelper.typeInInputField("Password", employeeData.password);
+      SharedHelper.typeInInputField(
+        "Confirm Password",
+        employeeData.confirmPassword
+      );
+    }
+    SharedHelper.clickSubmitButtonIsContains("Save");
   }
 
-  editPersonalDetails(
-    id: string,
-    nickName: string,
-    driversLicenseNumber: string,
-    licenseExpiryDate: string,
-    maritalStatus: string,
-    dateOfBirth: string,
-    gender: string
-  ) {
-    // TODO: navigate to employee details page directly
-    this.elements.editAction().click(); 
-    this.elements.employeeInputNickName().type(nickName);
-    this.elements
-      .employeeInputDriversLicenseNumber()
-      .type(driversLicenseNumber);
-    this.elements
-      .employeeInputLicenseExpiryDate()
-      .clear()
-      .type(licenseExpiryDate);
-    this.elements.closeCalendar().click();
-    this.elements.employeeInputMaritalStatus().click();
-    this.elements.dropDownOptions().contains(maritalStatus).click();
-    this.elements.employeeInputDateOfBirth().clear().type(dateOfBirth);
-    this.elements.closeCalendar().click();
-    this.elements.employeeInputGender().contains(gender).click({ force: true });
-    this.elements.saveEmp().eq(0).click();
+  editEmployeeByEmpNumber(empNumber: number) {
+    cy.visit(`/web/index.php/pim/viewPersonalDetails/empNumber/${empNumber}`);
+  }
+
+  editPersonalDetails(employeeData: any) {
+    this.elements.employeeInputName("firstName", employeeData.firstName);
+    this.elements.employeeInputName("middleName", employeeData.middleName);
+    this.elements.employeeInputName("lastName", employeeData.lastName);
+    SharedHelper.typeInInputField("Nickname", employeeData.nickName);
+    SharedHelper.typeInInputField("Employee Id", employeeData.employeeId);
+    SharedHelper.typeInInputField("Other Id", employeeData.otherId);
+    SharedHelper.typeInInputField(
+      "Driver's License Number",
+      employeeData.drivingLicenseNo
+    );
+    SharedHelper.selectDateFromCalendar(
+      "License Expiry Date",
+      employeeData.drivingLicenseExpiredDate
+    );
+    SharedHelper.typeInInputField("SSN Number", employeeData.ssnNumber);
+    SharedHelper.typeInInputField("SIN Number", employeeData.sinNumber);
+    SharedHelper.selectItemFromDropdown(
+      "Nationality",
+      employeeData.nationalityId
+    );
+    SharedHelper.selectItemFromDropdown(
+      "Marital Status",
+      employeeData.maritalStatus
+    );
+    SharedHelper.selectDateFromCalendar("Date of Birth", employeeData.birthday);
+    SharedHelper.selectOptionFromList("Gender", employeeData.gender);
+    SharedHelper.typeInInputField(
+      "Military Service",
+      employeeData.militaryService
+    );
+    SharedHelper.selectOptionFromList("Smoker", employeeData.smoker); // I'm not smoker :D
+    SharedHelper.clickSubmitButtonIsContains("Save");
   }
 
   searchEmployee(id: string) {
-    this.openPIMTab();
-    this.elements.employeeSearchId().type(id);
-    this.elements.searchBtn().click({ force: true });
+    SharedHelper.typeInInputField("Employee Id", id);
+    SharedHelper.clickSubmitButtonIsContains("Search");
+  }
+
+  openEditMode(id: string) {
+    this.searchEmployee(id);
+    this.elements.editAction().click();
+  }
+
+  deleteEmployee(id: string) {
+    this.searchEmployee(id);
+    this.elements.deleteAction().click();
+    this.elements.deleteBtn().click();
   }
 }
 
