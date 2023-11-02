@@ -4,13 +4,13 @@ import LoginPageAssertions from "../../support/pageObjects/loginPage/LoginPageAs
 const loginPageActions: LoginPageActions = new LoginPageActions();
 const loginPageAssertions: LoginPageAssertions = new LoginPageAssertions();
 
-describe("Login Page", { tags: "login" }, () => {
+describe("Login - Login functionality", { tags: "login" }, () => {
   beforeEach(() => {
     cy.visit("/");
     cy.fixture("loginPage/loginInfo.json").as("logInfo");
   });
 
-  it("Check valid username and valid password", () => {
+  it("Login: Check valid username and valid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPageActions.login(infoData.username.valid, infoData.password.valid);
       loginPageAssertions.checkValidLogin(infoData.validLogin);
@@ -18,7 +18,7 @@ describe("Login Page", { tags: "login" }, () => {
     });
   });
 
-  it("Check valid username and invalid password", () => {
+  it("Login: Check valid username and invalid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPageActions.login(
         infoData.username.valid,
@@ -28,7 +28,7 @@ describe("Login Page", { tags: "login" }, () => {
     });
   });
 
-  it("Check invalid username and valid password", () => {
+  it("Login: Check invalid username and valid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPageActions.login(
         infoData.username.invalid,
@@ -38,7 +38,7 @@ describe("Login Page", { tags: "login" }, () => {
     });
   });
 
-  it("Check invalid username and invalid password", () => {
+  it("Login: Check invalid username and invalid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPageActions.login(
         infoData.username.invalid,
@@ -48,7 +48,7 @@ describe("Login Page", { tags: "login" }, () => {
     });
   });
 
-  it("Check empty username and valid password", () => {
+  it("Login: Check empty username and valid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPageActions.login(infoData.password.empty, infoData.password.valid);
       loginPageAssertions.checkUsernameInputErrorMessageContainsValue(
@@ -57,7 +57,7 @@ describe("Login Page", { tags: "login" }, () => {
     });
   });
 
-  it("Check empty username and invalid password", () => {
+  it("Login: Check empty username and invalid password", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPageActions.login(
         infoData.password.empty,
@@ -69,7 +69,7 @@ describe("Login Page", { tags: "login" }, () => {
     });
   });
 
-  it("Check valid username and empty password", () => {
+  it("Login: Check valid username and empty password", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPageActions.login(infoData.username.valid, infoData.password.empty);
       loginPageAssertions.checkPasswordInputErrorMessageContainsValue(
@@ -78,7 +78,7 @@ describe("Login Page", { tags: "login" }, () => {
     });
   });
 
-  it("Check invalid username and empty password", () => {
+  it("Login: Check invalid username and empty password", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPageActions.login(
         infoData.username.invalid,
@@ -90,7 +90,7 @@ describe("Login Page", { tags: "login" }, () => {
     });
   });
 
-  it("Check empty username and empty password", () => {
+  it("Login: Check empty username and empty password", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPageActions.login(infoData.password.empty, infoData.password.empty);
       loginPageAssertions.checkUsernameInputErrorMessageContainsValue(
@@ -102,13 +102,13 @@ describe("Login Page", { tags: "login" }, () => {
     });
   });
 
-  it("Check password visibility", () => {
+  it("Login: Check password visibility", () => {
     cy.get("@logInfo").then((infoData: any) => {
       loginPageAssertions.passwordIsHidden();
     });
   });
 
-  it("Check username sensitivity", () => {
+  it("Login: Check username sensitivity", () => {
     cy.get("@logInfo").then((infoData: any) => {
       if (infoData.username.valid == infoData.username.valid.toUpperCase())
         loginPageActions.login(
@@ -125,7 +125,7 @@ describe("Login Page", { tags: "login" }, () => {
     });
   });
 
-  it("Check password sensitivity", () => {
+  it("Login: Check password sensitivity", () => {
     cy.get("@logInfo").then((infoData: any) => {
       if (infoData.password.valid == infoData.password.valid.toUpperCase())
         loginPageActions.login(
