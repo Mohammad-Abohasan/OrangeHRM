@@ -1,4 +1,4 @@
-class PimTab {
+class PimTabActions {
   elements = {
     mainMenuItems: () => cy.get(".oxd-sidepanel-body"),
     addEmp: () => cy.get(".oxd-button--secondary"),
@@ -71,7 +71,6 @@ class PimTab {
     password: string,
     confirmPassword: string
   ) {
-    this.openPIMTab();
     this.elements.addEmp().eq(1).click();
     this.elements.employeeInputName().children().eq(0).type(firstName);
     this.elements.employeeInputName().children().eq(1).type(middleName);
@@ -82,10 +81,6 @@ class PimTab {
     this.elements.passwords().eq(0).type(password);
     this.elements.passwords().eq(1).type(confirmPassword);
     this.elements.saveEmp().click();
-    this.elements
-      .result()
-      .contains("Successfully Saved")
-      .as("Successfully Added Employee");
   }
 
   editPersonalDetails(
@@ -97,15 +92,16 @@ class PimTab {
     dateOfBirth: string,
     gender: string
   ) {
-    this.openPIMTab();
-    this.elements.employeeSearchId().type(id);
-    this.elements.searchBtn().click({ force: true });
-    this.elements.editAction().click();
+    // TODO: navigate to employee details page directly
+    this.elements.editAction().click(); 
     this.elements.employeeInputNickName().type(nickName);
     this.elements
       .employeeInputDriversLicenseNumber()
       .type(driversLicenseNumber);
-    this.elements.employeeInputLicenseExpiryDate().clear().type(licenseExpiryDate);
+    this.elements
+      .employeeInputLicenseExpiryDate()
+      .clear()
+      .type(licenseExpiryDate);
     this.elements.closeCalendar().click();
     this.elements.employeeInputMaritalStatus().click();
     this.elements.dropDownOptions().contains(maritalStatus).click();
@@ -113,48 +109,13 @@ class PimTab {
     this.elements.closeCalendar().click();
     this.elements.employeeInputGender().contains(gender).click({ force: true });
     this.elements.saveEmp().eq(0).click();
-    this.elements
-      .result()
-      .contains("Successfully Updated")
-      .as("Successfully Updated Employee Information");
   }
 
-  deleteEmployee(id: string) {
+  searchEmployee(id: string) {
     this.openPIMTab();
     this.elements.employeeSearchId().type(id);
     this.elements.searchBtn().click({ force: true });
-    this.elements.deleteAction().click();
-    this.elements.deleteBtn().click();
-    this.elements
-      .result()
-      .contains("Successfully Deleted")
-      .as("Successfully Deleted Employee");
-  }
-
-  searchEmployee([
-    id,
-    firstName,
-    middleName,
-    lastName,
-    jobTitle,
-    employmentStatus,
-    subUnit,
-    supervisor,
-  ]: any) {
-    this.openPIMTab();
-    this.elements.employeeSearchId().type(id);
-    this.elements.searchBtn().click({ force: true });
-    this.elements.resultData().eq(1).should("contain", id);
-    this.elements
-      .resultData()
-      .eq(2)
-      .should("contain", `${firstName} ${middleName}`);
-    this.elements.resultData().eq(3).should("contain", lastName);
-    this.elements.resultData().eq(4).should("contain", jobTitle);
-    this.elements.resultData().eq(5).should("contain", employmentStatus);
-    this.elements.resultData().eq(6).should("contain", subUnit);
-    this.elements.resultData().eq(7).should("contain", supervisor);
   }
 }
 
-export default PimTab;
+export default PimTabActions;

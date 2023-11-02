@@ -1,8 +1,11 @@
-import PIMTab from "../../support/pageObjects/pimTab/PimTab";
+import PimTabActions from "../../support/pageObjects/pimTab/PimTabActions";
+import PimTabAssertions from "../../support/pageObjects/pimTab/PimTabAssertions";
 import pimHelper from "../../support/helpers/pimTab/PimHelper";
 import adminHelper from "../../support/helpers/adminTab/AdminHelper";
+import SharedHelper from "../../support/helpers/SharedHelper";
 
-const pimTab: PIMTab = new PIMTab();
+const pimTabActions: PimTabActions = new PimTabActions();
+const pimTabAssertions: PimTabAssertions = new PimTabAssertions();
 
 let employeeData: any = {};
 
@@ -12,7 +15,7 @@ describe("PIM: Employee's table data validation", () => {
     cy.fixture("pimTab/employeeInfo.json").then((empData) => {
       employeeData = empData;
     });
-    pimTab.openPIMTab();
+    pimTabActions.openPIMTab();
   });
 
   it("PIM - Add employee and verify login info", () => {
@@ -38,8 +41,8 @@ describe("PIM: Employee's table data validation", () => {
       });
   });
 
-  it("PIM - Add employee with Personal Details UI", /*{ retries: 2 },*/ () => {
-    pimTab.addEmployee(
+  it("PIM - Add employee with Personal Details UI", () => {
+    pimTabActions.addEmployee(
       employeeData.firstName,
       employeeData.middleName,
       employeeData.lastName,
@@ -48,7 +51,8 @@ describe("PIM: Employee's table data validation", () => {
       employeeData.password,
       employeeData.password
     );
-    pimTab.editPersonalDetails(
+    SharedHelper.checkToastMessage("Successfully Saved");
+    pimTabActions.editPersonalDetails(
       employeeData.employeeId,
       employeeData.nickName,
       employeeData.driversLicenseNumber,
@@ -57,8 +61,9 @@ describe("PIM: Employee's table data validation", () => {
       employeeData.dateOfBirth,
       employeeData.gender
     );
+    SharedHelper.checkToastMessage("Successfully Saved");
 
-    pimTab.openPIMTab();
+    pimTabActions.openPIMTab();
     let pimTableData = [
       {
         Id: employeeData.employeeId,
@@ -79,7 +84,7 @@ describe("PIM: Employee's table data validation", () => {
       .addEmployee(employeeData)
       // Edit Personal Details
       .then(() => {
-        pimTab.editPersonalDetails(
+        pimTabActions.editPersonalDetails(
           employeeData.employeeId,
           employeeData.nickName,
           employeeData.driversLicenseNumber,
@@ -88,6 +93,7 @@ describe("PIM: Employee's table data validation", () => {
           employeeData.dateOfBirth,
           employeeData.gender
         );
+        SharedHelper.checkToastMessage("Successfully Saved");
       });
   });
 
@@ -97,7 +103,8 @@ describe("PIM: Employee's table data validation", () => {
       .addEmployee(employeeData)
       // Search an employee
       .then(() => {
-        pimTab.searchEmployee([
+        pimTabActions.searchEmployee(employeeData.employeeId);
+        pimTabAssertions.searchEmployee([
           employeeData.employeeId,
           employeeData.firstName,
           employeeData.middleName,
