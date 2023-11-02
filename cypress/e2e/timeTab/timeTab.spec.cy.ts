@@ -1,3 +1,4 @@
+import SharedHelper from "../../support/helpers/SharedHelper";
 import AdminHelper from "../../support/helpers/adminTab/AdminHelper";
 import PimHelper from "../../support/helpers/pimTab/PimHelper";
 import TimesheetsPageActions from "../../support/pageObjects/timeTab/timesheetsPage/TimesheetsPageActions";
@@ -32,7 +33,7 @@ describe("Time: ", () => {
         timesheetsPageActions.openTimePage();
         timesheetsPageActions.openMyTimesheets();
         timesheetsPageActions.addTimesheet();
-        timesheetsPageAssertions.addTimesheetAssertion();
+        SharedHelper.checkToastMessage("Timesheet Submitted");
         cy.logoutOrangeHRM();
         cy.loginOrangeHRM();
         timesheetsPageActions.openTimePage();

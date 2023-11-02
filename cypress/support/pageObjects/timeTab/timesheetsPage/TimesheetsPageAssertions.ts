@@ -2,11 +2,7 @@ import SharedHelper from "../../../helpers/SharedHelper";
 
 class TimesheetsPageAssertions {
   elements = {};
-
-  addTimesheetAssertion() {
-    SharedHelper.checkToastMessage("Timesheet Submitted");
-  }
-
+  
   checkRecordsContainsTimesheetAssertion(employeeData: any) {
     SharedHelper.checkRecordsContainsValueInColumn(0, "Action", "Submitted");
     SharedHelper.checkRecordsContainsValueInColumn(
