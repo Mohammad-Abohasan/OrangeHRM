@@ -10,7 +10,7 @@ export default class PimInit {
       employeeData;
     const payload = {
       employeeId,
-      firstName: `${SharedHelper.generateRandomNumber(2, 5)}-${firstName}`,
+      firstName: `${SharedHelper.generateRandomString(2, 5)}-${firstName}`,
       middleName,
       lastName,
       empPicture,

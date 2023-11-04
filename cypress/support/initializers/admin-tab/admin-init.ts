@@ -8,7 +8,7 @@ export default class AdminInit {
   ): ICreateAdminPayload {
     const { username, password, status, userRoleId } = adminData;
     const payload = {
-      username: `${username}_${SharedHelper.generateRandomNumber()}`,
+      username: `${username}_${SharedHelper.generateRandomString()}`,
       password,
       status,
       userRoleId,

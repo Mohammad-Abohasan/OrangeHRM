@@ -145,7 +145,7 @@ export default class SharedHelper {
     cy.contains(".oxd-date-input-link", "Close").click();
   }
 
-  static generateRandomNumber(min: number = 5, max: number = 10) {
+  static generateRandomString(min: number = 5, max: number = 10) {
     return faker.string.alpha({ length: { min, max } });
   }
 }
