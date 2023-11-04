@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@cypress/grep": "^4.0.0",
+    "@faker-js/faker": "^8.2.0",
     "@shelex/cypress-allure-plugin": "^2.40.0",
     "allure-commandline": "^2.24.0",
     "cypress": "^13.3.1",
