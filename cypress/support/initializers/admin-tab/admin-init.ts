@@ -1,4 +1,5 @@
 import { ICreateAdminPayload } from "../../apis/payload/admin-tab/user-management-page/add-admin-payload";
+import SharedHelper from "../../helpers/shared-helper";
 
 export default class AdminInit {
   static initAdmin(
@@ -7,7 +8,7 @@ export default class AdminInit {
   ): ICreateAdminPayload {
     const { username, password, status, userRoleId } = adminData;
     const payload = {
-      username,
+      username: `${username}_${SharedHelper.generateRandomNumber()}`,
       password,
       status,
       userRoleId,

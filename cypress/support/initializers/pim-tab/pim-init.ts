@@ -1,5 +1,6 @@
 import { ICreateEmployeePayload } from "../../apis/payload/pim-tab/add-employee-payload";
 import { IDeleteEmployeePayload } from "../../apis/payload/pim-tab/delete-employee-payload";
+import SharedHelper from "../../helpers/shared-helper";
 
 export default class PimInit {
   static initEmployee(
@@ -9,7 +10,7 @@ export default class PimInit {
       employeeData;
     const payload = {
       employeeId,
-      firstName,
+      firstName: `${SharedHelper.generateRandomNumber(2, 5)}-${firstName}`,
       middleName,
       lastName,
       empPicture,
