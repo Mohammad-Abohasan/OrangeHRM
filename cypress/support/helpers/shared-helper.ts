@@ -1,5 +1,10 @@
 import { faker } from "@faker-js/faker";
+import { INPUT_TYPE, SystemFields } from "./constant";
 export default class SharedHelper {
+  static generateRandomString(min: number = 5, max: number = 10) {
+    return faker.string.alpha({ length: { min, max } });
+  }
+
   static getHeaderIndex(headerName: string) {
     return cy
       .get(".oxd-table-header")
@@ -31,21 +36,12 @@ export default class SharedHelper {
     });
   }
 
-  static selectAllRecordsFoundAndDelete() {
-    cy.get(".oxd-table-row").then(($rows) => {
-      if ($rows.length > 1) {
-        cy.get(".oxd-table-header")
-          .find("[type='checkbox']")
-          .click({ force: true });
-        cy.get(".oxd-button--label-danger").click({ force: true });
-        cy.get(".oxd-button--label-danger").eq(1).click();
-        this.checkToastMessage("Successfully Deleted");
-      }
-    });
-  }
-
   static clickSubmitButtonIsContains(buttonText: string, index: number = 0) {
     cy.contains("[type='submit']", ` ${buttonText} `).eq(index).click();
+  }
+
+  static mainMenuItems() {
+    return cy.get(".oxd-sidepanel-body");
   }
 
   static clickResetButton() {
@@ -60,24 +56,10 @@ export default class SharedHelper {
     cy.contains(".oxd-toast", message).should("exist");
   }
 
-  static mainMenuItems() {
-    return cy.get(".oxd-sidepanel-body");
-  }
-
   static checkLoadingSpinnerIsExist(isExist: boolean) {
     cy.get(".oxd-loading-spinner-container").should(
       isExist ? "exist" : "not.exist"
     );
-  }
-
-  static selectItemFromDropdown(labelName: string, itemName: string) {
-    cy.get(".oxd-input-group")
-      .contains(".oxd-label", labelName)
-      .parents()
-      .eq(1)
-      .find(".oxd-select-text")
-      .click();
-    cy.get(".oxd-select-option").contains(itemName).click();
   }
 
   static deselectOptionsFromMultiSelect(labelName: string) {
@@ -94,9 +76,10 @@ export default class SharedHelper {
     });
   }
 
-  static typeInInputField(labelName: string, value: string) {
+  static typeInInputField(labelName: string, value: string, index: number = 0) {
     cy.get(".oxd-input-group")
-      .contains(".oxd-label", labelName)
+      .find(`.oxd-label:contains(${labelName})`)
+      .eq(index)
       .parents()
       .eq(1)
       .find("input")
@@ -104,9 +87,29 @@ export default class SharedHelper {
       .type(value);
   }
 
-  static selectOptionFromList(labelName: string, value: string) {
+  static selectItemFromDropdown(
+    labelName: string,
+    itemName: string,
+    index: number = 0
+  ) {
     cy.get(".oxd-input-group")
-      .contains(".oxd-label", labelName)
+      .find(`.oxd-label:contains(${labelName})`)
+      .eq(index)
+      .parents()
+      .eq(1)
+      .find(".oxd-select-text")
+      .click();
+    cy.get(".oxd-select-option").contains(itemName).click();
+  }
+
+  static selectOptionFromList(
+    labelName: string,
+    value: string,
+    index: number = 0
+  ) {
+    cy.get(".oxd-input-group")
+      .find(`.oxd-label:contains(${labelName})`)
+      .eq(index)
       .parents()
       .eq(1)
       .children()
@@ -117,9 +120,14 @@ export default class SharedHelper {
       .click({ force: true });
   }
 
-  static selectOptionFromListBox(labelName: string, option: string) {
+  static selectOptionFromListBox(
+    labelName: string,
+    option: string,
+    index: number = 0
+  ) {
     cy.get(".oxd-input-group")
-      .contains(".oxd-label", labelName)
+      .find(`.oxd-label:contains(${labelName})`)
+      .eq(index)
       .parents()
       .eq(1)
       .find("[placeholder='Type for hints...']")
@@ -132,20 +140,45 @@ export default class SharedHelper {
       .click();
   }
 
-  static selectDateFromCalendar(labelName: string, date: string) {
+  static selectDateFromCalendar(
+    labelName: string,
+    date: string,
+    index: number = 0
+  ) {
     cy.get(".oxd-input-group")
-      .contains(".oxd-label", labelName)
+      .find(`.oxd-label:contains(${labelName})`)
+      .eq(index)
       .parents()
       .eq(1)
       .find(".oxd-date-input > .oxd-input")
       .clear()
       .type(date);
-
-    // close calendar
     cy.contains(".oxd-date-input-link", "Close").click();
   }
 
-  static generateRandomString(min: number = 5, max: number = 10) {
-    return faker.string.alpha({ length: { min, max } });
+  static fillInInputField(fieldName: string, value: string, index: number = 0) {
+    let labelName: string = fieldName;
+    if (labelName.includes("Status")) {
+      labelName = "Status";
+    }
+    switch (SystemFields[fieldName]) {
+      case INPUT_TYPE.TEXT:
+        this.typeInInputField(labelName, value, index);
+        break;
+      case INPUT_TYPE.DROPDOWN:
+        this.selectItemFromDropdown(labelName, value, index);
+        break;
+      case INPUT_TYPE.MULTI_SELECT:
+        this.selectOptionFromList(labelName, value, index);
+        break;
+      case INPUT_TYPE.LIST_BOX:
+        this.selectOptionFromListBox(labelName, value, index);
+        break;
+      case INPUT_TYPE.DATE:
+        this.selectDateFromCalendar(labelName, value, index);
+        break;
+      default:
+        throw new Error("Invalid Input Type");
+    }
   }
 }
