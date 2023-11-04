@@ -74,15 +74,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         return pimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
-        // TODO: Fix this issue
-        vacanciesPageActions.openVacanciesPage();
-        SharedHelper.selectItemFromDropdown(
-          "Hiring Manager",
-          "Mohammad Abohasan"
-        );
-        SharedHelper.clickSubmitButtonIsContains("Search");
-        SharedHelper.selectAllRecordsFoundAndDelete();
-
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
@@ -159,15 +150,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         return pimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
-        // TODO: Fix this issue
-        vacanciesPageActions.openVacanciesPage();
-        SharedHelper.selectItemFromDropdown(
-          "Hiring Manager",
-          "Mohammad Abohasan"
-        );
-        SharedHelper.clickSubmitButtonIsContains("Search");
-        SharedHelper.selectAllRecordsFoundAndDelete();
-
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
@@ -213,21 +195,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         return pimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
-        // TODO: Fix this issue
-        candidatesPageActions.openCandidatesPage();
-        SharedHelper.selectOptionFromListBox("Candidate Name", "Mohammad");
-        SharedHelper.clickSubmitButtonIsContains("Search");
-        SharedHelper.selectAllRecordsFoundAndDelete();
-
-        // TODO: Fix this issue
-        vacanciesPageActions.openVacanciesPage();
-        SharedHelper.selectItemFromDropdown(
-          "Hiring Manager",
-          "Mohammad Abohasan"
-        );
-        SharedHelper.clickSubmitButtonIsContains("Search");
-        SharedHelper.selectAllRecordsFoundAndDelete();
-
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
@@ -281,21 +248,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         return pimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
-        // TODO: Fix this issue
-        candidatesPageActions.openCandidatesPage();
-        SharedHelper.selectOptionFromListBox("Candidate Name", "Mohammad");
-        SharedHelper.clickSubmitButtonIsContains("Search");
-        SharedHelper.selectAllRecordsFoundAndDelete();
-
-        // TODO: Fix this issue
-        vacanciesPageActions.openVacanciesPage();
-        SharedHelper.selectItemFromDropdown(
-          "Hiring Manager",
-          "Mohammad Abohasan"
-        );
-        SharedHelper.clickSubmitButtonIsContains("Search");
-        SharedHelper.selectAllRecordsFoundAndDelete();
-
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
@@ -345,21 +297,6 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
         return pimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
-        // TODO: Fix this issue
-        candidatesPageActions.openCandidatesPage();
-        SharedHelper.selectOptionFromListBox("Candidate Name", "Mohammad");
-        SharedHelper.clickSubmitButtonIsContains("Search");
-        SharedHelper.selectAllRecordsFoundAndDelete();
-
-        // TODO: Fix this issue
-        vacanciesPageActions.openVacanciesPage();
-        SharedHelper.selectItemFromDropdown(
-          "Hiring Manager",
-          "Mohammad Abohasan"
-        );
-        SharedHelper.clickSubmitButtonIsContains("Search");
-        SharedHelper.selectAllRecordsFoundAndDelete();
-
         pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
