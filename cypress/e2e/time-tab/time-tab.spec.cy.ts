@@ -5,7 +5,7 @@ import TimesheetsPageActions from "../../support/page-objects/time-tab/timesheet
 import TimesheetsPageAssertions from "../../support/page-objects/time-tab/timesheets-page/timesheets-page-assertions";
 
 let employeeData: any = {};
-let adminData: any = {};
+let employeeLoginData: any = {};
 const timesheetsPageActions: TimesheetsPageActions =
   new TimesheetsPageActions();
 const timesheetsPageAssertions: TimesheetsPageAssertions =
@@ -18,18 +18,26 @@ describe("Time: ", () => {
       (employeeInfo) => (employeeData = employeeInfo)
     );
     cy.fixture("admin-tab/user-management-page/adminInfo.json").then(
-      (adminInfo) => (adminData = adminInfo)
+      (adminInfo) => (employeeLoginData = adminInfo)
     );
   });
 
   it("Time - Timesheets: The user should be able to add a new timesheet", () => {
     PimHelper.addEmployee(employeeData)
-      .then((employeeResponse) =>
-        AdminHelper.addAdmin(adminData, employeeResponse.empNumber)
-      )
-      .then(() => {
+      .then((employeeResponse) => {
+        employeeData.firstName = employeeResponse.firstName;
+        return AdminHelper.addAdmin(
+          employeeLoginData,
+          employeeResponse.empNumber
+        );
+      })
+      .then((adminEmployeeResponse) => {
+        employeeLoginData.username = adminEmployeeResponse.userName;
         cy.logoutOrangeHRM();
-        cy.loginOrangeHRM(adminData.username, adminData.password);
+        cy.loginOrangeHRM(
+          employeeLoginData.username,
+          employeeLoginData.password
+        );
         timesheetsPageActions.openTimePage();
         timesheetsPageActions.openMyTimesheets();
         timesheetsPageActions.addTimesheet();

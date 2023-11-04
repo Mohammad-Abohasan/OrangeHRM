@@ -43,6 +43,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       .addEmployee(employeeData)
       // Add a vacancy
       .then((employeeResponse) => {
+        employeeData.firstName = employeeResponse.firstName;
         return cy
           .fixture("recruitment-tab/vacancies-page/vacancyInfo.json")
           .then((vacancyData) => {
@@ -92,6 +93,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       .addEmployee(employeeData)
       // Add a vacancy
       .then((employeeResponse) => {
+        employeeData.firstName = employeeResponse.firstName;
         return cy
           .fixture("recruitment-tab/vacancies-page/vacancyInfo.json")
           .then((vacancyData) => {
@@ -176,6 +178,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       .addEmployee(employeeData)
       // Add a vacancy
       .then((employeeResponse) => {
+        employeeData.firstName = employeeResponse.firstName;
         return cy
           .fixture("recruitment-tab/vacancies-page/vacancyInfo.json")
           .then((vacancyData) => {
@@ -212,10 +215,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       .then((employeeResponse) => {
         // TODO: Fix this issue
         candidatesPageActions.openCandidatesPage();
-        SharedHelper.selectOptionFromListBox(
-          "Candidate Name",
-          "Mohammad"
-        );
+        SharedHelper.selectOptionFromListBox("Candidate Name", "Mohammad");
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
 
@@ -245,6 +245,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       .addEmployee(employeeData)
       // Add a vacancy
       .then((employeeResponse) => {
+        employeeData.firstName = employeeResponse.firstName;
         return cy
           .fixture("recruitment-tab/vacancies-page/vacancyInfo.json")
           .then((vacancyData) => {
@@ -282,10 +283,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       .then((employeeResponse) => {
         // TODO: Fix this issue
         candidatesPageActions.openCandidatesPage();
-        SharedHelper.selectOptionFromListBox(
-          "Candidate Name",
-          "Mohammad"
-        );
+        SharedHelper.selectOptionFromListBox("Candidate Name", "Mohammad");
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
 
@@ -308,6 +306,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       .addEmployee(employeeData)
       // Add a vacancy
       .then((employeeResponse) => {
+        employeeData.firstName = employeeResponse.firstName;
         return cy
           .fixture("recruitment-tab/vacancies-page/vacancyInfo.json")
           .then((vacancyData) => {
@@ -348,10 +347,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       .then((employeeResponse) => {
         // TODO: Fix this issue
         candidatesPageActions.openCandidatesPage();
-        SharedHelper.selectOptionFromListBox(
-          "Candidate Name",
-          "Mohammad"
-        );
+        SharedHelper.selectOptionFromListBox("Candidate Name", "Mohammad");
         SharedHelper.clickSubmitButtonIsContains("Search");
         SharedHelper.selectAllRecordsFoundAndDelete();
 

@@ -8,6 +8,7 @@ const pimTabActions: PimTabActions = new PimTabActions();
 const pimTabAssertions: PimTabAssertions = new PimTabAssertions();
 
 let employeeData: any = {};
+let employeeLoginData: any = {};
 
 describe("PIM: Employee's table data validation", () => {
   beforeEach(() => {
@@ -15,6 +16,9 @@ describe("PIM: Employee's table data validation", () => {
     cy.fixture("pim-tab/employeeInfo.json").then((empData) => {
       employeeData = empData;
     });
+    cy.fixture("admin-tab/user-management-page/adminInfo.json").then(
+      (adminInfo) => (employeeLoginData = adminInfo)
+    );
     pimTabActions.openPimTab();
   });
 
@@ -24,16 +28,20 @@ describe("PIM: Employee's table data validation", () => {
       .addEmployee(employeeData)
       // Add an Admin
       .then((employeeResponse) => {
-        cy.fixture("admin-tab/user-management-page/adminInfo").then(
-          (adminData) => {
-            AdminHelper.addAdmin(adminData, employeeResponse.empNumber);
-          }
+        employeeData.firstName = employeeResponse.firstName;
+        return AdminHelper.addAdmin(
+          employeeLoginData,
+          employeeResponse.empNumber
         );
       })
       // Verify login info
-      .then(() => {
+      .then((adminEmployeeResponse) => {
+        employeeLoginData.username = adminEmployeeResponse.userName;
         cy.logoutOrangeHRM();
-        cy.loginOrangeHRM(employeeData.username, employeeData.password);
+        cy.loginOrangeHRM(
+          employeeLoginData.username,
+          employeeLoginData.password
+        );
 
         // Login as Admin
         cy.logoutOrangeHRM();
@@ -59,6 +67,7 @@ describe("PIM: Employee's table data validation", () => {
       .addEmployee(employeeData)
       // Edit Personal Details
       .then((employeeResponse) => {
+        employeeData.firstName = employeeResponse.firstName;
         pimTabActions.editEmployeeByEmpNumber(employeeResponse.empNumber);
         SharedHelper.checkLoadingSpinnerIsExist(false);
         pimTabActions.editPersonalDetails(employeeData);
@@ -71,7 +80,8 @@ describe("PIM: Employee's table data validation", () => {
       // Add an employee
       .addEmployee(employeeData)
       // Search an employee
-      .then(() => {
+      .then((employeeResponse) => {
+        employeeData.firstName = employeeResponse.firstName;
         pimTabActions.searchEmployee(employeeData.employeeId);
         pimTabAssertions.checkRecordsContainsEmployee(employeeData);
       });
