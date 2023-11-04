@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 export default class SharedHelper {
   static getHeaderIndex(headerName: string) {
     return cy
@@ -87,9 +88,9 @@ export default class SharedHelper {
       .find(".--clear")
       .as("clearItemsButton");
     cy.get("@clearItemsButton").then(($clearItemsButton) => {
-      for (let i = 0; i < $clearItemsButton.length; i++) {
+      Cypress._.times($clearItemsButton.length, () => {
         cy.get("@clearItemsButton").eq(0).click();
-      }
+      });
     });
   }
 
@@ -142,5 +143,9 @@ export default class SharedHelper {
 
     // close calendar
     cy.contains(".oxd-date-input-link", "Close").click();
+  }
+
+  static generateRandomNumber(min: number = 5, max: number = 10) {
+    return faker.string.alpha({ length: { min, max } });
   }
 }
