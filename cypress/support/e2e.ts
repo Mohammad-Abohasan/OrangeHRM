@@ -17,7 +17,8 @@
 import "./commands";
 import "@cypress/grep";
 import "@shelex/cypress-allure-plugin";
-import "cypress-mochawesome-reporter/register";
+import '@mmisty/cypress-allure-adapter/support';
+// import "cypress-mochawesome-reporter/register";
 import "cypress-plugin-api";
 import "./utils/api-utils";
 import PimHelper from "./helpers/pim-tab/pim-helper";
