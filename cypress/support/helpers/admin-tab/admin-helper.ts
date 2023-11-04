@@ -11,6 +11,6 @@ export default class AdminHelper {
       "POST",
       URLs.admins,
       AdminInit.initAdmin(adminData, empNumber)
-    );
+    ).then((response) => response.data);
   }
 }
