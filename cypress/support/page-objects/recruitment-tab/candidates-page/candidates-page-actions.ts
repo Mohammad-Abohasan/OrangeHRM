@@ -30,14 +30,14 @@ export default class CandidatesPageActions {
     const [firstNameHM, , lastNameHM] =
       candidateData["Hiring Manager"].split(" ");
     const [firstNameCandidate] = candidateData["Candidate"].split(" ");
-    SharedHelper.selectItemFromDropdown("Vacancy", candidateData["Vacancy"]);
-    SharedHelper.selectItemFromDropdown(
+    SharedHelper.fillInInputField("Vacancy", candidateData["Vacancy"]);
+    SharedHelper.fillInInputField(
       "Hiring Manager",
       `${firstNameHM} ${lastNameHM}`
     );
-    SharedHelper.selectItemFromDropdown("Status", candidateData["Status"]);
-    SharedHelper.selectOptionFromListBox("Candidate Name", firstNameCandidate);
-    SharedHelper.selectDateFromCalendar(
+    SharedHelper.fillInInputField("Candidate Status", candidateData["Status"]);
+    SharedHelper.fillInInputField("Candidate Name", firstNameCandidate);
+    SharedHelper.fillInInputField(
       "Date of Application",
       candidateData["Date of Application"]
     );

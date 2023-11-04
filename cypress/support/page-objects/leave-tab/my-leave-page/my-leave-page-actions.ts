@@ -28,14 +28,14 @@ class MyLeavePageActions {
   }
 
   searchForLeave(leaveData: any) {
-    SharedHelper.selectDateFromCalendar("From Date", leaveData.Date);
-    SharedHelper.selectDateFromCalendar("To Date", leaveData.Date);
+    SharedHelper.fillInInputField("From Date", leaveData.Date);
+    SharedHelper.fillInInputField("To Date", leaveData.Date);
     SharedHelper.deselectOptionsFromMultiSelect("Show Leave with Status");
-    SharedHelper.selectItemFromDropdown(
+    SharedHelper.fillInInputField(
       "Show Leave with Status",
       leaveData.Status.split(" ")[0]
     );
-    SharedHelper.selectItemFromDropdown("Leave Type", leaveData["Leave Type"]);
+    SharedHelper.fillInInputField("Leave Type", leaveData["Leave Type"]);
   }
 }
 

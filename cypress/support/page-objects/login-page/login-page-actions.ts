@@ -9,8 +9,8 @@ class LoginPageActions {
   };
 
   login(username: string, password: string) {
-    username && SharedHelper.typeInInputField("Username", username);
-    password && SharedHelper.typeInInputField("Password", password);
+    username && SharedHelper.fillInInputField("Username", username);
+    password && SharedHelper.fillInInputField("Password", password);
     this.elements.submitButton().click();
   }
 
@@ -21,7 +21,7 @@ class LoginPageActions {
 
   forgotYourPassword(username: string) {
     this.elements.forgotPassword().click();
-    SharedHelper.typeInInputField("Username", username);
+    SharedHelper.fillInInputField("Username", username);
     this.elements.submitButton().click();
   }
 }
