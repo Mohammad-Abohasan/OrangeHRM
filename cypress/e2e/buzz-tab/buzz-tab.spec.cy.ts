@@ -1,3 +1,4 @@
+import SharedHelper from "../../support/helpers/shared-helper";
 import BuzzTabActions from "../../support/page-objects/buzz-tab/buzz-tab-actions";
 import BuzzTabAssertions from "../../support/page-objects/buzz-tab/buzz-tab-assertions";
 
@@ -10,7 +11,7 @@ describe("Buzz: Check Posts Validation", () => {
     cy.loginOrangeHRM();
     buzzTabActions.openBuzzTab();
     cy.writeFile(postInfoPath, {
-      content: "Hi, I'm Mohammad Abohasan",
+      content: `Hi, I'm Mohammad Abohasan - ${SharedHelper.generateRandomString(3, 5)}`,
     });
   });
 
