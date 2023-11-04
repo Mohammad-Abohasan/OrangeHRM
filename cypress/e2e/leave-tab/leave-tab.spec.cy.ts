@@ -29,7 +29,10 @@ describe("Leave: Leave's functionality", () => {
       .then((employeeResponse) => {
         employeeData.empNumber = employeeResponse.empNumber;
         employeeData.firstName = employeeResponse.firstName;
-        return AdminHelper.addAdmin(employeeLoginData, employeeResponse.empNumber);
+        return AdminHelper.addAdmin(
+          employeeLoginData,
+          employeeResponse.empNumber
+        );
       })
       // Add leave entitlement for the employee.
       .then((adminEmployeeResponse) => {
@@ -48,15 +51,20 @@ describe("Leave: Leave's functionality", () => {
       // Login as employee and apply for leave.
       .then((leaveEntitlementResponse) => {
         cy.logoutOrangeHRM();
-        cy.loginOrangeHRM(employeeLoginData.username, employeeLoginData.password);
+        cy.loginOrangeHRM(
+          employeeLoginData.username,
+          employeeLoginData.password
+        );
         return cy
           .fixture("leave-tab/apply-page/leaveRequestInfo.json")
           .then((leaveRequestData) => {
             leaveRequestData.fromDate = moment()
               .add(1, "day")
+              .add(moment().day() % 6 === 0 ? 1 : 0, "day")
               .format("YYYY-MM-DD");
             leaveRequestData.toDate = moment()
               .add(1, "day")
+              .add(moment().day() % 6 === 0 ? 1 : 0, "day")
               .format("YYYY-MM-DD");
             return LeaveHelper.applyLeave(
               leaveRequestData,
@@ -80,7 +88,10 @@ describe("Leave: Leave's functionality", () => {
       // Login as employee and check the leave status.
       .then(() => {
         cy.logoutOrangeHRM();
-        cy.loginOrangeHRM(employeeLoginData.username, employeeLoginData.password);
+        cy.loginOrangeHRM(
+          employeeLoginData.username,
+          employeeLoginData.password
+        );
         myLeavePageActions.openMyLeavePage();
         cy.fixture("leave-tab/my-leave-page/myLeaveInfo.json").then(
           (myLeaveData) => {
