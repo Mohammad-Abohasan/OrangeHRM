@@ -9,14 +9,15 @@
     "regression-allureEl": "cypress run --e2e --env allure=true",
     "allure:clean": "rm -rf allure-results/ cypress/screenshots cypress/videos || true",
     "allure:report": "allure generate allure-results --clean -o allure-report",
-    "regression:buzz": "cypress run -s cypress/e2e/buzzTab/*",
-    "regression:leave": "cypress run -s cypress/e2e/leaveTab/*",
-    "regression:login": "cypress run -s cypress/e2e/loginPage/*",
-    "regression:pim": "cypress run -s cypress/e2e/pimTab/*",
-    "regression:recruitment": "cypress run -s cypress/e2e/recruitmentTab/*",
-    "regression:time": "cypress run -s cypress/e2e/timeTab/*",
-    "regression:withCloud": "cypress run --record --key d961cdbf-deb2-4156-9705-bf54098c9577",
-    "regression:withCloudAndTags": "cypress run -e grepTags=\"@login\" --record --key d961cdbf-deb2-4156-9705-bf54098c9577"
+    "allure:report-and-clean": "npm-run-all --sequential allure:report allure:clean",
+    "regression:buzz": "cypress run -s cypress/e2e/buzz-tab/*",
+    "regression:leave": "cypress run -s cypress/e2e/leave-tab/*",
+    "regression:login": "cypress run -s cypress/e2e/login-page/*",
+    "regression:pim": "cypress run -s cypress/e2e/pim-tab/*",
+    "regression:recruitment": "cypress run -s cypress/e2e/recruitment-tab/*",
+    "regression:time": "cypress run -s cypress/e2e/time-tab/*",
+    "regression:withCloud": "cypress run -b chrome --record --key %CYPRESS_RECORD_KEY%",
+    "regression:withCloudAndTags": "cypress run -e grepTags=\"@login\" --record --key %CYPRESS_RECORD_KEY%"
   },
   "dependencies": {
     "dotenv": "^16.3.1",
@@ -25,11 +26,14 @@
   },
   "devDependencies": {
     "@cypress/grep": "^4.0.0",
+    "@faker-js/faker": "^8.2.0",
+    "@mmisty/cypress-allure-adapter": "^0.13.0",
     "@shelex/cypress-allure-plugin": "^2.40.0",
     "allure-commandline": "^2.24.0",
     "cypress": "^13.3.1",
     "cypress-mochawesome-reporter": "^3.6.1",
     "cypress-plugin-api": "^2.11.1",
+    "npm-run-all": "^4.1.5",
     "typescript": "^5.2.2"
   }
 }

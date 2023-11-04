@@ -1,5 +1,6 @@
 import { writeFileSync, unlink } from "fs";
 import { defineConfig } from "cypress";
+import { configureAllureAdapterPlugins } from "@mmisty/cypress-allure-adapter/plugins";
 // import allureWriter from "@shelex/cypress-allure-plugin/writer";
 import * as XLSX from "xlsx";
 import * as path from "path";
@@ -41,13 +42,15 @@ export default defineConfig({
         },
       });
       // allureWriter(on, config);
-      require("@cypress/grep/src/plugin")(config);
       require("cypress-mochawesome-reporter/plugin")(on);
+      require("@cypress/grep/src/plugin")(config);
+      configureAllureAdapterPlugins(on, config);
       return config;
     },
     env: {
       allure: true,
-      allureResultsPath: "allure-results",
+      allureAttachRequests: true,
+      allureShowDuplicateWarn: true,
     },
     screenshotOnRunFailure: true,
   },
