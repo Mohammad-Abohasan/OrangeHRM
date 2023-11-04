@@ -95,7 +95,10 @@ describe("Leave: Leave's functionality", () => {
         myLeavePageActions.openMyLeavePage();
         cy.fixture("leave-tab/my-leave-page/myLeaveInfo.json").then(
           (myLeaveData) => {
-            myLeaveData.Date = moment().add(1, "day").format("YYYY-MM-DD");
+            myLeaveData.Date = moment()
+              .add(1, "day")
+              .add(moment().day() % 6 === 0 ? 1 : 0, "day")
+              .format("YYYY-MM-DD");
             myLeaveData["Leave Balance (Days)"] -=
               myLeaveData["Number of Days"];
             myLeavePageActions.searchForLeave(myLeaveData);
