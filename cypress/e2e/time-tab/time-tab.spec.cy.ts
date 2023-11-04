@@ -11,7 +11,7 @@ const timesheetsPageActions: TimesheetsPageActions =
 const timesheetsPageAssertions: TimesheetsPageAssertions =
   new TimesheetsPageAssertions();
 
-describe("Time: ", () => {
+describe("Time: Time Tab Functionality", () => {
   beforeEach(() => {
     cy.loginOrangeHRM();
     cy.fixture("pim-tab/employeeInfo.json").then(
