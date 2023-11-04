@@ -42,7 +42,7 @@ export default defineConfig({
         },
       });
       // allureWriter(on, config);
-      // require("cypress-mochawesome-reporter/plugin")(on);
+      require("cypress-mochawesome-reporter/plugin")(on);
       require("@cypress/grep/src/plugin")(config);
       configureAllureAdapterPlugins(on, config);
       return config;
@@ -51,7 +51,6 @@ export default defineConfig({
       allure: true,
       allureAttachRequests: true,
       allureShowDuplicateWarn: true,
-      allureShowTagsInTitle: true,
     },
     screenshotOnRunFailure: true,
   },
