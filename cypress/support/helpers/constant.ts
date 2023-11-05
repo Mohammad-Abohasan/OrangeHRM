@@ -39,9 +39,4 @@ export const SystemFields: { [key: string]: string } = {
   "CandiDate Name": INPUT_TYPE.ListBox,
   "CandiDate Status": INPUT_TYPE.Dropdown,
   "Date of Application": INPUT_TYPE.Date,
-  "Report Name": INPUT_TYPE.Text,
-  "Selection Criteria": INPUT_TYPE.Dropdown,
-  "Select Display Field Group": INPUT_TYPE.Dropdown,
-  "Select Display Field": INPUT_TYPE.Dropdown,
-  Location: INPUT_TYPE.Dropdown,
 };
