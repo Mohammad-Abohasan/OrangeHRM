@@ -168,8 +168,8 @@ export default class SharedHelper {
 
   static fillInInputField(fieldName: string, value: string, index: number = 0) {
     let labelName: string = fieldName;
-    if (labelName.includes("Status")) {
-      labelName = "Status";
+    if (labelName.includes("-")) {
+      labelName = labelName.substring(labelName.indexOf("-") + 2);
     }
     switch (SystemFields[fieldName]) {
       case INPUT_TYPE.Text:
