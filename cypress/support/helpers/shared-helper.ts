@@ -172,19 +172,19 @@ export default class SharedHelper {
       labelName = "Status";
     }
     switch (SystemFields[fieldName]) {
-      case INPUT_TYPE.TEXT:
+      case INPUT_TYPE.Text:
         this.typeInInputField(labelName, value, index);
         break;
-      case INPUT_TYPE.DROPDOWN:
+      case INPUT_TYPE.Dropdown:
         this.selectItemFromDropdown(labelName, value, index);
         break;
-      case INPUT_TYPE.MULTI_SELECT:
+      case INPUT_TYPE.MultiSelect:
         this.selectOptionFromList(labelName, value, index);
         break;
-      case INPUT_TYPE.LIST_BOX:
+      case INPUT_TYPE.ListBox:
         this.selectOptionFromListBox(labelName, value, index);
         break;
-      case INPUT_TYPE.DATE:
+      case INPUT_TYPE.Date:
         this.selectDateFromCalendar(labelName, value, index);
         break;
       default:
