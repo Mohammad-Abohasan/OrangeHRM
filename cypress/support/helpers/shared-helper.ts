@@ -48,6 +48,12 @@ export default class SharedHelper {
     return cy.get(".oxd-topbar-body-nav");
   }
 
+  static addButton() {
+    return cy
+      .get(".orangehrm-header-container")
+      .contains("[type='button']", " Add ");
+  }
+
   static clickResetButton() {
     cy.getByAttribute("type", "reset").click();
   }

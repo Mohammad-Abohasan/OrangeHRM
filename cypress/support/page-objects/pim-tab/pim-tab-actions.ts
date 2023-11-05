@@ -2,10 +2,6 @@ import SharedHelper from "../../helpers/shared-helper";
 
 class PimTabActions {
   elements = {
-    addEmployeeButton: () =>
-      cy
-        .get(".orangehrm-header-container")
-        .contains("[type='button']", " Add "),
     employeeInputName: (name: string, value: string) =>
       cy
         .get(".--name-grouped-field")
@@ -39,7 +35,7 @@ class PimTabActions {
   }
 
   addEmployee(employeeData: any, withLoginDetails: boolean = false) {
-    this.elements.addEmployeeButton().click();
+    SharedHelper.addButton().click();
     this.elements.employeeInputName("firstName", employeeData.firstName);
     this.elements.employeeInputName("middleName", employeeData.middleName);
     this.elements.employeeInputName("lastName", employeeData.lastName);
