@@ -44,6 +44,10 @@ export default class SharedHelper {
     return cy.get(".oxd-sidepanel-body");
   }
 
+  static topBarItems() {
+    return cy.get(".oxd-topbar-body-nav");
+  }
+
   static clickResetButton() {
     cy.getByAttribute("type", "reset").click();
   }

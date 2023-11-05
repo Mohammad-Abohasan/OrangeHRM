@@ -6,7 +6,6 @@ const candidatesPageAssertions: CandidatesPageAssertions =
 
 export default class CandidatesPageActions {
   elements = {
-    pages: () => cy.get(".oxd-topbar-body-nav-tab"),
     loadingSpinner: () => cy.get(".oxd-loading-spinner-container"),
     scheduleInterviewBtn: () => cy.get(".oxd-button--success"),
     labels: () => cy.get(".oxd-label"),
@@ -23,7 +22,7 @@ export default class CandidatesPageActions {
 
   openCandidatesPage() {
     SharedHelper.mainMenuItems().contains("Recruitment").click();
-    this.elements.pages().contains("Candidates").click();
+    SharedHelper.topBarItems().contains("Candidates").click();
   }
 
   searchForCandidate(candidateData: any) {
