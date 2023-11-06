@@ -14,6 +14,8 @@
   "gender": "Male",
   "status": "Enabled",
   "jobTitle": "",
+  "location": "",
+  "salaryAmount": "",
   "employmentStatus": "",
   "subUnit": "",
   "supervisor": "",
