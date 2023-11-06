@@ -53,27 +53,25 @@ Cypress.Commands.add("getByAttribute", (attribute: string, value: string) => {
 Cypress.Commands.add(
   "loginOrangeHRM",
   (userName = "Admin", password = "admin123") => {
-    cy.intercept(
-      "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/dashboard/employees/time-at-work**"
-    ).as("timeAtWork");
-    cy.intercept(
-      "https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/buzz/feed**"
-    ).as("buzzFeed");
+    cy.intercept("/web/index.php/core/i18n/messages**").then(() => {
+      cy.intercept("/web/index.php/api/v2/dashboard/employees/time-at-work**").as(
+        "timeAtWork"
+      );
+      cy.intercept("/web/index.php/api/v2/buzz/feed**").as("buzzFeed");
 
-    cy.visit("/");
-    cy.getByAttribute("placeholder", "Username").type(userName);
-    cy.getByAttribute("placeholder", "Password").type(password);
-    cy.get("button").click();
+      cy.visit("/");
+      cy.getByAttribute("placeholder", "Username").type(userName);
+      cy.getByAttribute("placeholder", "Password").type(password);
+      cy.get("button").click();
 
-    cy.wait(["@timeAtWork", "@buzzFeed"]);
+      cy.wait(["@timeAtWork", "@buzzFeed"]);
+    });
   }
 );
 
 Cypress.Commands.add("logoutOrangeHRM", () => {
   // cy.request("/web/index.php/auth/logout").as("Logout Successfully");
-  cy.intercept(
-    "https://opensource-demo.orangehrmlive.com/web/index.php/core/i18n/messages**"
-  ).as("messages");
+  cy.intercept("/web/index.php/core/i18n/messages**").as("messages");
   cy.get(".oxd-userdropdown-tab").click();
   cy.contains("[role=menuitem]", "Logout").click();
 
