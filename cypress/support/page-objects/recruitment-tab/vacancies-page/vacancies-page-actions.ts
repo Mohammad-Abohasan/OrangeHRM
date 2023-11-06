@@ -2,7 +2,6 @@ import SharedHelper from "../../../helpers/shared-helper";
 
 class VacanciesPageActions {
   elements = {
-    pages: () => cy.get(".oxd-topbar-body-nav-tab"),
     addAttachmentBtn: () =>
       cy.get(".orangehrm-attachment-header > button[type='button']"),
     fileInput: () => cy.get("input[type='file']"),
@@ -12,7 +11,7 @@ class VacanciesPageActions {
 
   openVacanciesPage() {
     SharedHelper.mainMenuItems().contains("Recruitment").click();
-    this.elements.pages().contains("Vacancies").click();
+    SharedHelper.topBarItems().contains("Vacancies").click();
   }
 
   editVacancyById(vacancyId: number) {

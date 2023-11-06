@@ -5,7 +5,7 @@ import VacanciesPageActions from "../../support/page-objects/recruitment-tab/vac
 import VacanciesPageAssertions from "../../support/page-objects/recruitment-tab/vacancies-page/vacancies-page-assertions";
 import candidatesHelper from "../../support/helpers/recruitment-tab/candidates-page/candidates-helper";
 import vacanciesHelper from "../../support/helpers/recruitment-tab/vacancies-page/vacancies-helper";
-import pimHelper from "../../support/helpers/pim-tab/pim-helper";
+import PimHelper from "../../support/helpers/pim-tab/pim-helper";
 import SharedHelper from "../../support/helpers/shared-helper";
 
 const candidatesPageActions: CandidatesPageActions =
@@ -38,7 +38,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
   });
 
   it("Recruitment - Vacancies: The user should be able to attach a file to a vacancy", () => {
-    pimHelper
+    PimHelper
       // Add an employee
       .addEmployee(employeeData)
       // Add a vacancy
@@ -71,15 +71,15 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       })
       // Delete the employee after the test
       .then(() => {
-        return pimHelper.getEmployee(employeeData.employeeId);
+        return PimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
-        pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
+        PimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
 
   it("Recruitment - Vacancies: The user should be able to download the vacancy attachment (excel file)", () => {
-    pimHelper
+    PimHelper
       // Add an employee
       .addEmployee(employeeData)
       // Add a vacancy
@@ -147,15 +147,15 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       })
       // Delete the employee after the test
       .then(() => {
-        return pimHelper.getEmployee(employeeData.employeeId);
+        return PimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
-        pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
+        PimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
 
   it("Recruitment - Candidates: Attach Resume File", () => {
-    pimHelper
+    PimHelper
       // Add an employee
       .addEmployee(employeeData)
       // Add a vacancy
@@ -192,10 +192,10 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       })
       // Delete the employee after the test
       .then(() => {
-        return pimHelper.getEmployee(employeeData.employeeId);
+        return PimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
-        pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
+        PimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
 
@@ -207,7 +207,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
   });
 
   it("Recruitment - Candidates: Schedule an Interview for a Candidate", () => {
-    pimHelper
+    PimHelper
       // Add an employee
       .addEmployee(employeeData)
       // Add a vacancy
@@ -245,15 +245,15 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       })
       // Delete the employee after the test
       .then(() => {
-        return pimHelper.getEmployee(employeeData.employeeId);
+        return PimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
-        pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
+        PimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
 
   it("Recruitment - Candidates: Add a new candidate and verify the record", () => {
-    pimHelper
+    PimHelper
       // Add an employee
       .addEmployee(employeeData)
       // Add a vacancy
@@ -294,10 +294,10 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       })
       // Delete the employee after the test
       .then(() => {
-        return pimHelper.getEmployee(employeeData.employeeId);
+        return PimHelper.getEmployee(employeeData.employeeId);
       })
       .then((employeeResponse) => {
-        pimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
+        PimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
       });
   });
 });

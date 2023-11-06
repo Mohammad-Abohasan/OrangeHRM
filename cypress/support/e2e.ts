@@ -17,7 +17,7 @@
 import "./commands";
 import "@cypress/grep";
 import "@shelex/cypress-allure-plugin";
-import '@mmisty/cypress-allure-adapter/support';
+import "@mmisty/cypress-allure-adapter/support";
 import "cypress-mochawesome-reporter/register";
 import "cypress-plugin-api";
 import "./utils/api-utils";
@@ -28,14 +28,4 @@ import PimHelper from "./helpers/pim-tab/pim-helper";
 
 Cypress.on("uncaught:exception", (err, runnable) => {
   return false;
-});
-
-it("Delete an employee if exists", () => {
-  cy.loginOrangeHRM();
-  cy.fixture("pim-tab/employeeInfo.json").then((employeeData) => {
-    PimHelper.getEmployee(employeeData.employeeId).then((employeeResponse) => {
-      if (employeeResponse.meta.total > 0)
-        PimHelper.deleteEmployee(employeeResponse.data[0].empNumber);
-    });
-  });
 });

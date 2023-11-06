@@ -2,15 +2,18 @@ import { ICreateAdminPayload } from "../../apis/payload/admin-tab/user-managemen
 import AdminInit from "../../initializers/admin-tab/admin-init";
 
 export const URLs = {
-  admins: `/web/index.php/api/v2/admin/users`,
+  adminBaseUrl: "/web/index.php/api/v2/admin",
+  users: "/users",
 };
 
 export default class AdminHelper {
   static addAdmin(adminData: ICreateAdminPayload, empNumber: number) {
-    return cy.addAdmin(
-      "POST",
-      URLs.admins,
-      AdminInit.initAdmin(adminData, empNumber)
-    ).then((response) => response.data);
+    return cy
+      .addAdmin(
+        "POST",
+        `${URLs.adminBaseUrl}${URLs.users}}`,
+        AdminInit.initAdmin(adminData, empNumber)
+      )
+      .then((response) => response.data);
   }
 }

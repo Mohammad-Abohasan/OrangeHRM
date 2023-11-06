@@ -2,10 +2,6 @@ import SharedHelper from "../../helpers/shared-helper";
 
 class PimTabActions {
   elements = {
-    addEmployeeButton: () =>
-      cy
-        .get(".orangehrm-header-container")
-        .contains("[type='button']", " Add "),
     employeeInputName: (name: string, value: string) =>
       cy
         .get(".--name-grouped-field")
@@ -39,17 +35,17 @@ class PimTabActions {
   }
 
   addEmployee(employeeData: any, withLoginDetails: boolean = false) {
-    this.elements.addEmployeeButton().click();
+    SharedHelper.addButton().click();
     this.elements.employeeInputName("firstName", employeeData.firstName);
     this.elements.employeeInputName("middleName", employeeData.middleName);
     this.elements.employeeInputName("lastName", employeeData.lastName);
-    SharedHelper.typeInInputField("Employee Id", employeeData.employeeId);
+    SharedHelper.fillInInputField("Employee Id", employeeData.employeeId);
     if (withLoginDetails) {
       this.elements.createLoginDetails().click({ force: true });
-      SharedHelper.typeInInputField("Username", employeeData.username);
-      SharedHelper.selectOptionFromList("Status", employeeData.status);
-      SharedHelper.typeInInputField("Password", employeeData.password);
-      SharedHelper.typeInInputField(
+      SharedHelper.fillInInputField("Username", employeeData.username);
+      SharedHelper.fillInInputField("PIM Status", employeeData.status);
+      SharedHelper.fillInInputField("Password", employeeData.password);
+      SharedHelper.fillInInputField(
         "Confirm Password",
         employeeData.confirmPassword
       );
@@ -65,39 +61,39 @@ class PimTabActions {
     this.elements.employeeInputName("firstName", employeeData.firstName);
     this.elements.employeeInputName("middleName", employeeData.middleName);
     this.elements.employeeInputName("lastName", employeeData.lastName);
-    SharedHelper.typeInInputField("Nickname", employeeData.nickName);
-    SharedHelper.typeInInputField("Employee Id", employeeData.employeeId);
-    SharedHelper.typeInInputField("Other Id", employeeData.otherId);
-    SharedHelper.typeInInputField(
+    SharedHelper.fillInInputField("Nickname", employeeData.nickName);
+    SharedHelper.fillInInputField("Employee Id", employeeData.employeeId);
+    SharedHelper.fillInInputField("Other Id", employeeData.otherId);
+    SharedHelper.fillInInputField(
       "Driver's License Number",
       employeeData.drivingLicenseNo
     );
-    SharedHelper.selectDateFromCalendar(
+    SharedHelper.fillInInputField(
       "License Expiry Date",
       employeeData.drivingLicenseExpiredDate
     );
-    SharedHelper.typeInInputField("SSN Number", employeeData.ssnNumber);
-    SharedHelper.typeInInputField("SIN Number", employeeData.sinNumber);
-    SharedHelper.selectItemFromDropdown(
+    SharedHelper.fillInInputField("SSN Number", employeeData.ssnNumber);
+    SharedHelper.fillInInputField("SIN Number", employeeData.sinNumber);
+    SharedHelper.fillInInputField(
       "Nationality",
       employeeData.nationalityId
     );
-    SharedHelper.selectItemFromDropdown(
+    SharedHelper.fillInInputField(
       "Marital Status",
       employeeData.maritalStatus
     );
-    SharedHelper.selectDateFromCalendar("Date of Birth", employeeData.birthday);
-    SharedHelper.selectOptionFromList("Gender", employeeData.gender);
-    SharedHelper.typeInInputField(
+    SharedHelper.fillInInputField("Date of Birth", employeeData.birthday);
+    SharedHelper.fillInInputField("Gender", employeeData.gender);
+    SharedHelper.fillInInputField(
       "Military Service",
       employeeData.militaryService
     );
-    SharedHelper.selectOptionFromList("Smoker", employeeData.smoker); // I'm not smoker :D
+    SharedHelper.fillInInputField("Smoker", employeeData.smoker); // I'm not smoker :D
     SharedHelper.clickSubmitButtonIsContains("Save");
   }
 
   searchEmployee(id: string) {
-    SharedHelper.typeInInputField("Employee Id", id);
+    SharedHelper.fillInInputField("Employee Id", id);
     SharedHelper.clickSubmitButtonIsContains("Search");
   }
 
