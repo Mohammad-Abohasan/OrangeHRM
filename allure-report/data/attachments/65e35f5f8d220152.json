@@ -1,3 +1,0 @@
-POST
-/web/index.php/api/v2/leave/leave-requests
-{"leaveTypeId":9,"fromDate":"2023-11-07","toDate":"2023-11-07","comment":"One day only.","duration":{"type":"full_day"}}
