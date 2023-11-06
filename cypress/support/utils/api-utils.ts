@@ -16,7 +16,10 @@ import { IActionOnLeaveRequestPayload } from "../apis/payload/leave-tab/leave-li
 import { IActionOnLeaveRequestResponse } from "../apis/response/leave-tab/leave-list-page/action-on-leave-request-response";
 import { SharedDeletePayload } from "../apis/payload/shared-delete-payload";
 import { SharedDeleteResponse } from "../apis/response/shared-delete-response";
-
+import { ICreateLocationPayload } from "../apis/payload/admin-tab/location-page/add-location-payload";
+import { ICreateLocationResponse } from "../apis/response/admin-tab/location-page/add-location-response";
+import { ICreateJobTitlePayload } from "../apis/payload/admin-tab/job-page/add-jobTitle-payload";
+import { ICreateJobTitleResponse } from "../apis/response/admin-tab/job-page/add-jobTitle-response";
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
@@ -76,6 +79,18 @@ declare global {
         url: string,
         payload: IActionOnLeaveRequestPayload
       ) => Chainable<IActionOnLeaveRequestResponse>;
+
+      addJobTitle: (
+        method: string,
+        url: string,
+        payload: ICreateJobTitlePayload
+      ) => Chainable<ICreateJobTitleResponse>;
+
+      addLocation: (
+        method: string,
+        url: string,
+        payload: ICreateLocationPayload
+      ) => Chainable<ICreateLocationResponse>;
     }
   }
 }
@@ -104,3 +119,5 @@ Cypress.Commands.add("addAdmin", apiCall);
 Cypress.Commands.add("addLeaveEntitlement", apiCall);
 Cypress.Commands.add("applyLeave", apiCall);
 Cypress.Commands.add("actionOnLeaveRequest", apiCall);
+Cypress.Commands.add("addJobTitle", apiCall);
+Cypress.Commands.add("addLocation", apiCall);
