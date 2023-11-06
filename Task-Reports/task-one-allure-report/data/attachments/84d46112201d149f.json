@@ -1,3 +1,0 @@
-PUT
-/web/index.php/api/v2/pim/employees/67/job-details
-{"joinedDate":"","jobTitleId":27,"locationId":7}

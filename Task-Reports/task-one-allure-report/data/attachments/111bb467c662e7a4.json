@@ -1,0 +1,3 @@
+PUT
+/web/index.php/api/v2/pim/employees/700/job-details
+{"joinedDate":"","jobTitleId":336,"locationId":257}
