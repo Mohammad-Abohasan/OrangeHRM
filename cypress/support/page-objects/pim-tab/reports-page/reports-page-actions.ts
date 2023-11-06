@@ -27,28 +27,22 @@ export default class ReportsPageActions {
     SharedHelper.addButton().click();
     cy.wait(["@messages", "@reports"]).then(() => {
       addReportPageActions.typeReportName(name);
-
-      addReportPageActions.addSelectionCriteria("Job Title", criteria["Job Title"]);
-      addReportPageActions.addSelectionCriteria("Location", criteria["Location"]);
-
+      // Select all criteria
+      Cypress._.each(Object.keys(criteria), (criteriaKey: any) => {
+        addReportPageActions.addSelectionCriteria(
+          criteriaKey,
+          criteria[criteriaKey]
+        );
+      });
       addReportPageActions.selectIncludeOption(include);
-
-      addReportPageActions.addDisplayFieldGroup(
-        "Personal",
-        group["Personal"].field,
-        group["Personal"].includeHeader
-      );
-      addReportPageActions.addDisplayFieldGroup(
-        "Job",
-        group["Job"].field,
-        group["Job"].includeHeader
-      );
-      addReportPageActions.addDisplayFieldGroup(
-        "Salary",
-        group["Salary"].field,
-        group["Salary"].includeHeader
-      );
-
+      // Select all display fields
+      Cypress._.each(Object.keys(group), (groupKey: any) => {
+        addReportPageActions.addDisplayFieldGroup(
+          groupKey,
+          group[groupKey].field,
+          group[groupKey].includeHeader
+        );
+      });
       addReportPageActions.saveReport();
     });
   }
