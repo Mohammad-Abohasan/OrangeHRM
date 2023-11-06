@@ -1,5 +1,6 @@
 import { ICreateEmployeePayload } from "../../apis/payload/pim-tab/add-employee-payload";
 import PimInit from "../../initializers/pim-tab/pim-init";
+import SharedInit from "../../initializers/shared-init";
 
 export const URLs = {
   employees: `/web/index.php/api/v2/pim/employees`,
@@ -17,10 +18,10 @@ export default class PimHelper {
   }
 
   static deleteEmployee(empNumber: number) {
-    return cy.deleteEmployee(
+    return cy.deleteItem(
       "DELETE",
       URLs.employees,
-      PimInit.initDeleteEmployee(empNumber)
+      SharedInit.initDeleteItem(empNumber)
     );
   }
 }
