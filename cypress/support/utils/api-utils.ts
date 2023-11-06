@@ -20,6 +20,11 @@ import { ICreateLocationPayload } from "../apis/payload/admin-tab/location-page/
 import { ICreateLocationResponse } from "../apis/response/admin-tab/location-page/add-location-response";
 import { ICreateJobTitlePayload } from "../apis/payload/admin-tab/job-page/add-jobTitle-payload";
 import { ICreateJobTitleResponse } from "../apis/response/admin-tab/job-page/add-jobTitle-response";
+import { IUpdateEmployeeJobDetailsResponse } from "../apis/response/pim-tab/update-employee-job-details-response";
+import { IUpdateEmployeeJobDetailsPayload } from "../apis/payload/pim-tab/update-employee-job-details-payload";
+import { ICreateEmployeeSalaryComponentsResponse } from "../apis/response/pim-tab/add-employee-salary-components-response";
+import { ICreateEmployeeSalaryComponentsPayload } from "../apis/payload/pim-tab/add-employee-salary-components-payload";
+
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
@@ -91,6 +96,18 @@ declare global {
         url: string,
         payload: ICreateLocationPayload
       ) => Chainable<ICreateLocationResponse>;
+
+      updateEmployeeJobDetails: (
+        method: string,
+        url: string,
+        payload: IUpdateEmployeeJobDetailsPayload
+      ) => Chainable<IUpdateEmployeeJobDetailsResponse>;
+
+      addEmployeeSalaryComponents: (
+        method: string,
+        url: string,
+        payload: ICreateEmployeeSalaryComponentsPayload
+      ) => Chainable<ICreateEmployeeSalaryComponentsResponse>;
     }
   }
 }
@@ -121,3 +138,5 @@ Cypress.Commands.add("applyLeave", apiCall);
 Cypress.Commands.add("actionOnLeaveRequest", apiCall);
 Cypress.Commands.add("addJobTitle", apiCall);
 Cypress.Commands.add("addLocation", apiCall);
+Cypress.Commands.add("updateEmployeeJobDetails", apiCall);
+Cypress.Commands.add("addEmployeeSalaryComponents", apiCall);
