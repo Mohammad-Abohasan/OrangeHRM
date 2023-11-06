@@ -1,0 +1,3 @@
+POST
+/web/index.php/api/v2/pim/employees/68/salary-components
+{"salaryComponent":"Basic salary","salaryAmount":"56175","payGradeId":1,"currencyId":"USD","payFrequencyId":"4","addDirectDeposit":false}

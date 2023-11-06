@@ -1,0 +1,1 @@
+{"data":{"id":11,"amount":"58197","salaryName":"Basic salary","comment":null,"payPeriod":{"id":"4","name":"Monthly"},"payGrade":{"id":1,"name":"Grade 1"},"currencyType":{"id":"USD","name":"United States Dollar"},"directDebit":{"id":null,"routingNumber":null,"account":null,"amount":null,"accountType":null}},"meta":{"empNumber":80},"rels":[]}
