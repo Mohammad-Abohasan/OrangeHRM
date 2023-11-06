@@ -1,0 +1,8 @@
+{
+  "salaryComponent": "Basic salary",
+  "salaryAmount": "",
+  "payGradeId": 1,
+  "currencyId": "USD",
+  "payFrequencyId": "4",
+  "addDirectDeposit": false
+}
