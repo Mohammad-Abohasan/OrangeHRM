@@ -5,6 +5,10 @@ export default class SharedHelper {
     return faker.string.alpha({ length: { min, max } });
   }
 
+  static generateRandomNumber(min: number = 1, max: number = 1000) {
+    return faker.number.int({ min, max });
+  }
+
   static getHeaderIndex(headerName: string) {
     return cy
       .get(".oxd-table-header")
@@ -67,9 +71,7 @@ export default class SharedHelper {
   }
 
   static checkLoadingSpinnerIsExist(isExist: boolean) {
-    cy.get(".oxd-loading-spinner-container").should(
-      isExist ? "exist" : "not.exist"
-    );
+    cy.get(".oxd-loading-spinner-container").should(isExist ? "exist" : "not.exist");
   }
 
   static deselectOptionsFromMultiSelect(labelName: string) {
@@ -112,11 +114,7 @@ export default class SharedHelper {
     cy.get(".oxd-select-option").contains(itemName).click();
   }
 
-  static selectOptionFromList(
-    labelName: string,
-    value: string,
-    index: number = 0
-  ) {
+  static selectOptionFromList(labelName: string, value: string, index: number = 0) {
     cy.get(".oxd-input-group")
       .find(`.oxd-label:contains(${labelName})`)
       .eq(index)
@@ -145,16 +143,10 @@ export default class SharedHelper {
     cy.getByAttribute("role", "listbox")
       .contains("[role=option]", "Searching....")
       .should("not.exist");
-    cy.getByAttribute("role", "listbox")
-      .contains("[role=option]", option)
-      .click();
+    cy.getByAttribute("role", "listbox").contains("[role=option]", option).click();
   }
 
-  static selectDateFromCalendar(
-    labelName: string,
-    date: string,
-    index: number = 0
-  ) {
+  static selectDateFromCalendar(labelName: string, date: string, index: number = 0) {
     cy.get(".oxd-input-group")
       .find(`.oxd-label:contains(${labelName})`)
       .eq(index)
