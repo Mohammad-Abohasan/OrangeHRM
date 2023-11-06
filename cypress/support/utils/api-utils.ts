@@ -6,8 +6,6 @@ import { IShortlistCandidateResponse } from "../apis/response/recruitment-tab/ca
 import { ICreateEmployeeResponse } from "../apis/response/pim-tab/add-employee-response";
 import { ICreateEmployeePayload } from "../apis/payload/pim-tab/add-employee-payload";
 import { IGetEmployeeResponse } from "../apis/response/pim-tab/get-employee-response";
-import { IDeleteEmployeeResponse } from "../apis/response/pim-tab/delete-employee-response";
-import { IDeleteEmployeePayload } from "../apis/payload/pim-tab/delete-employee-payload";
 import { ICreateAdminPayload } from "../apis/payload/admin-tab/user-management-page/add-admin-payload";
 import { ICreateAdminResponse } from "../apis/response/admin-tab/user-management-page/add-admin-response";
 import { IAddLeaveEntitlementPayload } from "../apis/payload/leave-tab/entitlements-page/add-leave-entitlement-payload";
@@ -16,6 +14,8 @@ import { IApplyLeavePayload } from "../apis/payload/leave-tab/apply-page/apply-l
 import { IApplyLeaveResponse } from "../apis/response/leave-tab/apply-page/apply-leave-response";
 import { IActionOnLeaveRequestPayload } from "../apis/payload/leave-tab/leave-list-page/action-on-leave-request-payload";
 import { IActionOnLeaveRequestResponse } from "../apis/response/leave-tab/leave-list-page/action-on-leave-request-response";
+import { SharedDeletePayload } from "../apis/payload/shared-delete-payload";
+import { SharedDeleteResponse } from "../apis/response/shared-delete-response";
 
 declare global {
   namespace Cypress {
@@ -45,16 +45,13 @@ declare global {
         payload: ICreateEmployeePayload
       ) => Chainable<ICreateEmployeeResponse>;
 
-      getEmployee: (
-        method: string,
-        url: string
-      ) => Chainable<IGetEmployeeResponse>;
+      getEmployee: (method: string, url: string) => Chainable<IGetEmployeeResponse>;
 
-      deleteEmployee: (
+      deleteItem: (
         method: string,
         url: string,
-        payload: IDeleteEmployeePayload
-      ) => Chainable<IDeleteEmployeeResponse>;
+        payload: SharedDeletePayload
+      ) => Chainable<SharedDeleteResponse>;
 
       addAdmin: (
         method: string,
@@ -102,7 +99,7 @@ Cypress.Commands.add("addVacancy", apiCall);
 Cypress.Commands.add("shortlistCandidate", apiCall);
 Cypress.Commands.add("addEmployee", apiCall);
 Cypress.Commands.add("getEmployee", apiCall);
-Cypress.Commands.add("deleteEmployee", apiCall);
+Cypress.Commands.add("deleteItem", apiCall);
 Cypress.Commands.add("addAdmin", apiCall);
 Cypress.Commands.add("addLeaveEntitlement", apiCall);
 Cypress.Commands.add("applyLeave", apiCall);
