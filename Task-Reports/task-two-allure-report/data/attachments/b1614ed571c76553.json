@@ -1,0 +1,3 @@
+POST
+/web/index.php/api/v2/claim/events
+{"name":"Fitness reimbursement - iFK","description":"Created by Mohammad-Abohasan","status":true}

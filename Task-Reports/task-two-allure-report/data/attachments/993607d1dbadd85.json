@@ -1,0 +1,3 @@
+POST
+/web/index.php/api/v2/claim/requests
+{"claimEventId":35,"currencyId":"ILS","remarks":"Free Palestine"}

@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Thu Nov 09 02:49:21 EET 2023","Thu Nov 09 02:50:11 EET 2023","49700","Claim: Claim Tab functionality","","","","","Claim - The admin should be able to approve the employee's claim request, and the employee should be able to view the status of the claim request",""
+"passed","Thu Nov 09 02:50:11 EET 2023","Thu Nov 09 02:50:55 EET 2023","44026","Claim: Claim Tab functionality","","","","","Claim - The admin should be able to reject the employee's claim request, and the employee should be able to view the status of the claim request",""
