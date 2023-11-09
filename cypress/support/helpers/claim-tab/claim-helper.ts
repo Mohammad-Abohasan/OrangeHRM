@@ -37,11 +37,13 @@ export default class ClaimHelper {
   }
 
   static actionOnClaimRequest(claimReqId: any, action: any): any {
-    return cy.actionOnClaimRequest(
-      "PUT",
-      `${URLs.claimBaseUrl}${URLs.claimRequests}/${claimReqId}${URLs.action}`,
-      ClaimInit.initActionOnClaimRequest({ action })
-    );
+    return cy
+      .actionOnClaimRequest(
+        "PUT",
+        `${URLs.claimBaseUrl}${URLs.claimRequests}/${claimReqId}${URLs.action}`,
+        ClaimInit.initActionOnClaimRequest({ action })
+      )
+      .then((response: any) => response.data);
   }
 
   static submitClaimRequest(claimReqId: any): any {
