@@ -15,25 +15,23 @@ export default class ReportsPageAssertions {
     });
   }
 
-  checkReportContents(numberOfEmployees: number, reportGroupData: any) {
-    Cypress._.times(numberOfEmployees, (count) => {
-      cy.get(`@employeeNo${count}`).then((employeeInfo: any) => {
-        this.checkReportContainsValueInColumn(
-          count,
-          reportGroupData["Personal"].field,
-          employeeInfo.firstName
-        );
-        this.checkReportContainsValueInColumn(
-          count,
-          reportGroupData["Job"].field,
-          employeeInfo.jobTitle
-        );
-        this.checkReportContainsValueInColumn(
-          count,
-          reportGroupData["Salary"].field,
-          employeeInfo.salaryAmount
-        );
-      });
+  checkReportContents(employeesData: any, reportGroupData: any) {
+    Cypress._.times(employeesData.length, (count) => {
+      this.checkReportContainsValueInColumn(
+        count,
+        reportGroupData["Personal"].field,
+        employeesData[count].firstName
+      );
+      this.checkReportContainsValueInColumn(
+        count,
+        reportGroupData["Job"].field,
+        employeesData[count].jobTitle
+      );
+      this.checkReportContainsValueInColumn(
+        count,
+        reportGroupData["Salary"].field,
+        employeesData[count].salaryAmount
+      );
     });
   }
 

@@ -6,6 +6,7 @@ import SharedInit from "../../initializers/shared-init";
 
 export const URLs = {
   employees: `/web/index.php/api/v2/pim/employees`,
+  reports: `/web/index.php/api/v2/pim/reports/defined`,
 };
 
 export default class PimHelper {
@@ -51,5 +52,13 @@ export default class PimHelper {
         PimInit.initEmployeeSalaryComponentsDetails(employeeSalaryComponentsDetails)
       )
       .then((response) => response.data);
+  }
+
+  static deleteReport(reportId: number) {
+    return cy.deleteItem(
+      "DELETE",
+      URLs.reports,
+      SharedInit.initDeleteItem(reportId)
+    );
   }
 }

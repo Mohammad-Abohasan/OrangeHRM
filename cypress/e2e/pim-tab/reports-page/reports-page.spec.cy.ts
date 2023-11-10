@@ -6,141 +6,117 @@ import ReportsPageAssertions from "../../../support/page-objects/pim-tab/reports
 
 const reportsPageActions: ReportsPageActions = new ReportsPageActions();
 const reportsPageAssertions: ReportsPageAssertions = new ReportsPageAssertions();
+
 let numberOfEmployees: number = 1;
+let reportData: any = {};
+let jobData: any = {};
+let locationData: any = {};
+let employeeData: any = {};
+let employeesData: any = [];
+let empJobData: any = {};
+let empSalData: any = {};
+
 describe("PIM - Reports: Reports Table Functionality", () => {
   beforeEach(() => {
-    // to store the job title and location ids and names for later use instead of get them from fixture every time
-    const jobTitle: { [key: string]: number | string } = {};
-    const location: { [key: string]: number | string } = {};
-
     // assign number of employees to be created
     numberOfEmployees = 3;
 
     cy.loginOrangeHRM();
-
-    cy.fixture("pim-tab/reports-page/reportInfo.json").as("reportData");
-    cy.fixture("admin-tab/job-page/jobTitleInfo.json").as("jobData");
-    cy.fixture("admin-tab/location-page/locationInfo.json").as("locationData");
-    cy.fixture("pim-tab/employeeInfo.json").as("employeeData");
-    cy.fixture("pim-tab/employeeJobDetailsInfo.json").as("empJobData");
-    cy.fixture("pim-tab/employeeSalaryComponent.json").as("empSalaryData");
-
-    cy.get("@jobData")
+    cy.fixture("pim-tab/reports-page/reportInfo.json")
+      .then((reportInfo: any) => {
+        reportData = reportInfo;
+        cy.fixture("admin-tab/job-page/jobTitleInfo.json");
+      })
+      .then((jobInfo: any) => {
+        jobData = jobInfo;
+        cy.fixture("admin-tab/location-page/locationInfo.json");
+      })
+      .then((locationInfo: any) => {
+        locationData = locationInfo;
+        cy.fixture("pim-tab/employeeInfo.json");
+      })
+      .then((employeeInfo: any) => {
+        employeeData = employeeInfo;
+        cy.fixture("pim-tab/employeeJobDetailsInfo.json");
+      })
+      .then((empJobInfo: any) => {
+        empJobData = empJobInfo;
+        cy.fixture("pim-tab/employeeSalaryComponent.json");
+      })
       // Add a new job title
-      .then((jobData: any) => {
+      .then((empSalaryInfo: any) => {
+        empSalData = empSalaryInfo;
         AdminHelper.addJobTitle(jobData);
       })
-      // Save the job title Information
-      .then((jobRes: any) => {
-        jobTitle.id = jobRes.id;
-        jobTitle.title = jobRes.title;
-        return cy.get("@locationData");
-      })
       // Add a new location
-      .then((locationData: any) => {
-        return AdminHelper.addLocation(locationData);
-      })
-      // Save the location Information
-      .then((locationRes: any) => {
-        location.id = locationRes.id;
-        location.name = locationRes.name;
-        return cy.get("@employeeData");
+      .then((jobRes: any) => {
+        jobData.id = jobRes.id;
+        jobData.title = jobRes.title;
+        AdminHelper.addLocation(locationData);
       })
       // Add a new employees and update their job details and salary components
-      .then((employeeData: any) => {
-        Cypress._.times(numberOfEmployees, (count) => {
+      .then((locationRes: any) => {
+        locationData.id = locationRes.id;
+        locationData.name = locationRes.name;
+        Cypress._.times(numberOfEmployees, () => {
+          // Copy the employee data to a new employee
           const empInfo = { ...employeeData };
           // Add a new employee
           PimHelper.addEmployee(empInfo)
-            // Update the employee job details
+            // Update the employee job details and Add a new salary component
             .then((empRes: any) => {
               empInfo.empNumber = empRes.empNumber;
-              cy.get("@empJobData").then((empJobData: any) => {
-                empJobData.jobTitleId = jobTitle.id;
-                empJobData.locationId = location.id;
-                PimHelper.updateEmployeeJobDetails(empJobData, empInfo.empNumber);
-              });
+              empInfo.firstName = empRes.firstName;
+              empJobData.jobTitleId = jobData.id;
+              empJobData.locationId = locationData.id;
+              PimHelper.updateEmployeeJobDetails(empJobData, empInfo.empNumber);
+              PimHelper.addEmployeeSalaryComponents(empSalData, empInfo.empNumber);
             })
-            // Update the employee salary components
-            .then(() => {
-              return cy.get("@empSalaryData").then((empSalData: any) => {
-                return PimHelper.addEmployeeSalaryComponents(
-                  empSalData,
-                  empInfo.empNumber
-                );
-              });
-            })
-            // Save the updated employee information
+            // Save employee data
             .then((empSalRes: any) => {
-              empInfo.jobTitle = jobTitle.title;
-              empInfo.location = location.name;
+              empInfo.jobTitle = jobData.title;
+              empInfo.location = locationData.name;
               empInfo.salaryAmount = empSalRes.amount;
-              return empInfo;
-            })
-            .as(`employeeNo${count}`);
+              employeesData.push(empInfo);
+            });
         });
       })
       // Update the report data with the job title and location
       .then(() => {
-        cy.get("@reportData").then((reportData: any) => {
-          reportData.name = `${SharedHelper.generateRandomString()}-${
-            reportData.name
-          }`;
-          reportData.criteria["Job Title"] = jobTitle.title;
-          reportData.criteria["Location"] = location.name;
-        });
+        reportData.name += ` - ${SharedHelper.generateRandomString()}`;
+        reportData.criteria["Job Title"] = jobData.title;
+        reportData.criteria["Location"] = locationData.name;
       });
-
-    // Save the job title and location ids
-    cy.wrap(jobTitle.id).as("jobTitleId");
-    cy.wrap(location.id).as("locationId");
 
     reportsPageActions.openReportsPage();
   });
 
   it("PIM - Reports - The admin should be able to add a new report and verify it", () => {
-    cy.get("@reportData").then((reportData: any) => {
-      reportsPageActions.addReport(reportData);
-      SharedHelper.checkToastMessage("Successfully Saved");
-      SharedHelper.checkLoadingSpinnerIsExist(false);
-      
-      reportsPageAssertions.verifyReportName(reportData.name);
-      reportsPageAssertions.checkTopHeaders(Object.keys(reportData.group));
-      reportsPageAssertions.checkReportContents(numberOfEmployees, reportData.group);
-      reportsPageAssertions.verifyNumberOfRows(numberOfEmployees);
-    });
-    cy.url()
-      .then((url) => url.split("/").pop()!)
-      .as("reportId");
+    reportsPageActions.addReport(reportData);
+    SharedHelper.checkToastMessage("Successfully Saved");
+    SharedHelper.checkLoadingSpinnerIsExist(false);
+
+    reportsPageAssertions.verifyReportName(reportData.name);
+    reportsPageAssertions.checkTopHeaders(Object.keys(reportData.group));
+    reportsPageAssertions.checkReportContents(employeesData, reportData.group);
+    reportsPageAssertions.verifyNumberOfRows(numberOfEmployees);
+
+    cy.url().then((url) => (reportData.id = url.split("/").pop()!));
   });
 
   afterEach(() => {
     // Delete our report via UI
     // reportsPageActions.openReportsPage();
-    // cy.get("@reportData").then((reportData: any) => {
-    //   reportsPageActions.searchReport(reportData.name);
-    //   reportsPageActions.deleteReport();
-    //   SharedHelper.checkToastMessage("Successfully Deleted");
-    // });
+    // reportsPageActions.searchReport(reportData.name);
+    // reportsPageActions.deleteReport();
+    // SharedHelper.checkToastMessage("Successfully Deleted");
+
     // Delete our report via API
-    cy.get("@reportId").then((reportId: any) => {
-      cy.request("DELETE", `/web/index.php/api/v2/pim/reports/defined`, {
-        ids: [reportId],
-      });
-    });
-    // Delete our job title via API
-    cy.get("@jobTitleId").then((jobTitleId: any) => {
-      AdminHelper.deleteJobTitle(jobTitleId);
-    });
-    // Delete our location via API
-    cy.get("@locationId").then((locationId: any) => {
-      AdminHelper.deleteLocation(locationId);
-    });
-    // Delete our employees via API
+    PimHelper.deleteReport(reportData.id);
+    AdminHelper.deleteJobTitle(jobData.id);
+    AdminHelper.deleteLocation(locationData.id);
     Cypress._.times(numberOfEmployees, (count) => {
-      cy.get(`@employeeNo${count}`).then((employeeInfo: any) => {
-        PimHelper.deleteEmployee(employeeInfo.empNumber);
-      });
+      PimHelper.deleteEmployee(employeesData[count].empNumber);
     });
   });
 });
