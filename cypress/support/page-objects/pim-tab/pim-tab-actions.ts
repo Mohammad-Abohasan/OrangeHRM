@@ -35,7 +35,7 @@ class PimTabActions {
   }
 
   addEmployee(employeeData: any, withLoginDetails: boolean = false) {
-    SharedHelper.addButton().click();
+    SharedHelper.addButton().click({force: true});
     this.elements.employeeInputName("firstName", employeeData.firstName);
     this.elements.employeeInputName("middleName", employeeData.middleName);
     this.elements.employeeInputName("lastName", employeeData.lastName);
@@ -43,7 +43,7 @@ class PimTabActions {
     if (withLoginDetails) {
       this.elements.createLoginDetails().click({ force: true });
       SharedHelper.fillInInputField("Username", employeeData.username);
-      SharedHelper.fillInInputField("PIM Status", employeeData.status);
+      SharedHelper.fillInInputField("PIM - Status", employeeData.status);
       SharedHelper.fillInInputField("Password", employeeData.password);
       SharedHelper.fillInInputField(
         "Confirm Password",
