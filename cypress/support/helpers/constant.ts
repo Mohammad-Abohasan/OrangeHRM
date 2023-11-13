@@ -25,7 +25,7 @@ export const SystemFields: { [key: string]: string } = {
   "Military Service": INPUT_TYPE.Text,
   Smoker: INPUT_TYPE.MultiSelect,
   "Employment Status": INPUT_TYPE.Dropdown,
-  "PIM Status": INPUT_TYPE.MultiSelect,
+  "PIM - Status": INPUT_TYPE.MultiSelect,
   Include: INPUT_TYPE.Dropdown,
   "Supervisor Name": INPUT_TYPE.ListBox,
   "Job Title": INPUT_TYPE.Dropdown,
