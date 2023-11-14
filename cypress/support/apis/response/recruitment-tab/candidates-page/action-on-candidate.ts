@@ -1,4 +1,4 @@
-export interface IShortlistCandidateResponse {
+export interface IActionOnCandidateResponse {
   data: {
     id: number;
     candidate: {
