@@ -1,3 +1,4 @@
+import { INTERVIEW_RESULT } from "../../../helpers/recruitment-tab/candidates-page/candidates-helper";
 import SharedHelper from "../../../helpers/shared-helper";
 import CandidatesPageAssertions from "./candidates-page-assertions";
 
@@ -7,33 +8,54 @@ const candidatesPageAssertions: CandidatesPageAssertions =
 export default class CandidatesPageActions {
   elements = {
     loadingSpinner: () => cy.get(".oxd-loading-spinner-container"),
-    scheduleInterviewBtn: () => cy.get(".oxd-button--success"),
+    getButtonByName: (buttonName: string) =>
+      cy
+        .get(".orangehrm-card-container")
+        .contains("[type=button]", ` ${buttonName} `),
     labels: () => cy.get(".oxd-label"),
     autoCompleteInput: () => cy.get(".oxd-autocomplete-text-input > input"),
     autoCompleteOptions: () => cy.get(".oxd-autocomplete-option"),
     dateInput: () => cy.get(".oxd-date-input"),
     timeInput: () => cy.get(".oxd-time-input"),
-    submitBtn: () => cy.get('button[type="submit"]'),
 
     editSwitch: () => cy.get(".oxd-switch-input"),
     fileInput: () => cy.get("input[type='file']"),
     resumeName: () => cy.get(".orangehrm-file-preview > .oxd-text"),
+    downloadResumeButton: () => cy.get(".bi-download"),
   };
 
   openCandidatesPage() {
+    cy.intercept("/web/index.php/core/i18n/messages").as("messages");
+    cy.intercept("/web/index.php/api/v2/admin/job-titles**").as("jobTitles");
+    cy.intercept("/web/index.php/api/v2/recruitment/vacancies**").as("vacancies");
+    cy.intercept("/web/index.php/api/v2/recruitment/hiring-managers**").as(
+      "hiringManagers"
+    );
+    cy.intercept("/web/index.php/api/v2/recruitment/candidates/statuses**").as(
+      "candidates-statuses"
+    );
+    cy.intercept("/web/index.php/api/v2/leave/workweek**").as("workweek");
+    cy.intercept("/web/index.php/api/v2/leave/holidays**").as("holidays");
+
     SharedHelper.mainMenuItems().contains("Recruitment").click();
     SharedHelper.topBarItems().contains("Candidates").click();
+
+    cy.wait([
+      "@messages",
+      "@jobTitles",
+      "@vacancies",
+      "@hiringManagers",
+      "@candidates-statuses",
+      "@workweek",
+      "@holidays",
+    ]);
   }
 
   searchForCandidate(candidateData: any) {
-    const [firstNameHM, , lastNameHM] =
-      candidateData["Hiring Manager"].split(" ");
+    const [firstNameHM, , lastNameHM] = candidateData["Hiring Manager"].split(" ");
     const [firstNameCandidate] = candidateData["Candidate"].split(" ");
     SharedHelper.fillInInputField("Vacancy", candidateData["Vacancy"]);
-    SharedHelper.fillInInputField(
-      "Hiring Manager",
-      `${firstNameHM} ${lastNameHM}`
-    );
+    SharedHelper.fillInInputField("Hiring Manager", `${firstNameHM} ${lastNameHM}`);
     SharedHelper.fillInInputField("Candidate Status", candidateData["Status"]);
     SharedHelper.fillInInputField("Candidate Name", firstNameCandidate);
     SharedHelper.fillInInputField(
@@ -43,28 +65,17 @@ export default class CandidatesPageActions {
     SharedHelper.clickSubmitButtonIsContains("Search");
   }
 
-  scheduleInterview(infoData: any) {
+  scheduleInterview(interviewData: any, interviewerData: any) {
+    this.elements.getButtonByName("Schedule Interview").click({ force: true });
     SharedHelper.checkLoadingSpinnerIsExist(true);
-    this.elements.scheduleInterviewBtn().click({ force: true });
-    SharedHelper.checkLoadingSpinnerIsExist(true);
-    this.elements
-      .labels()
-      .contains("Interview Title")
-      .parents()
-      .eq(1)
-      .children()
-      .eq(1)
-      .type(`${infoData.lastName} Interview`);
-    this.elements.autoCompleteInput().type(`${infoData.firstName}`);
-    this.elements
-      .autoCompleteOptions()
-      .contains(
-        `${infoData.firstName} ${infoData.middleName} ${infoData.lastName}`
-      )
-      .click();
-    this.elements.dateInput().type("2024-04-02");
-    this.elements.timeInput().clear().type("09:00 AM");
-    this.elements.submitBtn().click();
+    SharedHelper.fillInInputField("Interview Title", interviewData.interviewName);
+    SharedHelper.fillInInputField(
+      "Interviewer",
+      `${interviewerData.firstName} ${interviewerData.middleName} ${interviewerData.lastName}`
+    );
+    SharedHelper.fillInInputField("Date", interviewData.date);
+    SharedHelper.fillInInputField("Time", interviewData.time);
+    SharedHelper.clickSubmitButtonIsContains("Save");
   }
 
   editCandidateById(candidateId: number) {
@@ -72,8 +83,22 @@ export default class CandidatesPageActions {
   }
 
   addResume(filePath: string) {
-    this.elements.editSwitch().click();
+    this.elements.editSwitch().click({ force: true });
     this.elements.fileInput().selectFile(filePath, { force: true });
-    this.elements.submitBtn().click();
+    SharedHelper.clickSubmitButtonIsContains("Save");
+  }
+
+  downloadResume() {
+    this.elements
+      .downloadResumeButton()
+      .invoke("removeAttr", "target")
+      .click({ force: true });
+  }
+
+  markInterviewResult(result: INTERVIEW_RESULT) {
+    this.elements.getButtonByName(`Mark Interview ${result}ed`).click({ force: true });
+    SharedHelper.checkLoadingSpinnerIsExist(true);
+    SharedHelper.checkLoadingSpinnerIsExist(false);
+    SharedHelper.clickSubmitButtonIsContains("Save");
   }
 }

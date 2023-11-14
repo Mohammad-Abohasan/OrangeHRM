@@ -6,7 +6,16 @@ export default class CandidatesPageAssertions {
     statusLabel: () => cy.get(".oxd-text--subtitle-2"),
     resumeName: () => cy.get(".orangehrm-file-preview > .oxd-text"),
     resultToast: () => cy.get(".oxd-toast"),
+    applicationStageButtons: () =>
+      cy.get(".orangehrm-card-container").find("[type=button]"),
   };
+
+  checkButtonIsAvailable(buttonName: string) {
+    this.elements
+      .applicationStageButtons()
+      .contains(` ${buttonName} `)
+      .should("be.visible");
+  }
 
   checkNumberOfRecords(length: number) {
     this.elements.candidatesTable().should("have.length", length);
