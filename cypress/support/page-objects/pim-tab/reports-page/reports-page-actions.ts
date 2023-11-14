@@ -24,7 +24,7 @@ export default class ReportsPageActions {
     cy.intercept("/web/index.php/core/i18n/messages").as("messages");
     cy.intercept("/web/index.php/api/v2/pim/reports/**").as("reports");
 
-    SharedHelper.addButton().click();
+    SharedHelper.addButton().click({ force: true });
     cy.wait(["@messages", "@reports"]).then(() => {
       addReportPageActions.typeReportName(name);
       // Select all criteria
