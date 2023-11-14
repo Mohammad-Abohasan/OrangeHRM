@@ -1,0 +1,3 @@
+POST
+/web/index.php/api/v2/recruitment/vacancies
+{"name":"QA Automation Engineer - vh","jobTitleId":137,"numOfPositions":1,"description":"using Cypress tool.","status":true,"isPublished":true,"employeeId":197}

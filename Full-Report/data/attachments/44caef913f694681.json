@@ -1,0 +1,3 @@
+POST
+/web/index.php/api/v2/admin/job-titles
+{"title":"QA Automation Engineer - okYbv","description":"","specification":null,"note":"By Mohammad Abohasan"}

@@ -1,0 +1,3 @@
+POST
+/web/index.php/api/v2/recruitment/candidates/139/shedule-interview
+{"interviewName":"Technical Interview","interviewDate":"2023-11-15","interviewTime":"09:00","note":"Create by Mohammad-Abohasan","interviewerEmpNumbers":[199]}

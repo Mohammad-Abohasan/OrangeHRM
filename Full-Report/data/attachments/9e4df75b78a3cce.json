@@ -1,0 +1,3 @@
+POST
+/web/index.php/api/v2/recruitment/vacancies
+{"name":"QA Automation Engineer - kYmp","jobTitleId":134,"numOfPositions":1,"description":"using Cypress tool.","status":true,"isPublished":true,"employeeId":193}
