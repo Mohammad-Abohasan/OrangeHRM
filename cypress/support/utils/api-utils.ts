@@ -2,7 +2,7 @@ import { ICreateCandidatePayload } from "../apis/payload/recruitment-tab/candida
 import { ICreateCandidateResponse } from "../apis/response/recruitment-tab/candidates-page/add-candidate-response";
 import { ICreateVacancyPayload } from "../apis/payload/recruitment-tab/vacancies-page/add-vacancy-payload";
 import { ICreateVacancyResponse } from "../apis/response/recruitment-tab/vacancies-page/add-vacancy-response";
-import { IShortlistCandidateResponse } from "../apis/response/recruitment-tab/candidates-page/shortlist-candidate";
+import { IActionOnCandidateResponse } from "../apis/response/recruitment-tab/candidates-page/action-on-candidate";
 import { ICreateEmployeeResponse } from "../apis/response/pim-tab/add-employee-response";
 import { ICreateEmployeePayload } from "../apis/payload/pim-tab/add-employee-payload";
 import { IGetEmployeeResponse } from "../apis/response/pim-tab/get-employee-response";
@@ -30,6 +30,9 @@ import { ICreateClaimRequestPayload } from "../apis/payload/claim-tab/add-claim-
 import { ICreateClaimRequestResponse } from "../apis/response/claim-tab/add-claim-request-response";
 import { IActionOnClaimRequestPayload } from "../apis/payload/claim-tab/action-on-claim-request-payload";
 import { IActionOnClaimRequestResponse } from "../apis/response/claim-tab/action-on-claim-request-response";
+import { IScheduleInterviewPayload } from "../apis/payload/recruitment-tab/candidates-page/schedule-interview-payload";
+import { IScheduleInterviewResponse } from "../apis/response/recruitment-tab/candidates-page/schedule-interview-response";
+import { IGetAllowedActions } from "../apis/response/recruitment-tab/candidates-page/allowedActions";
 
 declare global {
   namespace Cypress {
@@ -47,11 +50,6 @@ declare global {
         url: string,
         payload: ICreateVacancyPayload
       ) => Chainable<ICreateVacancyResponse>;
-
-      shortlistCandidate: (
-        method: string,
-        url: string
-      ) => Chainable<IShortlistCandidateResponse>;
 
       addEmployee: (
         method: string,
@@ -132,6 +130,22 @@ declare global {
         url: string,
         payload: IActionOnClaimRequestPayload
       ) => Chainable<IActionOnClaimRequestResponse>;
+
+      scheduleInterview: (
+        method: string,
+        url: string,
+        payload: IScheduleInterviewPayload
+      ) => Chainable<IScheduleInterviewResponse>;
+
+      actionOnCandidate: (
+        method: string,
+        url: string
+      ) => Chainable<IActionOnCandidateResponse>;
+
+      getAllowedActions: (
+        method: string,
+        url: string
+      ) => Chainable<IGetAllowedActions>;
     }
   }
 }
@@ -152,7 +166,7 @@ const apiCall = (method: string, url: string, payload?: any) => {
 Cypress.Commands.add("getCandidatesTableData", apiCall);
 Cypress.Commands.add("addCandidate", apiCall);
 Cypress.Commands.add("addVacancy", apiCall);
-Cypress.Commands.add("shortlistCandidate", apiCall);
+Cypress.Commands.add("actionOnCandidate", apiCall);
 Cypress.Commands.add("addEmployee", apiCall);
 Cypress.Commands.add("getEmployee", apiCall);
 Cypress.Commands.add("deleteItem", apiCall);
@@ -167,3 +181,5 @@ Cypress.Commands.add("addEmployeeSalaryComponents", apiCall);
 Cypress.Commands.add("addEvent", apiCall);
 Cypress.Commands.add("addClaimRequest", apiCall);
 Cypress.Commands.add("actionOnClaimRequest", apiCall);
+Cypress.Commands.add("scheduleInterview", apiCall);
+Cypress.Commands.add("getAllowedActions", apiCall);
