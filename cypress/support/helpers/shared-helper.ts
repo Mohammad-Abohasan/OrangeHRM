@@ -9,6 +9,22 @@ export default class SharedHelper {
     return faker.number.int({ min, max });
   }
 
+  static verifyDownloadedFileContents(
+    downloadedFileName: string,
+    originalFilePath: string
+  ) {
+    cy.readFile(originalFilePath).then((originalFile: any) => {
+      cy.readFile(`cypress/downloads/${downloadedFileName}`).then(
+        (downloadedFile: any) => {
+          expect(downloadedFile).to.deep.equal(
+            originalFile,
+            "Downloaded file contents are equal to original file contents"
+          );
+        }
+      );
+    });
+  }
+
   static getHeaderIndex(headerName: string) {
     return cy
       .get(".oxd-table-header")
@@ -41,7 +57,7 @@ export default class SharedHelper {
   }
 
   static clickSubmitButtonIsContains(buttonText: string, index: number = 0) {
-    cy.contains("[type='submit']", ` ${buttonText} `).eq(index).click();
+    cy.contains("[type='submit']", ` ${buttonText} `).eq(index).click({force: true});
   }
 
   static mainMenuItems() {
@@ -83,7 +99,7 @@ export default class SharedHelper {
       .as("clearItemsButton");
     cy.get("@clearItemsButton").then(($clearItemsButton) => {
       Cypress._.times($clearItemsButton.length, () => {
-        cy.get("@clearItemsButton").eq(0).click();
+        cy.get("@clearItemsButton").eq(0).click({force: true});
       });
     });
   }
