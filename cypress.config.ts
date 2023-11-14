@@ -47,11 +47,11 @@ export default defineConfig({
       });
 
       // Cucumber preprocessor
-      // const bundler = createBundler({
-      //   plugins: [createEsbuildPlugin(config)],
-      // });
-      // on("file:preprocessor", bundler);
-      // await addCucumberPreprocessorPlugin(on, config);
+      const bundler = createBundler({
+        plugins: [createEsbuildPlugin(config)],
+      });
+      on("file:preprocessor", bundler);
+      await addCucumberPreprocessorPlugin(on, config);
 
       // Allure reporter
       configureAllureAdapterPlugins(on, config);
