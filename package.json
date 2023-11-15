@@ -22,8 +22,6 @@
     "regression:withCloudAndTags": "cypress run -e grepTags=\"@login\" --record --key %CYPRESS_RECORD_KEY%"
   },
   "dependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^19.1.0",
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
     "dotenv": "^16.3.1",
     "esbuild": "^0.19.5",
     "moment": "^2.29.4",
@@ -40,13 +38,5 @@
     "cypress-plugin-api": "^2.11.1",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.2.2"
-  },
-  "cypress-cucumber-preprocessor": {
-    "stepDefinitions": [
-      "cypress/e2e/**/[filepath]/**/*.{js,ts}",
-      "cypress/e2e/**/[filepath].{js,ts}"
-    ],
-    "filterSpecs": true,
-    "omitFiltered": true
   }
 }
