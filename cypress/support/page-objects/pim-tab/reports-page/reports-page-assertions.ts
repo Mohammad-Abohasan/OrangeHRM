@@ -1,3 +1,4 @@
+import { reportToEmployeeFieldAdapter } from './../../../helpers/pim-tab/reports-page/reports-helper';
 export default class ReportsPageAssertions {
   elements = {
     reportName: () => cy.get(".orangehrm-main-title"),
@@ -15,23 +16,17 @@ export default class ReportsPageAssertions {
     });
   }
 
-  checkReportContents(employeesData: any, reportGroupData: any) {
+  checkReportContents(employeesData: any, reportGroup: any) {
     Cypress._.times(employeesData.length, (count) => {
-      this.checkReportContainsValueInColumn(
-        count,
-        reportGroupData["Personal"].field,
-        employeesData[count].firstName
-      );
-      this.checkReportContainsValueInColumn(
-        count,
-        reportGroupData["Job"].field,
-        employeesData[count].jobTitle
-      );
-      this.checkReportContainsValueInColumn(
-        count,
-        reportGroupData["Salary"].field,
-        employeesData[count].salaryAmount
-      );
+      Cypress._.each(Object.keys(reportGroup), (groupKey: any) => {
+        const reportField = reportGroup[groupKey].field;
+        const employeeField = employeesData[count][reportToEmployeeFieldAdapter[reportField]];
+        this.checkReportContainsValueInColumn(
+          count,
+          reportField,
+          employeeField
+        );
+      });
     });
   }
 
