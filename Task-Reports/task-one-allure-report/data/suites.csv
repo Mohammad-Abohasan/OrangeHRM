@@ -1,0 +1,2 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Mon Nov 06 21:32:45 EET 2023","Mon Nov 06 21:33:22 EET 2023","37773","PIM - Reports: Reports Table Functionality","","","","","PIM - Reports - The admin should be able to add a new report and verify it",""

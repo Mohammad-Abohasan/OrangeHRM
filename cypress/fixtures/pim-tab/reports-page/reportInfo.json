@@ -1,0 +1,22 @@
+{
+  "name": "Mohammad Report",
+  "include": "Current and Past Employees",
+  "criteria": {
+    "Job Title": null,
+    "Location": null
+  },
+  "group": {
+    "Personal": {
+      "field": "Employee First Name",
+      "includeHeader": true
+    },
+    "Job": {
+      "field": "Job Title",
+      "includeHeader": true
+    },
+    "Salary": {
+      "field": "Amount",
+      "includeHeader": true
+    }
+  }
+}
