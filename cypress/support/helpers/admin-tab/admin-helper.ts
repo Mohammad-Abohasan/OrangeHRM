@@ -16,7 +16,7 @@ export default class AdminHelper {
     return cy
       .addAdmin(
         "POST",
-        `${URLs.adminBaseUrl}${URLs.users}}`,
+        `${URLs.adminBaseUrl}${URLs.users}`,
         AdminInit.initAdmin(adminData, empNumber)
       )
       .then((response) => response.data);

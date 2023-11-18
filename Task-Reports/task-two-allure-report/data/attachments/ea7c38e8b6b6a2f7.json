@@ -1,0 +1,3 @@
+POST
+/web/index.php/api/v2/pim/employees
+{"employeeId":"201913064","firstName":"vlTKF-Mohammad","middleName":"Saed","lastName":"Abohasan","empPicture":null}

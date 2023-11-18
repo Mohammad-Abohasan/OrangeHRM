@@ -24,6 +24,12 @@ import { IUpdateEmployeeJobDetailsResponse } from "../apis/response/pim-tab/upda
 import { IUpdateEmployeeJobDetailsPayload } from "../apis/payload/pim-tab/update-employee-job-details-payload";
 import { ICreateEmployeeSalaryComponentsResponse } from "../apis/response/pim-tab/add-employee-salary-components-response";
 import { ICreateEmployeeSalaryComponentsPayload } from "../apis/payload/pim-tab/add-employee-salary-components-payload";
+import { ICreateEventPayload } from "../apis/payload/claim-tab/add-event-payload";
+import { ICreateEventResponse } from "../apis/response/claim-tab/add-event-response";
+import { ICreateClaimRequestPayload } from "../apis/payload/claim-tab/add-claim-request-payload";
+import { ICreateClaimRequestResponse } from "../apis/response/claim-tab/add-claim-request-response";
+import { IActionOnClaimRequestPayload } from "../apis/payload/claim-tab/action-on-claim-request-payload";
+import { IActionOnClaimRequestResponse } from "../apis/response/claim-tab/action-on-claim-request-response";
 
 declare global {
   namespace Cypress {
@@ -108,6 +114,24 @@ declare global {
         url: string,
         payload: ICreateEmployeeSalaryComponentsPayload
       ) => Chainable<ICreateEmployeeSalaryComponentsResponse>;
+
+      addEvent: (
+        method: string,
+        url: string,
+        payload: ICreateEventPayload
+      ) => Chainable<ICreateEventResponse>;
+
+      addClaimRequest: (
+        method: string,
+        url: string,
+        payload: ICreateClaimRequestPayload
+      ) => Chainable<ICreateClaimRequestResponse>;
+
+      actionOnClaimRequest: (
+        method: string,
+        url: string,
+        payload: IActionOnClaimRequestPayload
+      ) => Chainable<IActionOnClaimRequestResponse>;
     }
   }
 }
@@ -140,3 +164,6 @@ Cypress.Commands.add("addJobTitle", apiCall);
 Cypress.Commands.add("addLocation", apiCall);
 Cypress.Commands.add("updateEmployeeJobDetails", apiCall);
 Cypress.Commands.add("addEmployeeSalaryComponents", apiCall);
+Cypress.Commands.add("addEvent", apiCall);
+Cypress.Commands.add("addClaimRequest", apiCall);
+Cypress.Commands.add("actionOnClaimRequest", apiCall);

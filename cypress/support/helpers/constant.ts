@@ -45,4 +45,7 @@ export const SystemFields: { [key: string]: string } = {
   "Select Display Field Group": INPUT_TYPE.Dropdown,
   "Select Display Field": INPUT_TYPE.Dropdown,
   Location: INPUT_TYPE.Dropdown,
+  "Reference Id": INPUT_TYPE.ListBox,
+  "Event Name": INPUT_TYPE.Dropdown,
+  "Claim - Status": INPUT_TYPE.Dropdown,
 };
