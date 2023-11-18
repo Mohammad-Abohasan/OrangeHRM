@@ -37,12 +37,15 @@
 // }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-declare namespace Cypress {
-  interface Chainable<Subject> {
-    getByAttribute: (attribute: string, value: string) => Chainable;
-    loginOrangeHRM: (userName?: string, password?: string) => void;
-    logoutOrangeHRM: () => any;
-    clearDownloadsDirectory: Chainable;
+export {};
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      getByAttribute: (attribute: string, value: string) => Chainable;
+      loginOrangeHRM: (userName?: string, password?: string) => void;
+      logoutOrangeHRM: () => any;
+      clearDownloadsDirectory: Chainable;
+    }
   }
 }
 

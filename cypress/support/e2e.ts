@@ -21,7 +21,6 @@ import "@mmisty/cypress-allure-adapter/support";
 import "cypress-mochawesome-reporter/register";
 import "cypress-plugin-api";
 import "./utils/api-utils";
-import PimHelper from "./helpers/pim-tab/pim-helper";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

@@ -1,9 +1,11 @@
-import { writeFileSync, unlink } from "fs";
 import { defineConfig } from "cypress";
 import { configureAllureAdapterPlugins } from "@mmisty/cypress-allure-adapter/plugins";
-// import allureWriter from "@shelex/cypress-allure-plugin/writer";
+import { writeFileSync, unlink } from "fs";
 import * as XLSX from "xlsx";
 import * as path from "path";
+import createBundler from "@bahmutov/cypress-esbuild-preprocessor";
+import { addCucumberPreprocessorPlugin } from "@badeball/cypress-cucumber-preprocessor";
+import { createEsbuildPlugin } from "@badeball/cypress-cucumber-preprocessor/esbuild";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -11,8 +13,10 @@ export default defineConfig({
   projectId: process.env.CYPRESS_PROJECT_ID,
   reporter: "cypress-mochawesome-reporter",
   e2e: {
+    // baseUrl: "http://51.20.133.122:8200",
     baseUrl: "https://opensource-demo.orangehrmlive.com",
-    setupNodeEvents(on, config) {
+    specPattern: ["cypress/e2e/**/*.cy.ts", "cypress/e2e/**/*.feature"],
+    async setupNodeEvents(on, config) {
       // implement node event listeners here
       on("task", {
         convertXlsxToJson(args: [string, boolean]) {
@@ -41,10 +45,23 @@ export default defineConfig({
           });
         },
       });
-      // allureWriter(on, config);
-      require("cypress-mochawesome-reporter/plugin")(on);
-      require("@cypress/grep/src/plugin")(config);
+
+      // Cucumber preprocessor
+      const bundler = createBundler({
+        plugins: [createEsbuildPlugin(config)],
+      });
+      on("file:preprocessor", bundler);
+      await addCucumberPreprocessorPlugin(on, config);
+
+      // Allure reporter
       configureAllureAdapterPlugins(on, config);
+
+      // Mocha reporter
+      await require("cypress-mochawesome-reporter/plugin")(on);
+
+      // Grep plugin
+      await require("@cypress/grep/src/plugin")(config);
+
       return config;
     },
     env: {
