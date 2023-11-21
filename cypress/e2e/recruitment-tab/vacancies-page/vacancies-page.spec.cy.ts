@@ -3,7 +3,7 @@ import VacanciesPageActions from "../../../support/page-objects/recruitment-tab/
 import VacanciesPageAssertions from "../../../support/page-objects/recruitment-tab/vacancies-page/vacancies-page-assertions";
 import VacanciesHelper, {
   cleanupEntities,
-  prepareCandidate,
+  prepareVacancy,
 } from "../../../support/helpers/recruitment-tab/vacancies-page/vacancies-helper";
 import PimHelper from "../../../support/helpers/pim-tab/pim-helper";
 import SharedHelper from "../../../support/helpers/shared-helper";
@@ -21,7 +21,7 @@ describe("Recruitment: Candidates page functionality", () => {
     cy.loginOrangeHRM();
 
     cy.loginOrangeHRM();
-    prepareCandidate().then((preparedData: any) => {
+    prepareVacancy().then((preparedData: any) => {
       employeeData = preparedData.employeeData;
       jobData = preparedData.jobData;
       vacancyData = preparedData.vacancyData;

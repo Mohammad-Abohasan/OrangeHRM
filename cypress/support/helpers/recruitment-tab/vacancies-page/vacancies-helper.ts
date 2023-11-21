@@ -8,7 +8,7 @@ export const URLs = {
   vacancies: `/web/index.php/api/v2/recruitment/vacancies`,
 };
 
-export const prepareCandidate = () => {
+export const prepareVacancy = () => {
   let employeeData: any = {};
   let jobData: any = {};
   let vacancyData: any = {};
