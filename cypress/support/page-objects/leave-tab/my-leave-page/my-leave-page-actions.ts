@@ -16,7 +16,8 @@ class MyLeavePageActions {
     cy.intercept("/web/index.php/api/v2/leave/workweek**").as("workweek");
     cy.intercept("/web/index.php/api/v2/leave/holidays**").as("holidays");
 
-    cy.visit("/web/index.php/leave/viewMyLeaveList");
+    SharedHelper.mainMenuItems().contains("Leave").click();
+    SharedHelper.topBarItems().contains("Reports").click();
 
     cy.wait([
       "@leaveRequests",
