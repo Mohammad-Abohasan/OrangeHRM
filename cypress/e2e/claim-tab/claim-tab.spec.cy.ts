@@ -85,7 +85,7 @@ describe("Claim: Claim Tab functionality", () => {
   it("Claim - The admin should be able to approve the employee's claim request, and the employee should be able to view the status of the claim request", () => {
     claimTabActions.openEmployeeClaimsPage();
     claimTabActions.searchClaimRequest(claimReqData);
-    SharedHelper.checkLoadingSpinnerIsExist(false);
+    SharedHelper.waitUntilItFinished();
     claimTabActions.viewDetailsOfClaimRequest();
     claimTabActions.approveClaimRequest();
     claimReqData.status = "Paid";
@@ -101,7 +101,7 @@ describe("Claim: Claim Tab functionality", () => {
   it("Claim - The admin should be able to reject the employee's claim request, and the employee should be able to view the status of the claim request", () => {
     claimTabActions.openEmployeeClaimsPage();
     claimTabActions.searchClaimRequest(claimReqData);
-    SharedHelper.checkLoadingSpinnerIsExist(false);
+    SharedHelper.waitUntilItFinished();
     claimTabActions.viewDetailsOfClaimRequest();
     claimTabActions.rejectClaimRequest();
     claimReqData.status = "Rejected";

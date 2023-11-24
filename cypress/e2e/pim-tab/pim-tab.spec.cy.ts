@@ -52,7 +52,7 @@ describe("PIM: Employee's table data validation", () => {
   it("PIM - Add employee with Personal Details UI", () => {
     pimTabActions.addEmployee(employeeData, true);
     SharedHelper.checkToastMessage("Successfully Saved");
-    SharedHelper.checkLoadingSpinnerIsExist(false);
+    SharedHelper.waitUntilItFinished();
     pimTabActions.editPersonalDetails(employeeData);
     SharedHelper.checkToastMessage("Successfully Updated");
 
@@ -69,7 +69,7 @@ describe("PIM: Employee's table data validation", () => {
       .then((employeeResponse) => {
         employeeData.firstName = employeeResponse.firstName;
         pimTabActions.editEmployeeByEmpNumber(employeeResponse.empNumber);
-        SharedHelper.checkLoadingSpinnerIsExist(false);
+        SharedHelper.waitUntilItFinished();
         pimTabActions.editPersonalDetails(employeeData);
         SharedHelper.checkToastMessage("Successfully Updated");
       });
