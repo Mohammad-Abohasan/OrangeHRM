@@ -57,7 +57,7 @@ export default class SharedHelper {
   }
 
   static clickSubmitButtonIsContains(buttonText: string, index: number = 0) {
-    cy.contains("[type='submit']", ` ${buttonText} `).eq(index).click({force: true});
+    cy.contains("[type='submit']", ` ${buttonText} `).eq(index).click();
   }
 
   static mainMenuItems() {
@@ -86,8 +86,8 @@ export default class SharedHelper {
     cy.contains(".oxd-toast", message).should("exist");
   }
 
-  static checkLoadingSpinnerIsExist(isExist: boolean) {
-    cy.get(".oxd-loading-spinner-container").should(isExist ? "exist" : "not.exist");
+  static waitUntilItFinished() {
+    cy.get(".oxd-loading-spinner-container", { timeout: 50000, log: false }).should("not.exist");
   }
 
   static deselectOptionsFromMultiSelect(labelName: string) {
