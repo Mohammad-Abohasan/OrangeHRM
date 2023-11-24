@@ -6,6 +6,15 @@ import SharedInit from "../../../initializers/shared-init";
 import PimHelper from "../../pim-tab/pim-helper";
 import VacanciesHelper from "../vacancies-page/vacancies-helper";
 import AdminHelper from "../../admin-tab/admin-helper";
+import { ICreateEmployeePayload } from "../../../apis/payload/pim-tab/add-employee-payload";
+import { ICreateJobTitlePayload } from "../../../apis/payload/admin-tab/job-page/add-jobTitle-payload";
+import { ICreateVacancyPayload } from "../../../apis/payload/recruitment-tab/vacancies-page/add-vacancy-payload";
+import { ICreateEmployeeResponse } from "../../../apis/response/pim-tab/add-employee-response";
+import { ICreateJobTitleResponse } from "../../../apis/response/admin-tab/job-page/add-jobTitle-response";
+import { ICreateVacancyResponse } from "../../../apis/response/recruitment-tab/vacancies-page/add-vacancy-response";
+import { ICreateCandidateResponse } from "../../../apis/response/recruitment-tab/candidates-page/add-candidate-response";
+import { IScheduleInterviewResponse } from "../../../apis/response/recruitment-tab/candidates-page/schedule-interview-response";
+import { IGetAllowedActions } from "../../../apis/response/recruitment-tab/candidates-page/allowedActions";
 
 export enum CANDIDATE_STATUS {
   ApplicationInitiated = "Application Initiated",
@@ -30,51 +39,53 @@ export const URLs = {
 };
 
 export const prepareCandidate = () => {
-  let employeeData: any = {};
-  let jobData: any = {};
-  let vacancyData: any = {};
-  let candidateData: any = {};
+  let employeeData: ICreateEmployeePayload,
+    jobData: ICreateJobTitlePayload,
+    vacancyData: ICreateVacancyPayload,
+    candidateData: ICreateCandidatePayload,
+    empNumber: number,
+    jobId: number,
+    vacancyId: number,
+    candidateId: number;
 
   const prepare = () => {
     cy.fixture("pim-tab/employeeInfo.json")
-      .then((employeeInfo: any) => {
+      .then((employeeInfo: ICreateEmployeePayload) => {
         employeeData = employeeInfo;
         cy.fixture("admin-tab/job-page/jobTitleInfo.json");
       })
-      .then((jobInfo: any) => {
+      .then((jobInfo: ICreateJobTitlePayload) => {
         jobData = jobInfo;
         cy.fixture("recruitment-tab/vacancies-page/vacancyInfo.json");
       })
-      .then((vacancyInfo: any) => {
+      .then((vacancyInfo: ICreateVacancyPayload) => {
         vacancyData = vacancyInfo;
         cy.fixture("recruitment-tab/candidates-page/candidateInfo.json");
       })
       // Add an employee
-      .then((candidateInfo: any) => {
+      .then((candidateInfo: ICreateCandidatePayload) => {
         candidateData = candidateInfo;
         PimHelper.addEmployee(employeeData);
       })
       // Add a job title
-      .then((employeeResponse: any) => {
-        employeeData.empNumber = employeeResponse.empNumber;
+      .then((employeeResponse: ICreateEmployeeResponse["data"]) => {
+        empNumber = employeeResponse.empNumber;
         employeeData.firstName = employeeResponse.firstName;
         AdminHelper.addJobTitle(jobData);
       })
       // Add a vacancy
-      .then((jobResponse: any) => {
-        vacancyData.jobTitleId = jobData.id = jobResponse.id;
+      .then((jobResponse: ICreateJobTitleResponse["data"]) => {
+        vacancyData.jobTitleId = jobId = jobResponse.id;
         jobData.title = jobResponse.title;
-        VacanciesHelper.addVacancy(vacancyData, employeeData.empNumber);
+        VacanciesHelper.addVacancy(vacancyData, empNumber);
       })
       // Add a candidate
-      .then((vacancyResponse: any) => {
-        vacancyData.id = vacancyResponse.id;
-        vacancyData.name = vacancyResponse.name;
+      .then((vacancyResponse: ICreateVacancyResponse["data"]) => {
+        vacancyId = vacancyResponse.id;
         CandidatesHelper.addCandidate(candidateData, vacancyResponse.id);
       })
-      // Shortlist a candidate
-      .then((candidateResponse: any) => {
-        candidateData.id = candidateResponse.id;
+      .then((candidateResponse: ICreateCandidateResponse["data"]) => {
+        candidateId = candidateResponse.id;
       });
   };
 
@@ -83,23 +94,15 @@ export const prepareCandidate = () => {
     jobData,
     vacancyData,
     candidateData,
+    empNumber,
+    jobId,
+    vacancyId,
+    candidateId,
   }));
 };
 
-export const cleanupEntities = (
-  employeeNumber: any,
-  jobId: any,
-  vacancyId: any,
-  candidateId: any
-) => {
-  PimHelper.deleteEmployee(employeeNumber);
-  AdminHelper.deleteJobTitle(jobId);
-  VacanciesHelper.deleteVacancy(vacancyId);
-  CandidatesHelper.deleteCandidate(candidateId);
-};
-
 export default class CandidatesHelper {
-  private static interviewId: any;
+  private static interviewId: number;
   private static statusFlow: { [key: string]: string } = {
     [CANDIDATE_STATUS.ApplicationInitiated]: "",
     [CANDIDATE_STATUS.Rejected]: "",
@@ -115,7 +118,9 @@ export default class CandidatesHelper {
   static getAllowedActions(candidateId: number) {
     return cy
       .getAllowedActions("GET", `${URLs.candidates}/${candidateId}/actions/allowed`)
-      .then((response: any) => response.data.map((item: any) => item.label));
+      .then((response: IGetAllowedActions) =>
+        response.data.map((item) => item.label)
+      );
   }
 
   static getCandidatesTableDataUsingAPI() {
@@ -140,18 +145,18 @@ export default class CandidatesHelper {
     );
   }
 
-  static rejectCandidate(candidateId: number) {
+  static setCandidateVacancyRejectStatus(candidateId: number) {
     return cy.actionOnCandidate("PUT", `${URLs.candidates}/${candidateId}/reject`);
   }
 
-  static shortlistCandidate(candidateId: number) {
+  static setCandidateVacancyShortlistStatus(candidateId: number) {
     cy.actionOnCandidate("PUT", `${URLs.candidates}/${candidateId}/shortlist`);
   }
 
-  static scheduleInterview(candidateId: number) {
+  static setCandidateVacancyScheduleInterviewStatus(candidateId: number) {
     let scheduleInterviewData: IScheduleInterviewPayload;
     cy.fixture("recruitment-tab/candidates-page/scheduleInterviewInfo.json")
-      .then((scheduleInterviewInfo: any) => {
+      .then((scheduleInterviewInfo: IScheduleInterviewPayload) => {
         scheduleInterviewData = {
           ...scheduleInterviewInfo,
           interviewDate: moment()
@@ -161,10 +166,10 @@ export default class CandidatesHelper {
         };
         cy.fixture("pim-tab/employeeInfo.json");
       })
-      .then((interviewerData: any) => {
+      .then((interviewerData: ICreateEmployeePayload) => {
         PimHelper.addEmployee(interviewerData);
       })
-      .then((interviewerResponse: any) => {
+      .then((interviewerResponse: ICreateEmployeeResponse["data"]) => {
         scheduleInterviewData.interviewerEmpNumbers[0] =
           interviewerResponse.empNumber;
         cy.scheduleInterview(
@@ -173,14 +178,14 @@ export default class CandidatesHelper {
           CandidatesInit.initScheduleInterview(scheduleInterviewData)
         );
       })
-      .then((response: any) => {
+      .then((response: IScheduleInterviewResponse) => {
         CandidatesHelper.interviewId = response.data.id;
       });
   }
 
   static markInterviewResult(
     candidateId: number,
-    interviewId: any,
+    interviewId: number,
     result: INTERVIEW_RESULT
   ) {
     cy.actionOnCandidate(
@@ -191,28 +196,31 @@ export default class CandidatesHelper {
     );
   }
 
-  static jobOfferCandidate(candidateId: number, result: "offer" | "decline") {
+  static setCandidateVacancyJobStatus(
+    candidateId: number,
+    result: "offer" | "decline"
+  ) {
     cy.actionOnCandidate("PUT", `${URLs.candidates}/${candidateId}/job/${result}`);
   }
 
-  static hireCandidate(candidateId: number) {
+  static setCandidateVacancyHireCandidateStatus(candidateId: number) {
     cy.actionOnCandidate("PUT", `${URLs.candidates}/${candidateId}/hire`);
   }
 
-  static updateCandidateStatus(
+  static updateCandidateVacancyStatus(
     candidateId: number,
     currentStatus: string,
     targetStatus: string
-  ): any {
+  ) {
     if (!CandidatesHelper.statusFlow[targetStatus]) {
       if (targetStatus === CANDIDATE_STATUS.Rejected) {
-        CandidatesHelper.rejectCandidate(candidateId);
+        CandidatesHelper.setCandidateVacancyRejectStatus(candidateId);
       }
       return;
     }
 
     cy.wrap(
-      CandidatesHelper.updateCandidateStatus(
+      CandidatesHelper.updateCandidateVacancyStatus(
         candidateId,
         currentStatus,
         CandidatesHelper.statusFlow[targetStatus]
@@ -220,10 +228,10 @@ export default class CandidatesHelper {
     ).then(() => {
       switch (targetStatus) {
         case CANDIDATE_STATUS.Shortlisted:
-          CandidatesHelper.shortlistCandidate(candidateId);
+          CandidatesHelper.setCandidateVacancyShortlistStatus(candidateId);
           break;
         case CANDIDATE_STATUS.InterviewScheduled:
-          CandidatesHelper.scheduleInterview(candidateId);
+          CandidatesHelper.setCandidateVacancyScheduleInterviewStatus(candidateId);
           break;
         case CANDIDATE_STATUS.InterviewPassed:
           CandidatesHelper.markInterviewResult(
@@ -240,13 +248,13 @@ export default class CandidatesHelper {
           );
           break;
         case CANDIDATE_STATUS.JobOffered:
-          CandidatesHelper.jobOfferCandidate(candidateId, "offer");
+          CandidatesHelper.setCandidateVacancyJobStatus(candidateId, "offer");
           break;
         case CANDIDATE_STATUS.OfferDeclined:
-          CandidatesHelper.jobOfferCandidate(candidateId, "decline");
+          CandidatesHelper.setCandidateVacancyJobStatus(candidateId, "decline");
           break;
         case CANDIDATE_STATUS.Hired:
-          CandidatesHelper.hireCandidate(candidateId);
+          CandidatesHelper.setCandidateVacancyHireCandidateStatus(candidateId);
           break;
         default:
           return;
