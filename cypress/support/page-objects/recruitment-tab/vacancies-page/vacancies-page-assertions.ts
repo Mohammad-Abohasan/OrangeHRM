@@ -7,7 +7,7 @@ class VacanciesPageAssertions {
   };
 
   checkRecordsContainsAttachment(attachmentData: any) {
-    SharedHelper.checkLoadingSpinnerIsExist(false);
+    SharedHelper.waitUntilItFinished();
     this.elements.tableRows().should("exist");
     SharedHelper.checkRecordsContainsValueInColumn(
       0,

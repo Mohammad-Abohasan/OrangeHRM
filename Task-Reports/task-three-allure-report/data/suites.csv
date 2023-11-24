@@ -1,5 +1,0 @@
-"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Tue Nov 14 03:19:50 EET 2023","Tue Nov 14 03:20:29 EET 2023","38621","Recruitment: Candidates functionality","","","","","Candidates - The user should be able to upload a Resume (txt file) for the Hired status",""
-"passed","Tue Nov 14 03:19:13 EET 2023","Tue Nov 14 03:19:50 EET 2023","36836","Recruitment: Candidates functionality","","","","","Candidates - The user should be able to upload a Resume (txt file) for the Application Initiated status",""
-"passed","Tue Nov 14 03:17:41 EET 2023","Tue Nov 14 03:18:28 EET 2023","47103","Recruitment: Candidates functionality","","","","","Candidates - The user should be able to mark the interview result as Pass",""
-"passed","Tue Nov 14 03:18:28 EET 2023","Tue Nov 14 03:19:13 EET 2023","45118","Recruitment: Candidates functionality","","","","","Candidates - The user should be able to mark the interview result as Fail",""

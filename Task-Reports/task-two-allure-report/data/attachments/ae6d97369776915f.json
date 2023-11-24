@@ -1,3 +1,0 @@
-POST
-/web/index.php/api/v2/admin/users
-{"username":"mohammad._.abohasan_Zavhb","password":"mohammad123","status":true,"userRoleId":2,"empNumber":155}

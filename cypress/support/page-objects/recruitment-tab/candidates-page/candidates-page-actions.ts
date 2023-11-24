@@ -7,7 +7,6 @@ const candidatesPageAssertions: CandidatesPageAssertions =
 
 export default class CandidatesPageActions {
   elements = {
-    loadingSpinner: () => cy.get(".oxd-loading-spinner-container"),
     getButtonByName: (buttonName: string) =>
       cy
         .get(".orangehrm-card-container")
@@ -67,7 +66,7 @@ export default class CandidatesPageActions {
 
   scheduleInterview(interviewData: any, interviewerData: any) {
     this.elements.getButtonByName("Schedule Interview").click({ force: true });
-    SharedHelper.checkLoadingSpinnerIsExist(true);
+    SharedHelper.waitUntilItFinished();
     SharedHelper.fillInInputField("Interview Title", interviewData.interviewName);
     SharedHelper.fillInInputField(
       "Interviewer",
@@ -83,22 +82,19 @@ export default class CandidatesPageActions {
   }
 
   addResume(filePath: string) {
-    this.elements.editSwitch().click({ force: true });
+    this.elements.editSwitch().click();
     this.elements.fileInput().selectFile(filePath, { force: true });
     SharedHelper.clickSubmitButtonIsContains("Save");
   }
 
   downloadResume() {
-    this.elements
-      .downloadResumeButton()
-      .invoke("removeAttr", "target")
-      .click({ force: true });
+    this.elements.downloadResumeButton().click();
   }
 
   markInterviewResult(result: INTERVIEW_RESULT) {
-    this.elements.getButtonByName(`Mark Interview ${result}ed`).click({ force: true });
-    SharedHelper.checkLoadingSpinnerIsExist(true);
-    SharedHelper.checkLoadingSpinnerIsExist(false);
+    this.elements.getButtonByName(`Mark Interview ${result}ed`).click();
+    SharedHelper.waitUntilItFinished();
+    SharedHelper.waitUntilItFinished();
     SharedHelper.clickSubmitButtonIsContains("Save");
   }
 }

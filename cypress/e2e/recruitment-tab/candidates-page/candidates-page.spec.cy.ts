@@ -4,27 +4,43 @@ import CandidatesPageAssertions from "../../../support/page-objects/recruitment-
 import CandidatesHelper, {
   CANDIDATE_STATUS,
   INTERVIEW_RESULT,
-  cleanupEntities,
   prepareCandidate,
 } from "../../../support/helpers/recruitment-tab/candidates-page/candidates-helper";
+import { ICreateCandidatePayload } from "../../../support/apis/payload/recruitment-tab/candidates-page/add-candidate-payload";
+import { ICreateVacancyPayload } from "../../../support/apis/payload/recruitment-tab/vacancies-page/add-vacancy-payload";
+import { ICreateJobTitlePayload } from "../../../support/apis/payload/admin-tab/job-page/add-jobTitle-payload";
+import { ICreateEmployeePayload } from "../../../support/apis/payload/pim-tab/add-employee-payload";
+import PimHelper from "../../../support/helpers/pim-tab/pim-helper";
+import AdminHelper from "../../../support/helpers/admin-tab/admin-helper";
+import VacanciesHelper from "../../../support/helpers/recruitment-tab/vacancies-page/vacancies-helper";
 
 const candidatesPageActions: CandidatesPageActions = new CandidatesPageActions();
 const candidatesPageAssertions: CandidatesPageAssertions =
   new CandidatesPageAssertions();
 
-let employeeData: any = {};
-let jobData: any = {};
-let vacancyData: any = {};
-let candidateData: any = {};
+let employeeData: ICreateEmployeePayload,
+  jobData: ICreateJobTitlePayload,
+  vacancyData: ICreateVacancyPayload,
+  candidateData: ICreateCandidatePayload,
+  empNumber: number,
+  jobId: number,
+  vacancyId: number,
+  candidateId: number;
 
 describe("Recruitment: Candidates functionality", () => {
   beforeEach(() => {
     cy.loginOrangeHRM();
-    prepareCandidate().then((preparedData: any) => {
-      employeeData = preparedData.employeeData;
-      jobData = preparedData.jobData;
-      vacancyData = preparedData.vacancyData;
-      candidateData = preparedData.candidateData;
+    prepareCandidate().then((preparedData) => {
+      ({
+        employeeData,
+        jobData,
+        vacancyData,
+        candidateData,
+        empNumber,
+        jobId,
+        vacancyId,
+        candidateId,
+      } = preparedData);
     });
   });
 
@@ -32,17 +48,17 @@ describe("Recruitment: Candidates functionality", () => {
     (interviewResult: INTERVIEW_RESULT) => {
       it(`Candidates - The user should be able to mark the interview result as ${interviewResult}`, () => {
         candidatesPageActions.openCandidatesPage();
-        CandidatesHelper.updateCandidateStatus(
-          candidateData.id,
+        CandidatesHelper.updateCandidateVacancyStatus(
+          candidateId,
           CANDIDATE_STATUS.ApplicationInitiated,
           CANDIDATE_STATUS.InterviewScheduled
         );
-        candidatesPageActions.editCandidateById(candidateData.id);
-        SharedHelper.checkLoadingSpinnerIsExist(false);
+        candidatesPageActions.editCandidateById(candidateId);
+        SharedHelper.waitUntilItFinished();
         candidatesPageActions.markInterviewResult(interviewResult);
         SharedHelper.checkToastMessage("Successfully Updated");
         candidatesPageAssertions.checkStatus(interviewResult);
-        CandidatesHelper.getAllowedActions(candidateData.id).then((buttons: any) => {
+        CandidatesHelper.getAllowedActions(candidateId).then((buttons: any) => {
           buttons.forEach((buttonName: string) => {
             candidatesPageAssertions.checkButtonIsAvailable(buttonName);
           });
@@ -55,12 +71,12 @@ describe("Recruitment: Candidates functionality", () => {
     (candidateStatus: string) => {
       it(`Candidates - The user should be able to upload a Resume (txt file) for the ${candidateStatus} status`, () => {
         candidatesPageActions.openCandidatesPage();
-        CandidatesHelper.updateCandidateStatus(
-          candidateData.id,
+        CandidatesHelper.updateCandidateVacancyStatus(
+          candidateId,
           CANDIDATE_STATUS.ApplicationInitiated,
           candidateStatus
         );
-        candidatesPageActions.editCandidateById(candidateData.id);
+        candidatesPageActions.editCandidateById(candidateId);
         const resumePath =
           "cypress/fixtures/recruitment-tab/candidates-page/candidateResume.txt";
         const resumeName = resumePath.split("/").pop()!;
@@ -73,11 +89,9 @@ describe("Recruitment: Candidates functionality", () => {
   );
 
   afterEach(() => {
-    cleanupEntities(
-      employeeData.empNumber,
-      jobData.id,
-      vacancyData.id,
-      candidateData.id
-    );
+    PimHelper.deleteEmployee(empNumber);
+    AdminHelper.deleteJobTitle(jobId);
+    VacanciesHelper.deleteVacancy(vacancyId);
+    CandidatesHelper.deleteCandidate(candidateId);
   });
 });
