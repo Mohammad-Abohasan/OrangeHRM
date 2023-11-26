@@ -237,7 +237,7 @@ describe("Recruitment: Candidates & Vacancies table data validation", () => {
       .then((candidateResponse) => {
         candidatesHelper.shortlistCandidate(candidateResponse.id);
         candidatesPageActions.editCandidateById(candidateResponse.id);
-        SharedHelper.checkLoadingSpinnerIsExist(true);
+        SharedHelper.waitUntilItFinished();
         candidatesPageActions.scheduleInterview(employeeData);
         candidatesPageAssertions.checkStatus(
           STATUS_CANDIDATE.InterviewScheduled

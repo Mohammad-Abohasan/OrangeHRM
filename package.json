@@ -22,10 +22,7 @@
     "regression:withCloudAndTags": "cypress run -e grepTags=\"@login\" --record --key %CYPRESS_RECORD_KEY%"
   },
   "dependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^19.1.0",
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
     "dotenv": "^16.3.1",
-    "esbuild": "^0.19.5",
     "moment": "^2.29.4",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.0/xlsx-0.20.0.tgz"
   },
@@ -35,18 +32,10 @@
     "@mmisty/cypress-allure-adapter": "^0.13.0",
     "@shelex/cypress-allure-plugin": "^2.5.0",
     "allure-commandline": "^2.24.1",
-    "cypress": "^13.5.0",
+    "cypress": "^13.5.1",
     "cypress-mochawesome-reporter": "^3.6.1",
     "cypress-plugin-api": "^2.11.1",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.2.2"
-  },
-  "cypress-cucumber-preprocessor": {
-    "stepDefinitions": [
-      "cypress/e2e/**/[filepath]/**/*.{js,ts}",
-      "cypress/e2e/**/[filepath].{js,ts}"
-    ],
-    "filterSpecs": true,
-    "omitFiltered": true
   }
 }

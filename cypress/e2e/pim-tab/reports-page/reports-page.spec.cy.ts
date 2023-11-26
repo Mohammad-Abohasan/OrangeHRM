@@ -29,7 +29,7 @@ describe("PIM - Reports: Reports Table Functionality", () => {
   it("Reports - The admin should be able to add a new report and verify it", () => {
     reportsPageActions.addReport(reportData);
     SharedHelper.checkToastMessage("Successfully Saved");
-    SharedHelper.checkLoadingSpinnerIsExist(false);
+    SharedHelper.waitUntilItFinished();
 
     reportsPageAssertions.verifyReportName(reportData.name);
     reportsPageAssertions.checkTopHeaders(Object.keys(reportData.group));

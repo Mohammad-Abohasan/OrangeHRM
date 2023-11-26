@@ -1,3 +1,0 @@
-POST
-/web/index.php/api/v2/claim/events
-{"name":"Fitness reimbursement - LTxnb","description":"Created by Mohammad-Abohasan","status":true}

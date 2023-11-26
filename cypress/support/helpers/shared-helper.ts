@@ -9,6 +9,22 @@ export default class SharedHelper {
     return faker.number.int({ min, max });
   }
 
+  static verifyDownloadedFileContents(
+    downloadedFileName: string,
+    originalFilePath: string
+  ) {
+    cy.readFile(originalFilePath).then((originalFile: any) => {
+      cy.readFile(`cypress/downloads/${downloadedFileName}`).then(
+        (downloadedFile: any) => {
+          expect(downloadedFile).to.deep.equal(
+            originalFile,
+            "Downloaded file contents are equal to original file contents"
+          );
+        }
+      );
+    });
+  }
+
   static getHeaderIndex(headerName: string) {
     return cy
       .get(".oxd-table-header")
@@ -70,8 +86,8 @@ export default class SharedHelper {
     cy.contains(".oxd-toast", message).should("exist");
   }
 
-  static checkLoadingSpinnerIsExist(isExist: boolean) {
-    cy.get(".oxd-loading-spinner-container").should(isExist ? "exist" : "not.exist");
+  static waitUntilItFinished() {
+    cy.get(".oxd-loading-spinner-container", { timeout: 50000, log: false }).should("not.exist");
   }
 
   static deselectOptionsFromMultiSelect(labelName: string) {
@@ -83,7 +99,7 @@ export default class SharedHelper {
       .as("clearItemsButton");
     cy.get("@clearItemsButton").then(($clearItemsButton) => {
       Cypress._.times($clearItemsButton.length, () => {
-        cy.get("@clearItemsButton").eq(0).click();
+        cy.get("@clearItemsButton").eq(0).click({force: true});
       });
     });
   }

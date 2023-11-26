@@ -48,4 +48,8 @@ export const SystemFields: { [key: string]: string } = {
   "Reference Id": INPUT_TYPE.ListBox,
   "Event Name": INPUT_TYPE.Dropdown,
   "Claim - Status": INPUT_TYPE.Dropdown,
+  "Interview Title": INPUT_TYPE.Text,
+  Interviewer: INPUT_TYPE.ListBox,
+  Date: INPUT_TYPE.Date,
+  Time: INPUT_TYPE.Text,
 };
